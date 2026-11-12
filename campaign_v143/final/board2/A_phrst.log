@@ -1,0 +1,68 @@
+stored calibration arg(k) for this load: -56.21 deg
+
+== load 0: Firmware configuration (built Wed Nov  4 23:39:37 2026): ==
+  none: one-shot programs   -55.12 deg +-  0.32   reps program   -55.10 +-  0.34   |IQ| 1023
+   gen: one-shot programs    98.15 deg +- 97.18   reps program    93.38 +- 163.74   |IQ| 1026
+    ro: one-shot programs    39.29 deg +- 95.67   reps program   -94.28 +- 164.48   |IQ| 1021
+  both: one-shot programs   -12.41 deg +-  9.69   reps program   -10.87 +-  9.29   |IQ| 1025
+
+== reloading bitstream (load 1) ==
+Traceback (most recent call last):
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 191, in <module>
+    main()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 167, in main
+    reload_bitstream()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 136, in reload_bitstream
+    raise RuntimeError("no running session for " + SERVER_NB)
+RuntimeError: no running session for start nameserver.ipynb
+stored calibration arg(k) for this load: -56.21 deg
+
+== load 0: Firmware configuration (built Wed Nov  4 23:39:37 2026): ==
+  none: one-shot programs    -5.54 deg +-  0.34   reps program    -5.53 +-  0.38   |IQ| 1021
+   gen: one-shot programs    15.84 deg +- 100.14   reps program   102.30 +- 163.86   |IQ| 1025
+    ro: one-shot programs   101.70 deg +- 99.65   reps program   -48.94 +- 172.44   |IQ| 1021
+  both: one-shot programs   -11.19 deg +-  9.43   reps program   -11.20 +-  9.15   |IQ| 1025
+
+== reloading bitstream (load 1) ==
+Traceback (most recent call last):
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 191, in <module>
+    main()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 167, in main
+    reload_bitstream()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 136, in reload_bitstream
+    raise RuntimeError("no running session for " + SERVER_NB)
+RuntimeError: no running session for start nameserver.ipynb
+stored calibration arg(k) for this load: -56.21 deg
+
+== load 0: Firmware configuration (built Wed Nov  4 23:39:37 2026): ==
+  none: one-shot programs   -13.60 deg +-  0.37   reps program   -13.64 +-  0.38   |IQ| 1022
+   gen: one-shot programs   -15.77 deg +- 90.79   reps program   -22.26 +- 163.72   |IQ| 1025
+    ro: one-shot programs   154.93 deg +- 84.26   reps program   -22.39 +- 175.80   |IQ| 1021
+  both: one-shot programs   -12.44 deg +-  9.77   reps program   -11.04 +-  9.18   |IQ| 1024
+
+== reloading bitstream (load 1) ==
+Traceback (most recent call last):
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 191, in <module>
+    main()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 167, in main
+    reload_bitstream()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 136, in reload_bitstream
+    raise RuntimeError("no running session for " + SERVER_NB)
+RuntimeError: no running session for start nameserver.ipynb
+stored calibration arg(k) for this load: -56.21 deg
+
+== load 0: Firmware configuration (built Wed Nov  4 23:39:37 2026): ==
+  none: one-shot programs    -9.59 deg +-  0.35   reps program    -9.63 +-  0.37   |IQ| 1022
+   gen: one-shot programs   -79.46 deg +- 107.35   reps program    34.86 +- 163.74   |IQ| 1024
+    ro: one-shot programs   -95.68 deg +- 97.75   reps program    19.65 +- 172.43   |IQ| 1021
+  both: one-shot programs   -10.59 deg +-  9.64   reps program   -11.36 +-  9.18   |IQ| 1024
+
+== reloading bitstream (load 1) ==
+Traceback (most recent call last):
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 191, in <module>
+    main()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 167, in main
+    reload_bitstream()
+  File ".\analysis_scripts\diagnostics\phrst_probe.py", line 136, in reload_bitstream
+    raise RuntimeError("no running session for " + SERVER_NB)
+RuntimeError: no running session for start nameserver.ipynb

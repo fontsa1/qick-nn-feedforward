@@ -1,0 +1,55 @@
+ECHO is off.
+ECHO is off.
+NOTE: Using modified tcl85t.dll from https://gitenterprise.xilinx.com/ACT/vitis_hls_tcl
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2023.1 (64-bit)
+  **** SW Build 3854077 on May  4 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source C:/embedded-software/Vitis_HLS/2023.1/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running 'C:/embedded-software/Vitis_HLS/2023.1/bin/unwrapped/win64.o/vitis_hls.exe'
+INFO: [HLS 200-10] For user 'fonte' on host 'yugger' (Windows NT_amd64 version 6.2) on Tue Oct 20 23:50:19 -0600 2026
+INFO: [HLS 200-10] In directory './neural_net4_live576s'
+Sourcing Tcl script 'export_live.tcl'
+INFO: [HLS 200-1510] Running: open_project NN_live_prj 
+INFO: [HLS 200-10] Opening project './neural_net4_live576s/NN_live_prj'.
+INFO: [HLS 200-1510] Running: set_top NN_live 
+INFO: [HLS 200-1510] Running: open_solution solution1 
+INFO: [HLS 200-10] Opening solution './neural_net4_live576s/NN_live_prj/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 1.808ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.226ns.
+INFO: [HLS 200-1611] Setting target device to 'xczu48dr-ffvg1517-2-e'
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2023.1;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1464] Running solution command: config_compile -complex-mul-dsp=0
+INFO: [HLS 200-1464] Running solution command: config_compile -name_max_length=80
+INFO: [XFORM 203-1161] The maximum of name length is set to 80.
+INFO: [HLS 200-1464] Running solution command: config_export -format=ip_catalog
+INFO: [HLS 200-1464] Running solution command: config_export -version=1.5
+INFO: [HLS 200-1510] Running: export_design -format ip_catalog -version 1.5 
+INFO: [IMPL 213-8] Exporting RTL as a Vivado IP.
+ECHO is off.
+ECHO is off.
+
+****** Vivado v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+Sourcing tcl script '~/AppData/Roaming/Xilinx/Vivado/Vivado_init.tcl'
+Vivado_init.tcl: set general.maxThreads = 6
+source run_ippack.tcl -notrace
+ipx::create_core: Time (s): cpu = 00:00:09 ; elapsed = 00:00:14 . Memory (MB): peak = 462.238 ; gain = 158.027
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/embedded-software/Vivado/2023.1/data/ip'.
+INFO: [Common 17-206] Exiting Vivado at Tue Oct 20 23:50:53 2026...
+INFO: [HLS 200-802] Generated output file NN_live_prj/solution1/impl/export.zip
+INFO: [HLS 200-111] Finished Command export_design CPU user time: 1 seconds. CPU system time: 1 seconds. Elapsed time: 32.262 seconds; current allocated memory: 9.637 MB.
+INFO: [HLS 200-112] Total CPU user time: 2 seconds. Total CPU system time: 2 seconds. Total elapsed time: 34.875 seconds; peak allocated memory: 114.301 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Tue Oct 20 23:50:53 2026...

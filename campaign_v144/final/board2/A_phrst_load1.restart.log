@@ -1,0 +1,10 @@
+[10.1.9.26] jupyter login OK
+[10.1.9.26] restart requested; cold-starting
+[10.1.9.26] shutting down kernel bec3b0ff
+[10.1.9.26]   ns_host = '10.1.9.26'
+[10.1.9.26]   bitfile = '/home/xilinx/jupyter_notebooks/qick67.bit'
+[10.1.9.26]   bitfile=bitfile,
+[10.1.9.26]   ns_host=ns_host,
+[10.1.9.26] started kernel a3efff7a
+[10.1.9.26] start_server dispatched; waiting up to 300s ...
+[10.1.9.26] UP after 14s -> {'out_offset': 0, 'out_offset_ctrl': 0, 'trig_count': 0}

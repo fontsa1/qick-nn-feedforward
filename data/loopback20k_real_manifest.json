@@ -1,0 +1,22 @@
+{
+ "dataset": "test20k_real_X.npy",
+ "labels": "test20k_real_y.npy",
+ "shots": 20000,
+ "kfile": "k.npy",
+ "cfile": "c.npy",
+ "k": [
+  0.24574964054534276,
+  0.01314235870671412
+ ],
+ "c": [
+  0.2570358053305804,
+  0.5288565939644194
+ ],
+ "dac_fill_factor": 1.8257442155455348,
+ "phase": "0.0 (baked into waveform)",
+ "elapsed_min": 70.07449698050817,
+ "out_shape": [
+  20000,
+  1540
+ ]
+}

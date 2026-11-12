@@ -1,0 +1,26 @@
+2026-11-08 10:40:40 START v1.44 reacquisition, git 73a2a26
+2026-11-08 10:41:18 A v1.44 banner confirmed
+2026-11-08 10:42:06 B v1.44 banner confirmed
+2026-11-08 10:44:52 A calibration rc=0
+2026-11-08 10:45:05 A functional rc=0
+2026-11-08 10:45:42 A binding_fault rc=0
+2026-11-08 10:46:16 A fail_safe rc=0
+2026-11-08 10:47:41 A tproc_decision rc=0
+2026-11-08 10:48:23 B calibration rc=0
+2026-11-08 10:48:37 B functional rc=0
+2026-11-08 10:49:07 A leak thr2000 rc=0
+2026-11-08 10:49:14 B binding_fault rc=0
+2026-11-08 10:49:51 B fail_safe rc=0
+2026-11-08 10:50:39 A leak thr8 rc=0
+2026-11-08 10:51:16 B tproc_decision rc=0
+2026-11-08 10:52:06 A gate sweep rc=0
+2026-11-08 10:52:39 B leak thr2000 rc=0
+2026-11-08 10:54:02 B leak thr8 rc=0
+2026-11-08 10:55:29 B gate sweep rc=0
+2026-11-09 04:02:58 A cal_repeat rc=0
+2026-11-09 04:02:58 A BOARD DONE
+2026-11-09 04:19:14 B cal_repeat rc=0
+2026-11-09 04:19:14 B BOARD DONE
+2026-11-09 05:37:08 reloads rc=0
+2026-11-09 05:43:27 phrst rc=0
+2026-11-09 05:43:27 ALL DONE (cold starts still to do by hand)

@@ -1,0 +1,299 @@
+{
+  "k2": [
+    0.16781319068161538,
+    0.006101183265157379
+  ],
+  "c2": [
+    6.1237520831074335,
+    2.343486765481953
+  ],
+  "eval": "loopback20k_real",
+  "results": [
+    {
+      "arm": "real_10k",
+      "seed": 20260901,
+      "n_train": 10000,
+      "val_loss": 0.18671542406082153,
+      "F": 0.9476,
+      "p01": 0.0701,
+      "p10": 0.0347,
+      "correct": 18952,
+      "epochs": 10,
+      "degenerate": false
+    },
+    {
+      "arm": "real_10k",
+      "seed": 20260902,
+      "n_train": 10000,
+      "val_loss": 0.18309861421585083,
+      "F": 0.95335,
+      "p01": 0.0684,
+      "p10": 0.0249,
+      "correct": 19067,
+      "epochs": 9,
+      "degenerate": false
+    },
+    {
+      "arm": "real_10k",
+      "seed": 20260903,
+      "n_train": 10000,
+      "val_loss": 0.19447551667690277,
+      "F": 0.951,
+      "p01": 0.07,
+      "p10": 0.028,
+      "correct": 19020,
+      "epochs": 10,
+      "degenerate": false
+    },
+    {
+      "arm": "real_10k",
+      "seed": 20260904,
+      "n_train": 10000,
+      "val_loss": 0.199851393699646,
+      "F": 0.9524,
+      "p01": 0.0731,
+      "p10": 0.0221,
+      "correct": 19048,
+      "epochs": 7,
+      "degenerate": false
+    },
+    {
+      "arm": "real_10k",
+      "seed": 20260905,
+      "n_train": 10000,
+      "val_loss": 0.19262534379959106,
+      "F": 0.9519,
+      "p01": 0.0744,
+      "p10": 0.0218,
+      "correct": 19038,
+      "epochs": 9,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_10k",
+      "seed": 20260901,
+      "n_train": 10000,
+      "val_loss": 0.11257106065750122,
+      "F": 0.95195,
+      "p01": 0.0671,
+      "p10": 0.029,
+      "correct": 19039,
+      "epochs": 13,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_10k",
+      "seed": 20260902,
+      "n_train": 10000,
+      "val_loss": 0.11928295344114304,
+      "F": 0.95075,
+      "p01": 0.0665,
+      "p10": 0.032,
+      "correct": 19015,
+      "epochs": 15,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_10k",
+      "seed": 20260903,
+      "n_train": 10000,
+      "val_loss": 0.11635526269674301,
+      "F": 0.95145,
+      "p01": 0.0658,
+      "p10": 0.0313,
+      "correct": 19029,
+      "epochs": 19,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_10k",
+      "seed": 20260904,
+      "n_train": 10000,
+      "val_loss": 0.11771301925182343,
+      "F": 0.9511000000000001,
+      "p01": 0.0641,
+      "p10": 0.0337,
+      "correct": 19022,
+      "epochs": 20,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_10k",
+      "seed": 20260905,
+      "n_train": 10000,
+      "val_loss": 0.11886874586343765,
+      "F": 0.95155,
+      "p01": 0.0669,
+      "p10": 0.03,
+      "correct": 19031,
+      "epochs": 17,
+      "degenerate": false
+    },
+    {
+      "arm": "combined_20k",
+      "seed": 20260901,
+      "n_train": 20000,
+      "val_loss": 0.14494232833385468,
+      "F": 0.95455,
+      "p01": 0.0645,
+      "p10": 0.0264,
+      "correct": 19091,
+      "epochs": 7,
+      "degenerate": false
+    },
+    {
+      "arm": "combined_20k",
+      "seed": 20260902,
+      "n_train": 20000,
+      "val_loss": 0.1473473608493805,
+      "F": 0.95375,
+      "p01": 0.0643,
+      "p10": 0.0282,
+      "correct": 19075,
+      "epochs": 9,
+      "degenerate": false
+    },
+    {
+      "arm": "combined_20k",
+      "seed": 20260903,
+      "n_train": 20000,
+      "val_loss": 0.14453700184822083,
+      "F": 0.9534,
+      "p01": 0.0649,
+      "p10": 0.0283,
+      "correct": 19068,
+      "epochs": 10,
+      "degenerate": false
+    },
+    {
+      "arm": "combined_20k",
+      "seed": 20260904,
+      "n_train": 20000,
+      "val_loss": 0.14314569532871246,
+      "F": 0.95295,
+      "p01": 0.0644,
+      "p10": 0.0297,
+      "correct": 19059,
+      "epochs": 8,
+      "degenerate": false
+    },
+    {
+      "arm": "combined_20k",
+      "seed": 20260905,
+      "n_train": 20000,
+      "val_loss": 0.1638762652873993,
+      "F": 0.95405,
+      "p01": 0.0668,
+      "p10": 0.0251,
+      "correct": 19081,
+      "epochs": 11,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_50k",
+      "seed": 20260901,
+      "n_train": 50000,
+      "val_loss": 0.09379962086677551,
+      "F": 0.95455,
+      "p01": 0.0666,
+      "p10": 0.0243,
+      "correct": 19091,
+      "epochs": 9,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_50k",
+      "seed": 20260902,
+      "n_train": 50000,
+      "val_loss": 0.09081660956144333,
+      "F": 0.95445,
+      "p01": 0.0644,
+      "p10": 0.0267,
+      "correct": 19089,
+      "epochs": 12,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_50k",
+      "seed": 20260903,
+      "n_train": 50000,
+      "val_loss": 0.09304917603731155,
+      "F": 0.95365,
+      "p01": 0.0653,
+      "p10": 0.0274,
+      "correct": 19073,
+      "epochs": 12,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_50k",
+      "seed": 20260904,
+      "n_train": 50000,
+      "val_loss": 0.09738864749670029,
+      "F": 0.95465,
+      "p01": 0.0649,
+      "p10": 0.0258,
+      "correct": 19093,
+      "epochs": 9,
+      "degenerate": false
+    },
+    {
+      "arm": "synth_50k",
+      "seed": 20260905,
+      "n_train": 50000,
+      "val_loss": 0.09988702088594437,
+      "F": 0.9548,
+      "p01": 0.0652,
+      "p10": 0.0252,
+      "correct": 19096,
+      "epochs": 11,
+      "degenerate": false
+    }
+  ],
+  "summary": {
+    "real_10k": {
+      "n_train": 10000,
+      "mean": 95.12500000000001,
+      "sd": 0.2210203610530044,
+      "selected_seed": 20260902,
+      "selected_F": 95.33500000000001,
+      "selected_acc_ci": [
+        95.03391618581962,
+        95.6186712651828
+      ]
+    },
+    "synth_10k": {
+      "n_train": 10000,
+      "mean": 95.136,
+      "sd": 0.045607017003962365,
+      "selected_seed": 20260901,
+      "selected_F": 95.195,
+      "selected_acc_ci": [
+        94.88981066045037,
+        95.4828305626235
+      ]
+    },
+    "combined_20k": {
+      "n_train": 20000,
+      "mean": 95.374,
+      "sd": 0.06107372593840844,
+      "selected_seed": 20260904,
+      "selected_F": 95.295,
+      "selected_acc_ci": [
+        94.99273593462753,
+        95.57986687982387
+      ]
+    },
+    "synth_50k": {
+      "n_train": 50000,
+      "mean": 95.44200000000001,
+      "sd": 0.044944410108491935,
+      "selected_seed": 20260902,
+      "selected_F": 95.44500000000001,
+      "selected_acc_ci": [
+        95.14719252555352,
+        95.72535267596419
+      ]
+    }
+  }
+}

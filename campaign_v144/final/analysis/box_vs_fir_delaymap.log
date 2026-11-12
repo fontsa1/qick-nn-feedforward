@@ -1,0 +1,35 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246010.035881   37156 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246015.120592   37156 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+.\.venv\Lib\site-packages\tf_keras\src\constraints.py:365: UserWarning: The `keras.constraints.serialize()` API should only be used for objects of type `keras.constraints.Constraint`. Found an instance of type <class 'qkeras.quantizers.ternary'>, which may lead to improper serialization.
+  warnings.warn(
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x00000276508F7530> -> <hls4ml.model.types.NamedType object at 0x00000276508F75C0>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x000002765098C7A0> -> <hls4ml.model.types.NamedType object at 0x000002765098C860>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+20260901 95.236 81 51 0.011 0.155
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x0000027651D8BC20> -> <hls4ml.model.types.NamedType object at 0x0000027651D8BCE0>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x0000027651D50BF0> -> <hls4ml.model.types.NamedType object at 0x0000027651D50CB0>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+20260902 95.329 65 53 0.311 0.062
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x000002765098C650> -> <hls4ml.model.types.NamedType object at 0x000002765098C590>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x00000276508F72F0> -> <hls4ml.model.types.NamedType object at 0x00000276508F70B0>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+20260903 95.386 59 58 1.0 0.005
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x0000027651D77470> -> <hls4ml.model.types.NamedType object at 0x0000027651D77710>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x0000027650744EC0> -> <hls4ml.model.types.NamedType object at 0x0000027650744F80>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+20260904 95.324 70 57 0.287 0.067
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x0000027651DCBA40> -> <hls4ml.model.types.NamedType object at 0x0000027651DCBB00>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x0000027651C9CA40> -> <hls4ml.model.types.NamedType object at 0x0000027651C9CB00>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+20260905 95.149 110 63 0.0 0.242

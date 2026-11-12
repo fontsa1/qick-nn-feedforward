@@ -1,0 +1,8 @@
+ECHO is off.
+ECHO is off.
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "./audit_fixes/RB_prep/sim/tb_box_diff.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_box_diff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "./audit_fixes/RB_prep/sim/ref/boxcar_tap_ref.v" into library work
+INFO: [VRFC 10-311] analyzing module boxcar_tap_ref
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "./audit_fixes/RB_prep/sim/mut/boxcar_mut1.v" into library work
+INFO: [VRFC 10-311] analyzing module boxcar_tap

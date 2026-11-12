@@ -1,0 +1,301 @@
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.67%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_50000_51000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.63%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_51000_52000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.21%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_52000_53000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.68%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_53000_54000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.99%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_54000_55000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.47%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_55000_56000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.14%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_56000_57000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.73%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_57000_58000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.23%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_58000_59000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.89%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_59000_60000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.19%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_60000_61000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.86%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_61000_62000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.04%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_62000_63000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.29%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_63000_64000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.18%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_64000_65000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.75%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_65000_66000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.31%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_66000_67000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.11%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_67000_68000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.07%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_68000_69000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.43%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_69000_70000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.60%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_70000_71000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.97%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_71000_72000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.22%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_72000_73000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.59%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_73000_74000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.17%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_74000_75000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.48%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_75000_76000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.28%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_76000_77000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.61%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_77000_78000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.59%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_78000_79000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.48%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_79000_80000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.90%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_80000_81000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.30%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_81000_82000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.32%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_82000_83000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.73%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_83000_84000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.53%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_84000_85000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.39%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_85000_86000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.27%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_86000_87000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.72%
+DAC clipping: 1 shots, 1 samples capped at 32766
+saved campaign_v144/final/live/B_run1_87000_88000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.41%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_88000_89000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.30%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_89000_90000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.42%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_90000_91000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.35%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_91000_92000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.42%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_92000_93000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.02%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_93000_94000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.00%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_94000_95000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.11%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_95000_96000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.42%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_96000_97000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.10%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_97000_98000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.50%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_98000_99000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.9.26, not 10.1.4.105
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.17%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/B_run1_99000_100000.npz

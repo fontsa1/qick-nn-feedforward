@@ -1,0 +1,14 @@
+BANNER: Firmware configuration (built Sat Nov  7 19:57:07 2026):
+host 10.1.4.105 | banner Sat Nov  7 19:57:07 2026
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+calibration |k| 0.23721 arg -145.95 deg
+gate GAT4: EARLY_BLANK 1 SHOT_BIND 1 FAIL_SAFE 1 CFG_SAFE 0; marker -> pulse [33] cycles, DELAY 29; plateau 1556
+seg thr 1143 (half the |I|+|Q| plateau)
+rows 20000-20019: 20 shots (domain-map rows 1000:1600 skipped)
+   20/20  5.73 shots/s  in-loop F 89.58%  stale 0  late 0  rejects 0
+gate left disabled; saved .\campaign_v144\final\inloop\B_SMOKE.npz
+
+rows 20000-20019 (n = 20), slack -0.064 us
+in-loop fidelity (pulse came back vs label): 89.58% [75.71, 103.46]  P(1|0) 8.33  P(0|1) 12.50
+NN_live decision fidelity, same shots:        89.58% [75.71, 103.46]
+pulse == gate == NN_live decision (correct): 20/20; stale 0; late 0; unsafe 0; fresh 20; binding rejects 0; DAC-clipped shots 0

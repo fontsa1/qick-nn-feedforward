@@ -1,0 +1,113 @@
+BANNER: Firmware configuration (built Sat Nov  7 19:57:07 2026):
+host 10.1.4.105 | banner Sat Nov  7 19:57:07 2026
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+calibration |k| 0.23721 arg -145.95 deg
+gate GAT4: EARLY_BLANK 1 SHOT_BIND 1 FAIL_SAFE 1 CFG_SAFE 0; marker -> pulse [33] cycles, DELAY 29; plateau 1556
+seg thr 1143 (half the |I|+|Q| plateau)
+rows 0-99999: 99400 shots (domain-map rows 1000:1600 skipped)
+ 1000/99400  5.35 shots/s  in-loop F 94.94%  stale 0  late 0  rejects 0
+ 2000/99400  5.39 shots/s  in-loop F 95.07%  stale 0  late 0  rejects 0
+ 3000/99400  5.40 shots/s  in-loop F 95.35%  stale 0  late 0  rejects 0
+ 4000/99400  5.41 shots/s  in-loop F 95.49%  stale 0  late 0  rejects 0
+ 5000/99400  5.40 shots/s  in-loop F 95.49%  stale 0  late 0  rejects 0
+ 6000/99400  5.39 shots/s  in-loop F 95.51%  stale 0  late 0  rejects 0
+ 7000/99400  5.39 shots/s  in-loop F 95.50%  stale 0  late 0  rejects 0
+ 8000/99400  5.39 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+ 9000/99400  5.39 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+10000/99400  5.39 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+11000/99400  5.38 shots/s  in-loop F 95.52%  stale 0  late 0  rejects 0
+12000/99400  5.38 shots/s  in-loop F 95.43%  stale 0  late 0  rejects 0
+13000/99400  5.38 shots/s  in-loop F 95.44%  stale 0  late 0  rejects 0
+14000/99400  5.38 shots/s  in-loop F 95.43%  stale 0  late 0  rejects 0
+15000/99400  5.38 shots/s  in-loop F 95.41%  stale 0  late 0  rejects 0
+16000/99400  5.38 shots/s  in-loop F 95.35%  stale 0  late 0  rejects 0
+17000/99400  5.38 shots/s  in-loop F 95.44%  stale 0  late 0  rejects 0
+18000/99400  5.39 shots/s  in-loop F 95.47%  stale 0  late 0  rejects 0
+19000/99400  5.39 shots/s  in-loop F 95.43%  stale 0  late 0  rejects 0
+20000/99400  5.39 shots/s  in-loop F 95.41%  stale 0  late 0  rejects 0
+21000/99400  5.39 shots/s  in-loop F 95.43%  stale 0  late 0  rejects 0
+22000/99400  5.39 shots/s  in-loop F 95.43%  stale 0  late 0  rejects 0
+23000/99400  5.39 shots/s  in-loop F 95.46%  stale 0  late 0  rejects 0
+24000/99400  5.39 shots/s  in-loop F 95.46%  stale 0  late 0  rejects 0
+25000/99400  5.39 shots/s  in-loop F 95.53%  stale 0  late 0  rejects 0
+26000/99400  5.39 shots/s  in-loop F 95.54%  stale 0  late 0  rejects 0
+27000/99400  5.39 shots/s  in-loop F 95.60%  stale 0  late 0  rejects 0
+28000/99400  5.39 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+29000/99400  5.39 shots/s  in-loop F 95.58%  stale 0  late 0  rejects 0
+30000/99400  5.39 shots/s  in-loop F 95.55%  stale 0  late 0  rejects 0
+31000/99400  5.38 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+32000/99400  5.38 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+33000/99400  5.38 shots/s  in-loop F 95.64%  stale 0  late 0  rejects 0
+34000/99400  5.38 shots/s  in-loop F 95.64%  stale 0  late 0  rejects 0
+35000/99400  5.38 shots/s  in-loop F 95.62%  stale 0  late 0  rejects 0
+36000/99400  5.38 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+37000/99400  5.38 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+38000/99400  5.38 shots/s  in-loop F 95.60%  stale 0  late 0  rejects 0
+39000/99400  5.38 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+40000/99400  5.37 shots/s  in-loop F 95.62%  stale 0  late 0  rejects 0
+41000/99400  5.38 shots/s  in-loop F 95.66%  stale 0  late 0  rejects 0
+42000/99400  5.38 shots/s  in-loop F 95.66%  stale 0  late 0  rejects 0
+43000/99400  5.38 shots/s  in-loop F 95.66%  stale 0  late 0  rejects 0
+44000/99400  5.38 shots/s  in-loop F 95.64%  stale 0  late 0  rejects 0
+45000/99400  5.38 shots/s  in-loop F 95.64%  stale 0  late 0  rejects 0
+46000/99400  5.38 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+47000/99400  5.38 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+48000/99400  5.38 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+49000/99400  5.38 shots/s  in-loop F 95.62%  stale 0  late 0  rejects 0
+50000/99400  5.38 shots/s  in-loop F 95.63%  stale 0  late 0  rejects 0
+51000/99400  5.38 shots/s  in-loop F 95.64%  stale 0  late 0  rejects 0
+52000/99400  5.38 shots/s  in-loop F 95.62%  stale 0  late 0  rejects 0
+53000/99400  5.38 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+54000/99400  5.37 shots/s  in-loop F 95.60%  stale 0  late 0  rejects 0
+55000/99400  5.37 shots/s  in-loop F 95.60%  stale 0  late 0  rejects 0
+56000/99400  5.37 shots/s  in-loop F 95.58%  stale 0  late 0  rejects 0
+57000/99400  5.37 shots/s  in-loop F 95.57%  stale 0  late 0  rejects 0
+58000/99400  5.37 shots/s  in-loop F 95.57%  stale 0  late 0  rejects 0
+59000/99400  5.37 shots/s  in-loop F 95.60%  stale 0  late 0  rejects 0
+60000/99400  5.37 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+61000/99400  5.37 shots/s  in-loop F 95.62%  stale 0  late 0  rejects 0
+62000/99400  5.37 shots/s  in-loop F 95.62%  stale 0  late 0  rejects 0
+63000/99400  5.37 shots/s  in-loop F 95.63%  stale 0  late 0  rejects 0
+64000/99400  5.37 shots/s  in-loop F 95.62%  stale 0  late 0  rejects 0
+65000/99400  5.37 shots/s  in-loop F 95.60%  stale 0  late 0  rejects 0
+66000/99400  5.37 shots/s  in-loop F 95.61%  stale 0  late 0  rejects 0
+67000/99400  5.37 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+68000/99400  5.37 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+69000/99400  5.37 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+70000/99400  5.37 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+71000/99400  5.37 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+72000/99400  5.37 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+73000/99400  5.37 shots/s  in-loop F 95.58%  stale 0  late 0  rejects 0
+74000/99400  5.37 shots/s  in-loop F 95.59%  stale 0  late 0  rejects 0
+75000/99400  5.37 shots/s  in-loop F 95.58%  stale 0  late 0  rejects 0
+76000/99400  5.37 shots/s  in-loop F 95.58%  stale 0  late 0  rejects 0
+77000/99400  5.37 shots/s  in-loop F 95.57%  stale 0  late 0  rejects 0
+78000/99400  5.37 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+79000/99400  5.36 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+80000/99400  5.36 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+81000/99400  5.36 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+82000/99400  5.36 shots/s  in-loop F 95.57%  stale 0  late 0  rejects 0
+83000/99400  5.37 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+84000/99400  5.37 shots/s  in-loop F 95.57%  stale 0  late 0  rejects 0
+85000/99400  5.37 shots/s  in-loop F 95.57%  stale 0  late 0  rejects 0
+86000/99400  5.36 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+87000/99400  5.36 shots/s  in-loop F 95.56%  stale 0  late 0  rejects 0
+88000/99400  5.36 shots/s  in-loop F 95.55%  stale 0  late 0  rejects 0
+89000/99400  5.36 shots/s  in-loop F 95.54%  stale 0  late 0  rejects 0
+90000/99400  5.36 shots/s  in-loop F 95.54%  stale 0  late 0  rejects 0
+91000/99400  5.36 shots/s  in-loop F 95.55%  stale 0  late 0  rejects 0
+92000/99400  5.36 shots/s  in-loop F 95.54%  stale 0  late 0  rejects 0
+93000/99400  5.36 shots/s  in-loop F 95.55%  stale 0  late 0  rejects 0
+94000/99400  5.36 shots/s  in-loop F 95.54%  stale 0  late 0  rejects 0
+95000/99400  5.36 shots/s  in-loop F 95.53%  stale 0  late 0  rejects 0
+96000/99400  5.36 shots/s  in-loop F 95.53%  stale 0  late 0  rejects 0
+97000/99400  5.36 shots/s  in-loop F 95.53%  stale 0  late 0  rejects 0
+98000/99400  5.36 shots/s  in-loop F 95.54%  stale 0  late 0  rejects 0
+99000/99400  5.36 shots/s  in-loop F 95.53%  stale 0  late 0  rejects 0
+99400/99400  5.36 shots/s  in-loop F 95.53%  stale 0  late 0  rejects 0
+gate left disabled; saved .\campaign_v144\final\inloop\B_inloop_0_100000.npz
+
+rows 0-99999 (n = 99400), slack -0.064 us
+in-loop fidelity (pulse came back vs label): 95.53% [95.41, 95.66]  P(1|0) 2.71  P(0|1) 6.22
+NN_live decision fidelity, same shots:        95.53% [95.41, 95.66]
+pulse == gate == NN_live decision (correct): 99400/99400; stale 0; late 0; unsafe 0; fresh 99400; binding rejects 0; DAC-clipped shots 5

@@ -1,0 +1,53 @@
+START A c1 13:50:42
+  calib rc=0
+  box rc=0
+  protocol rc=3              op: thr   964  100/100 with a pulse  L_50  174.22 (sd 1.40, sem 0.14)  counter  175.38  L_buf  175.51  L_50-counter -1.16  L_buf-L_50 +1.29  phase +80
+  FAIL  path_minus_adv: path 113.36 - advance 111.90 = 1.46 ns; expected 3.2 +/- 1.0
+DONE A c1 13:57:19
+START B c1 13:57:19
+  calib rc=0
+  box rc=0
+  protocol rc=3              op: thr  1122  100/100 with a pulse  L_50  173.80 (sd 1.38, sem 0.14)  counter  174.84  L_buf  175.20  L_50-counter -1.04  L_buf-L_50 +1.40  phase -120
+  FAIL  path_minus_adv: path 113.29 - advance 111.90 = 1.39 ns; expected 3.2 +/- 1.0
+DONE B c1 14:03:46
+
+## 10.1.4.105: 1 loads; banner ['Firmware configuration (built Sat Nov  7 19:57:07 2026):']
+advance ticks [55]; op slack [-0.064]
+
+| load | checks | pulses | L_50 (ns) | counter | L_buf | L_50?counter | L_buf?L_50 | path | S_nn | S_cdc | S_gate | S_conv | S_fe | phase? |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| c1 | FAIL: path_minus_adv | 100/100 | 173.80 ? 0.14 | 174.84 | 175.20 | -1.04 | +1.40 | 113.29 | 18.08 | 8.67 | 9.87 | 99.93 | 38.28 | -120 |
+
+
+Sensitivity, c1 (slack 0, change in L_50 from the base point 239.07; base gain 0.6):
+
+| point | pulses | thr | plateau IQ | L_50 change (ns) | sem |
+|---|---|---|---|---|---|
+| gain_0.15 | 40/40 | 280 | 411 | +0.14 | 0.24 |
+| gain_0.3 | 40/40 | 561 | 822 | -0.05 | 0.20 |
+| gain_0.9 | 40/40 | 1683 | 2467 | +0.25 | 0.22 |
+| phase_90 | 40/40 | 1122 | 1645 | +0.03 | 0.24 |
+| phase_180 | 40/40 | 1122 | 1645 | +0.03 | 0.24 |
+| phase_270 | 40/40 | 1122 | 1644 | +0.16 | 0.23 |
+| zero_stim | 40/40 | 1122 | 1645 | +0.17 | 0.23 |
+
+## 10.1.9.26: 1 loads; banner ['Firmware configuration (built Sat Nov  7 19:57:07 2026):']
+advance ticks [55]; op slack [-0.064]
+
+| load | checks | pulses | L_50 (ns) | counter | L_buf | L_50?counter | L_buf?L_50 | path | S_nn | S_cdc | S_gate | S_conv | S_fe | phase? |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| c1 | FAIL: path_minus_adv | 100/100 | 174.22 ? 0.14 | 175.38 | 175.51 | -1.16 | +1.29 | 113.36 | 18.08 | 8.57 | 9.97 | 100.41 | 38.36 | +80 |
+
+
+Sensitivity, c1 (slack 0, change in L_50 from the base point 239.46; base gain 0.6):
+
+| point | pulses | thr | plateau IQ | L_50 change (ns) | sem |
+|---|---|---|---|---|---|
+| gain_0.15 | 40/40 | 241 | 416 | -0.16 | 0.20 |
+| gain_0.3 | 40/40 | 482 | 832 | -0.06 | 0.23 |
+| gain_0.9 | 40/40 | 1447 | 2498 | -0.04 | 0.23 |
+| phase_90 | 40/40 | 965 | 1665 | -0.44 | 0.20 |
+| phase_180 | 40/40 | 965 | 1665 | +0.04 | 0.25 |
+| phase_270 | 40/40 | 965 | 1666 | -0.09 | 0.25 |
+| zero_stim | 40/40 | 965 | 1665 | -0.26 | 0.22 |
+LOADS_DONE

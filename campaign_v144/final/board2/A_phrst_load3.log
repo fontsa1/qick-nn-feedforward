@@ -1,0 +1,16 @@
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+stored calibration arg(k) for this load: 152.71 deg
+
+== load 0: Firmware configuration (built Sat Nov  7 19:57:07 2026): ==
+  none: one-shot programs    57.97 deg +-  0.35   reps program    57.78 +-  0.36   |IQ| 1009
+   gen: one-shot programs   -50.14 deg +- 87.07   reps program    22.79 +- 163.77   |IQ| 1010
+    ro: one-shot programs    73.99 deg +- 88.99   reps program  -151.17 +- 157.40   |IQ| 1009
+  both: one-shot programs   -33.52 deg +-  8.68   reps program   -32.22 +-  9.49   |IQ| 1011
+
+== across loads: per-load mean phase (deg) ==
+  none:    57.97   across-load spread: std  -0.00, range   0.00   within-load std (median)  0.35
+   gen:   -50.14   across-load spread: std  -0.00, range   0.00   within-load std (median) 87.07
+    ro:    73.99   across-load spread: std  -0.00, range   0.00   within-load std (median) 88.99
+  both:   -33.52   across-load spread: std  -0.00, range   0.00   within-load std (median)  8.68
+saved campaign_v144/final/board2/A_phrst_load3.json
+NEXT: run_calibration.py (stored k/c belong to the load before this probe).

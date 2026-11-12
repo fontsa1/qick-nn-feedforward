@@ -1,0 +1,33 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246136.846377   43720 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246141.868387   43720 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+reference (pairing baseline) = LDA: {'loop20k': 95.555, 'pool100k': 96.024, 'src20k': 95.93}
+loaded (36s)
+[seg_hgb]
+[seg_hgb] loop20k 94.635 (-0.920 vs LDA, p=3.7e-17)  pool100k 96.266 (+0.242 vs LDA, p=5.1e-25)  src20k 96.155 (+0.225 vs LDA, p=6.1e-05)
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:277: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+
+[seg_mlp]
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+    seed 20260904: val_loss 0.14769 (22 ep)
+    seed 20260905: val_loss 0.14678 (19 ep)
+[seg_mlp] loop20k 95.395 (-0.160 vs LDA, p=0.055)  pool100k 96.279 (+0.255 vs LDA, p=5.5e-32)  src20k 96.195 (+0.265 vs LDA, p=3.8e-07)
+[bin_mlp]
+    seed 20260904: val_loss 0.14622 (22 ep)
+    seed 20260905: val_loss 0.14614 (16 ep)
+[bin_mlp] loop20k 95.485 (-0.070 vs LDA, p=0.45)  pool100k 96.264 (+0.240 vs LDA, p=1.6e-24)  src20k 96.2 (+0.270 vs LDA, p=2e-06)
+[cnn1d]
+    seed 20260904: val_loss 0.15137 (10 ep)
+    seed 20260905: val_loss 0.15494 (10 ep)
+[cnn1d] loop20k 95.575 (+0.020 vs LDA, p=0.84)  pool100k 96.208 (+0.184 vs LDA, p=1.5e-18)  src20k 96.12 (+0.190 vs LDA, p=0.00018)
+[bin_gru]
+    seed 20260904: val_loss 0.14272 (44 ep)
+    seed 20260905: val_loss 0.14279 (36 ep)
+[bin_gru] loop20k 95.085 (-0.470 vs LDA, p=3e-06)  pool100k 96.31 (+0.286 vs LDA, p=7.5e-32)  src20k 96.265 (+0.335 vs LDA, p=1.9e-08)
+
+wrote campaign_v144\final\analysis\arch\arch_sweep2_src_v144.json (776s total)

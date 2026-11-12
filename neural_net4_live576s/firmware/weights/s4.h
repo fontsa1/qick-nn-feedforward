@@ -1,0 +1,16 @@
+//Numpy array shape [1, 4]
+//Min 0.000052657324
+//Max 0.000111387206
+//Number of zeros 0
+
+#ifndef S4_H_
+#define S4_H_
+
+#ifndef __SYNTHESIS__
+batchnorm1_scale_t s4[4];
+#else
+batchnorm1_scale_t s4[4] = {0.00005265732397674582898616790771, 0.00005495680306921713054180145264, 0.00011138720583403483033180236816, 0.00005272577618598006665706634521};
+
+#endif
+
+#endif

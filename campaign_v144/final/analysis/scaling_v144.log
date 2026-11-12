@@ -1,0 +1,18 @@
+classifier (NN_live+boxcar+gate+trig_sync+2 CDC): {'lut': 2430, 'ff': 3180, 'bram': 0.5, 'dsp': 4}
+dac_gate: {'lut': 873, 'ff': 2388, 'bram': 0.0, 'dsp': 0}   record memory (verification): {'lut': 23, 'ff': 72, 'bram': 8.0, 'dsp': 0}
+front end none: {'lut': 0, 'ff': 0, 'bram': 0.0, 'dsp': 0}
+front end fir_free: {'lut': 1951, 'ff': 4228, 'bram': 16.0, 'dsp': 35}
+front end stock: {'lut': 6259, 'ff': 11891, 'bram': 16.0, 'dsp': 157}
+
+as built | front end none | record yes                                           N_max   51 (binding lut; limits {'lut': 51, 'ff': 100, 'bram': 68, 'dsp': 932})
+as built | front end none | record no                                            N_max   52 (binding lut; limits {'lut': 52, 'ff': 101, 'bram': 1160, 'dsp': 932})
+as built | front end fir_free | record yes                                       N_max   23 (binding bram; limits {'lut': 32, 'ff': 57, 'bram': 23, 'dsp': 95})
+as built | front end fir_free | record no                                        N_max   32 (binding lut; limits {'lut': 32, 'ff': 57, 'bram': 35, 'dsp': 95})
+as built | front end stock | record yes                                          N_max   17 (binding lut; limits {'lut': 17, 'ff': 32, 'bram': 23, 'dsp': 23})
+as built | front end stock | record no                                           N_max   18 (binding lut; limits {'lut': 18, 'ff': 32, 'bram': 35, 'dsp': 23})
+minus NN_axi (and time tagger if present) | front end none | record yes          N_max   68 (binding bram; limits {'lut': 100, 'ff': 126, 'bram': 68, 'dsp': 936})
+minus NN_axi (and time tagger if present) | front end none | record no           N_max  100 (binding lut; limits {'lut': 100, 'ff': 128, 'bram': 1161, 'dsp': 936})
+minus NN_axi (and time tagger if present) | front end fir_free | record yes      N_max   23 (binding bram; limits {'lut': 63, 'ff': 72, 'bram': 23, 'dsp': 96})
+minus NN_axi (and time tagger if present) | front end fir_free | record no       N_max   35 (binding bram; limits {'lut': 63, 'ff': 72, 'bram': 35, 'dsp': 96})
+minus NN_axi (and time tagger if present) | front end stock | record yes         N_max   23 (binding bram,dsp; limits {'lut': 34, 'ff': 40, 'bram': 23, 'dsp': 23})
+minus NN_axi (and time tagger if present) | front end stock | record no          N_max   23 (binding dsp; limits {'lut': 34, 'ff': 40, 'bram': 35, 'dsp': 23})

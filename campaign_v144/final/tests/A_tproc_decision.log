@@ -1,0 +1,12 @@
+BANNER: Firmware configuration (built Sat Nov  7 19:57:07 2026):
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+  100/400
+  200/400
+  300/400
+  400/400
+tProc shot field == NN_live shot: 400/400
+tProc decision bit == NN_live decision bit: 400/400  (NN_live decided 1 on 193/400)
+tProc logit == NN_live record logit: 400/400
+gate decision bit == NN_live decision bit (fresh shots): 400/400
+tProc decision check: PASS (gate left disabled)
+saved campaign_v144/final/tests/A_tproc_decision.json

@@ -1,0 +1,9 @@
+BANNER: Firmware configuration (built Sat Nov  7 19:57:07 2026):
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+gate GAT4, params [EB SB FS CS] [1, 1, 1, 0]; DELAY 29; always-pass plateau 1573
+control  n  40: pulse came back  40, rejected (word 19)   0, stale   0, gate bit == NN_live bit on fresh 40
+normal   n  50: pulse came back  50, rejected (word 19)   0, stale   0, gate bit == NN_live bit on fresh 50
+fault    n  25: pulse came back   0, rejected (word 19)  25, stale  25, gate bit == NN_live bit on fresh 0
+after    n  25: pulse came back  25, rejected (word 19)   0, stale   0, gate bit == NN_live bit on fresh 25
+binding fault check: PASS (gate left disabled)
+saved campaign_v144/final/tests/B_binding_fault.json

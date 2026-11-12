@@ -1,0 +1,52 @@
+Firmware configuration (built Sat Nov  7 19:57:07 2026):
+[PASS     ] T00 Firmware/software configuration (0 s)
+            {"sw": "0.2.414", "n_gens": 2, "n_ros": 3, "tproc": "qick_processor", "rev": 27, "f_core": 200.0, "f_time": 491.52, "gen0_fs": 7864.32, "ro0_fs": 4423.68, "ro0_fout": 552.96, "pins": 8, "has_lfsr": 1, "has_div": 1, "has_arith": 1, "ddr4": true, "mr": true}
+[PASS     ] T01 Memory access: host and tProc (0 s)
+            {"host_roundtrip_512": true, "tproc_loop_writes_64": true, "first_tproc_values": [7, 10, 13, 16], "tproc_counter": 1}
+[PASS     ] T02 Wiring matrix (gen -> readout) (0 s)
+            {"peak_over_median": [[524.3, 370.1, 3.2], [2.9, 3.4, 3.2]], "wired": [[true, true, false], [false, false, false]]}
+[PASS     ] T03 Single const pulse: width, timing shift, repeatability (0 s)
+            {"width_us": 0.401, "width_err_ns": 0.99, "t_shift_us": 0.102, "shift_err_ns": 2.04, "latency_us": 0.315, "amp_cv": 0.00026, "phase_sd_deg": 0.051, "edge_sd_samples": 0.349}
+[PASS     ] T04 Envelope shapes: gauss, flat_top, triangle, DRAG, custom (2 s)
+            {"nrms_residual": {"gauss": 0.0006, "flat_top": 0.0022, "triangle": 0.0007, "drag": 0.0006, "custom": 0.0026}}
+[PASS     ] T05 Gain sweep (QickSweep1D): linearity (0 s)
+            {"n": 19, "slope": 2022.038, "intercept_frac": 0.0, "max_dev_frac": 0.00013, "phase_span_deg": 0.068, "gains_first_last": [0.04999, 0.94983]}
+[PASS     ] T06 Phase sweep: commanded vs measured (0 s)
+            {"rms_err_deg": 0.004, "max_err_deg": 0.007, "amp_cv": 3e-05}
+[PASS     ] T07 Frequency matching: phase coherence across runs (0 s)
+            {"freq": 487.1234567, "phase_sd_deg": 0.03, "amp_cv": 0.0002}
+[PASS     ] T08 Dynamic readout frequency sweep (exec_before) + electrical delay (0 s)
+            {"delay_ns": [19.54, 19.539], "resid_rms_deg": [2.46, 2.47], "resid_max_deg": [6.34, 6.71], "amp_min_over_median": [0.89, 0.89]}
+warning: pulse time 0.4 appears to conflict with previous pulse ending at <qick.asm_v2.QickParam object at 0x000001A38BC10D10>?
+warning: pulse time 0.1 appears to conflict with previous pulse ending at <qick.asm_v2.QickParam object at 0x000001A38BA908C0>?
+[PASS     ] T09 Timeline semantics: delay, delay_auto, wait, collisions, swept delay (0 s)
+            {"delay": {"expected_us": 0.3, "measured_us": 0.2996, "err_ns": -0.4}, "delay_auto": {"expected_us": 0.45, "measured_us": 0.4495, "err_ns": -0.51}, "collision": {"expected_us": 0.5, "measured_us": 0.5002, "err_ns": 0.21}, "wait": {"measured_us": 0.7592, "note": "b must start no earlier than wait time - a start (0.7 us)"}, "swept_delay": {"expected_us": [0.15, 0.25, 0.35, 0.45, 0.55], "measured_us": [0.1508, 0.25, 0.35, 0.4499, 0.549]}}
+[PASS     ] T10 2D sweep (QickSpan), loop order, reps_innermost (0 s)
+            {"data_shape": [1, 3, 4], "gain_shape": [3, 4], "max_rel_dev": 0.0003, "raw_shape_innerFalse": [3, 4, 1, 2], "amp_rises_along_gain_innerFalse": true, "raw_shape_innerTrue": [4, 3, 1, 2], "amp_rises_along_gain_innerTrue": true}
+[PASS     ] T11 Accumulated vs decimated buffer, per shot, exact (0 s)
+            {"shots": 40, "samples_per_shot": 221, "exact_matches": 40, "first_shot": {"dec_sum": [-70685, -150698], "acc": [-70685, -150698]}}
+[PASS     ] T12 Feedback: read_input == buffered accumulation, per shot (sweep read_wait) (0 s)
+            {"shots": 200, "exact_matches_by_read_wait_us": {"0.0": 0, "0.02": 0, "0.05": 0, "0.1": 192, "0.2": 200}, "min_read_wait_all_exact": 0.2}
+[PASS     ] T13 Conditional pulse (read_and_jump) decision consistency (0 s)
+            {"shots": 205, "agree": 205, "n_played": 104, "n_expected": 104, "ro_rotation_deg": 115.01}
+[PASS     ] T14 Virtual-Z via read/write_wmem subroutine; subroutine timing; per-pulse gain (0 s)
+            {"rep0_phases_deg": [0.0, 90.13, 89.94, 179.98], "rep1_phases_deg": [0.0, 89.94, 89.83, 180.07], "subroutine_starts_us": [0.0, 0.1506, 0.3498, 0.5007], "gain_ratios": [1.0, 0.5002, 0.2501]}
+[PASS     ] T15 tProc ALU, ARITH, DIV and conditional-jump tests (0 s)
+            {"n_checks": 19, "mismatches": {}}
+[FAIL     ] T16 DDR4 buffer: capture, shot period (final_delay), equality with decimated buffer (0 s)
+            {"ddr_samples": 22784, "pulses_found": 6, "period_us": [5.8851, 5.8859, 5.9138, 5.9148, 5.914], "last_shot_found_exactly": true}
+[WARN     ] T17 MR buffer: raw ADC capture, tone frequency (0 s)
+            {"rows": 8192, "peak_MHz_if_doc_fs": 599.94, "peak_MHz_if_half_fs": 299.97, "complex_peak_MHz_half_fs": -299.97, "mirror_dBc": -68.4, "iq_correlation": 0.186, "played_MHz": 300.0}
+[PASS     ] T18 Edge counter vs software Schmitt trigger (0 s)
+            {"n0": {"hw": 0, "sw": 0}, "n3": {"hw": 3, "sw": 3}, "n5": {"hw": 5, "sw": 5}}
+[NOT WIRED] T19 Untestable on this wiring: gen 1, readouts 1/2 (weighted buffer), time tagger, PMOD pins (0 s)
+            {"gen1": "DAC_A not cabled", "readout1": "ADC_C not cabled", "readout2_weighted": "ADC_B not cabled", "time_tagger": "ADC_A not cabled", "pmod": "needs a scope/logic analyser"}
+[PASS     ] T20 Readout-chain integrity: CW tone in the decimated buffer, phase-continuity glitch search (1 s)
+            {"samples": 127040, "phase_jumps": 0, "amp_dropouts": 0, "step_rad": 0.005725, "step_expected": 0.005681}
+[FAIL     ] T20b DDR4 stream continuity: CW tone through DDR4 (5 s)
+            {"samples": 12582609, "jumps": 867, "per_million": 68.9, "missing_samples_hist": {"15": 144, "16": 670, "17": 53}, "jump_position_mod16": {"15": 867}}
+[PASS     ] T21 Program size and timing limits (0 s)
+            {"pmem_words": 1017, "pmem_size": 4096, "pulses_programmed": 1000, "pulses_seen": 1000}
+
+SUMMARY {'PASS': 19, 'WARN': 1, 'FAIL': 2, 'ERROR': 0, 'NOT WIRED': 1, 'INFO': 0} | dac_gate word 0 before 0x0 after 0x0
+saved campaign_v144/final/tests/A_functional.json

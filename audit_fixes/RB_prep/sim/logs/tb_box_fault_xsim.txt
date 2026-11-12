@@ -1,0 +1,75 @@
+ECHO is off.
+ECHO is off.
+
+****** xsim v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_box_fault_sim/xsim_script.tcl
+# xsim {tb_box_fault_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+---- cfg 00000a71
+OLD acc_i: outputs differing 2097, last at +2099 cycles, still wrong after +2000: 99
+OLD dif_i: outputs differing 2096, last at +2099 cycles, still wrong after +2000: 99
+OLD new_q: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD old_i: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD sri[4]: outputs differing 2088, last at +2099 cycles, still wrong after +2000: 99
+OLD rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+NEW acc_i: outputs differing 1, last at +3 cycles, still wrong after +2000: 0
+NEW h1_i: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW h2_q: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW g_i: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW l3i[1]: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW l2q[0]: outputs differing 1, last at +6 cycles, still wrong after +2000: 0
+NEW l1i[1]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW l1i[5]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW sri[0]: outputs differing 9, last at +15 cycles, still wrong after +2000: 0
+NEW sri[12]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW mk (mask bit 10): outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+---- cfg 00000f01
+OLD acc_i: outputs differing 1888, last at +2099 cycles, still wrong after +2000: 95
+OLD dif_i: outputs differing 1989, last at +2099 cycles, still wrong after +2000: 86
+OLD new_q: outputs differing 1969, last at +2099 cycles, still wrong after +2000: 97
+OLD old_i: outputs differing 1875, last at +2099 cycles, still wrong after +2000: 89
+OLD sri[4]: outputs differing 1945, last at +2099 cycles, still wrong after +2000: 91
+OLD rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+NEW acc_i: outputs differing 1, last at +3 cycles, still wrong after +2000: 0
+NEW h1_i: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW h2_q: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW g_i: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW l3i[1]: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW l2q[0]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW l1i[1]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW l1i[5]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW sri[0]: outputs differing 14, last at +20 cycles, still wrong after +2000: 0
+NEW sri[12]: outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW mk (mask bit 10): outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+---- cfg 00000071
+OLD acc_i: outputs differing 2097, last at +2099 cycles, still wrong after +2000: 99
+OLD dif_i: outputs differing 2096, last at +2099 cycles, still wrong after +2000: 99
+OLD new_q: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD old_i: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD sri[4]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+OLD rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+NEW acc_i: outputs differing 1, last at +3 cycles, still wrong after +2000: 0
+NEW h1_i: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW h2_q: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW g_i: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW l3i[1]: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW l2q[0]: outputs differing 1, last at +6 cycles, still wrong after +2000: 0
+NEW l1i[1]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW l1i[5]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW sri[0]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW sri[12]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW mk (mask bit 10): outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+$finish called at time : 215392464 ps : File "./audit_fixes/RB_prep/sim/tb_box_fault.sv" Line 74
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 198.352 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 02:17:51 2026...

@@ -1,0 +1,168 @@
+{
+ "A": [
+  {
+   "slack_ns": -72.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 0,
+   "late": 40,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -70.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 0,
+   "late": 40,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -68.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 0,
+   "late": 40,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -66.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 2,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -64.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -62.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -60.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -40.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": 0.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  }
+ ],
+ "B": [
+  {
+   "slack_ns": -72.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 0,
+   "late": 40,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -70.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 0,
+   "late": 40,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -68.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 0,
+   "late": 40,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -66.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 12,
+   "late": 6,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -64.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -62.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -60.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": -40.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  },
+  {
+   "slack_ns": 0.0,
+   "n": 40,
+   "n_dec1": 17,
+   "played_dec1": 17,
+   "late": 0,
+   "unsafe": 0,
+   "played_dec0": 0
+  }
+ ]
+}

@@ -1,0 +1,53 @@
+BANNER: Firmware configuration (built Sat Nov  7 19:57:07 2026):
+SETTINGS {
+ "label": "r3",
+ "host": "10.1.4.105",
+ "banner": "Firmware configuration (built Sat Nov  7 19:57:07 2026):",
+ "time": "2026-11-09 05:13:41",
+ "git_head": "73a2a264a81ae129639dd820679d0ebac9e35289",
+ "script_sha256": "d70f1236fbbac0f693c22fdcba85bec8affb48194db05fa4a43cbe02a2831a92",
+ "bit_sha256": "986c861a83be8d01d72db967af894e3d01de2b1c861021d1b5821bc183d7b7c6",
+ "k_sha256": "b621942c2b8dd318b12dd45702fa1c5615b421884790ae6d4a44745b1e4d6b1f",
+ "c_sha256": "248ec9c1ba9b558810adad5ea10e529e2f25eda38f91f07057f6a716071215ea",
+ "nn_advance_us": 0.1135,
+ "realised_ticks": 55,
+ "realised_adv_ns": 111.89778645833334,
+ "tick_ns": 2.0345052083333335,
+ "sample_ns": 1.808449074074074,
+ "op_slack_us": -0.064,
+ "path_ns": 113.31,
+ "box_shift": 7,
+ "box_m": 11,
+ "cp_gain": 0.6,
+ "cp_len_us": 0.2,
+ "cp_pre_us": 0.15,
+ "fb_margin_us": 0.035,
+ "rf_thr": 2048,
+ "live_n": "576",
+ "box_json": "campaign_v144/final/latency/reloads/B_r3.box_probe.json"
+}
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+DELAY 29
+            op: thr  1107  100/100 with a pulse  L_50  173.78 (sd 1.42, sem 0.14)  counter  174.79  L_buf  175.22  L_50-counter -1.00  L_buf-L_50 +1.44  phase -27
+        slack0: thr  1106  40/40 with a pulse  L_50  238.95 (sd 1.63, sem 0.26)  counter  240.16  L_buf  240.62  L_50-counter -1.21  L_buf-L_50 +1.67  phase -27
+
+closure checks:
+  FAIL  path_minus_adv: path 113.31 - advance 111.90 = 1.41 ns; expected 3.2 +/- 1.0
+  PASS  op_all_pulses: 100/100 (a shot with no pulse = late decision)
+  PASS  op_window_is_buffer: NN_live's window == buffer 1 on every shot
+  PASS  op_counter_is_samples: counter - edge rule on samples: [0]
+  PASS  op_nn_cycles: result - last: [9] cycles
+  PASS  op_thr_fraction: 0.500
+  PASS  op_l50_minus_counter: -1.00 ns; expected -0.9 +/- 0.79
+  PASS  op_lbuf_minus_l50: +1.44 ns; path - advance on this load 1.41 +/- 0.80
+  PASS  op_segments_sum: segment sum 174.79, counter 174.79 ns
+  PASS  slack0_all_pulses: 40/40 (a shot with no pulse = late decision)
+  PASS  slack0_window_is_buffer: NN_live's window == buffer 1 on every shot
+  PASS  slack0_counter_is_samples: counter - edge rule on samples: [0]
+  PASS  slack0_nn_cycles: result - last: [9] cycles
+  PASS  slack0_thr_fraction: 0.500
+  PASS  slack0_l50_minus_counter: -1.21 ns; expected -0.9 +/- 0.84
+  PASS  slack0_lbuf_minus_l50: +1.67 ns; path - advance on this load 1.41 +/- 0.94
+  PASS  slack0_segments_sum: segment sum 240.16, counter 240.16 ns
+
+CHECKS FAILED: do not report this run; saved campaign_v144/final/latency/reloads/B_r3.npz, campaign_v144/final/latency/reloads/B_r3.json; gate left at word 0

@@ -1,0 +1,19 @@
+ECHO is off.
+ECHO is off.
+
+****** xsim v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_lwg_sim/xsim_script.tcl
+# xsim {tb_lwg_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+windows (buffer) 979, TLASTs 1739, words 1001664 (= 1739 x N? 1), word/valid mismatches vs buffer.sv 0, windows whose TLAST is not on word N: 0
+$finish called at time : 3064942392 ps : File "./audit_fixes/RB_prep/sim/tb_lwg.sv" Line 48
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 197.832 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 06:09:27 2026...

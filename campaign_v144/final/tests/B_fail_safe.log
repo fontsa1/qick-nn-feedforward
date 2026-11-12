@@ -1,0 +1,8 @@
+BANNER: Firmware configuration (built Sat Nov  7 19:57:07 2026):
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+gate magic 47415434, build parameters [EARLY_BLANK SHOT_BIND FAIL_SAFE CFG_SAFE] = [1, 1, 1, 0]; marker -> pulse [33, 33, 33, 33, 33, 33, 33, 33] cycles, DELAY 29, always-pass plateau 1572
+A_reset_word0          word0 0x00000000: pulse came back 0/40; gate windows 40, passed 0, blanked 40; max plateau 0.007 x always-pass
+B_disabled_all_pass    word0 0x07d01d0e: pulse came back 0/40; gate windows 40, passed 40, blanked 0; max plateau 0.007 x always-pass
+C_enabled_all_pass     word0 0x07d01d0f: pulse came back 40/40; gate windows 40, passed 40, blanked 0; max plateau 1.007 x always-pass
+FAIL_SAFE check: PASS (gate left at word 0 = 0)
+saved campaign_v144/final/tests/B_fail_safe.json

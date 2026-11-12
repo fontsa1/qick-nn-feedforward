@@ -1,0 +1,205 @@
+ECHO is off.
+ECHO is off.
+NOTE: Using modified tcl85t.dll from https://gitenterprise.xilinx.com/ACT/vitis_hls_tcl
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2023.1 (64-bit)
+  **** SW Build 3854077 on May  4 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source C:/embedded-software/Vitis_HLS/2023.1/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running 'C:/embedded-software/Vitis_HLS/2023.1/bin/unwrapped/win64.o/vitis_hls.exe'
+INFO: [HLS 200-10] For user 'fonte' on host 'yugger' (Windows NT_amd64 version 6.2) on Tue Oct 20 23:49:33 -0600 2026
+INFO: [HLS 200-10] In directory './neural_net4_live576s'
+Sourcing Tcl script 'csynth_live.tcl'
+INFO: [HLS 200-1510] Running: open_project NN_live_prj 
+INFO: [HLS 200-10] Opening project './neural_net4_live576s/NN_live_prj'.
+INFO: [HLS 200-1510] Running: set_top NN_live 
+INFO: [HLS 200-1510] Running: open_solution solution1 
+INFO: [HLS 200-10] Opening solution './neural_net4_live576s/NN_live_prj/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 1.808ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.226ns.
+INFO: [HLS 200-1611] Setting target device to 'xczu48dr-ffvg1517-2-e'
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2023.1;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1464] Running solution command: config_compile -complex-mul-dsp=0
+INFO: [HLS 200-1464] Running solution command: config_compile -name_max_length=80
+INFO: [XFORM 203-1161] The maximum of name length is set to 80.
+INFO: [HLS 200-1464] Running solution command: config_export -format=ip_catalog
+INFO: [HLS 200-1464] Running solution command: config_export -version=1.5
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.244 seconds; current allocated memory: 105.840 MB.
+INFO: [HLS 200-10] Analyzing design file 'firmware/NN_live.cpp' ... 
+WARNING: [HLS 207-5559] unexpected pragma argument 'softmax', expects function/operation (firmware/nnet_utils/nnet_activation.h:402:36)
+WARNING: [HLS 207-5531] 'Resource pragma' is deprecated, use 'bind_op/bind_storage pragma' instead (firmware/nnet_utils/nnet_dense_resource.h:33:9)
+WARNING: [HLS 207-5531] 'Resource pragma' is deprecated, use 'bind_op/bind_storage pragma' instead (firmware/nnet_utils/nnet_dense_resource.h:107:9)
+WARNING: [HLS 207-5531] 'Resource pragma' is deprecated, use 'bind_op/bind_storage pragma' instead (firmware/nnet_utils/nnet_dense_resource.h:189:9)
+WARNING: [HLS 207-5292] unused parameter 'keep' (firmware/nnet_utils/nnet_helpers.h:285:99)
+WARNING: [HLS 207-5292] unused parameter 'data' (firmware/nnet_utils/nnet_function_stubs.h:14:36)
+WARNING: [HLS 207-5292] unused parameter 'buffer' (firmware/nnet_utils/nnet_function_stubs.h:15:36)
+WARNING: [HLS 207-5292] unused parameter 'partition' (firmware/nnet_utils/nnet_function_stubs.h:16:44)
+WARNING: [HLS 207-5292] unused parameter 'data' (firmware/nnet_utils/nnet_function_stubs.h:24:24)
+WARNING: [HLS 207-5292] unused parameter 'buffer' (firmware/nnet_utils/nnet_function_stubs.h:25:24)
+WARNING: [HLS 207-5292] unused parameter 'partition' (firmware/nnet_utils/nnet_function_stubs.h:26:32)
+WARNING: [HLS 207-5292] unused parameter 'data' (firmware/nnet_utils/nnet_function_stubs.h:33:30)
+WARNING: [HLS 207-5292] unused parameter 'res' (firmware/nnet_utils/nnet_function_stubs.h:33:58)
+WARNING: [HLS 207-5292] unused parameter 'weights' (firmware/nnet_utils/nnet_function_stubs.h:34:51)
+WARNING: [HLS 207-5292] unused parameter 'biases' (firmware/nnet_utils/nnet_function_stubs.h:35:49)
+WARNING: [HLS 207-5292] unused parameter 'data' (firmware/nnet_utils/nnet_function_stubs.h:42:30)
+WARNING: [HLS 207-5292] unused parameter 'res' (firmware/nnet_utils/nnet_function_stubs.h:42:58)
+WARNING: [HLS 207-5292] unused parameter 'weights' (firmware/nnet_utils/nnet_function_stubs.h:43:51)
+WARNING: [HLS 207-5292] unused parameter 'biases' (firmware/nnet_utils/nnet_function_stubs.h:44:49)
+WARNING: [HLS 207-5292] unused parameter 'data' (firmware/nnet_utils/nnet_function_stubs.h:51:29)
+WARNING: [HLS 207-5292] unused parameter 'res' (firmware/nnet_utils/nnet_function_stubs.h:51:80)
+WARNING: [HLS 207-5292] unused parameter 'weights' (firmware/nnet_utils/nnet_function_stubs.h:52:50)
+WARNING: [HLS 207-5292] unused parameter 'biases' (firmware/nnet_utils/nnet_function_stubs.h:53:48)
+WARNING: [HLS 207-5292] unused parameter 'data' (firmware/nnet_utils/nnet_code_gen.h:16:39)
+WARNING: [HLS 207-5292] unused parameter 'res' (firmware/nnet_utils/nnet_code_gen.h:17:38)
+WARNING: [HLS 207-5292] unused parameter 'weights' (firmware/nnet_utils/nnet_code_gen.h:18:60)
+WARNING: [HLS 207-5292] unused parameter 'biases' (firmware/nnet_utils/nnet_code_gen.h:19:58)
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 2 seconds. CPU system time: 1 seconds. Elapsed time: 22.838 seconds; current allocated memory: 114.383 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-131] Inlining function 'nnet::product::weight_ternary<ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_int<2> >::product(ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_int<2>)' into 'void nnet::dense_resource_rf_leq_nin<ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>(ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, config6::weight_t*, config6::bias_t*)' (firmware/nnet_utils/nnet_dense_resource.h:59:17)
+INFO: [HLS 214-131] Inlining function 'nnet::DenseResource_rf_leq_nin<ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>::dense(ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, ap_int<2>*, ap_int<2>*)' into 'void nnet::dense<ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>(ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, config6::weight_t*, config6::bias_t*)' (firmware/nnet_utils/nnet_dense.h:45:2)
+INFO: [HLS 214-131] Inlining function 'nnet::product::weight_exponential<ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, exponent_scale10_t>::product(ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, exponent_scale10_t)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:223:26)
+INFO: [HLS 214-131] Inlining function 'void nnet::dense<ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>(ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, ap_fixed<32, 16, (ap_q_mode)5, (ap_o_mode)3, 0>*, config6::weight_t*, config6::bias_t*)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:222:17)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:140:46)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:140:18)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:139:44)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:139:18)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:138:44)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:138:18)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:137:44)
+INFO: [HLS 214-131] Inlining function 'tern(ap_uint<2>, ap_int<16>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:137:18)
+INFO: [HLS 214-131] Inlining function 'bias_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:124:31)
+INFO: [HLS 214-131] Inlining function 'bias_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:123:31)
+INFO: [HLS 214-131] Inlining function 'bias_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:122:31)
+INFO: [HLS 214-131] Inlining function 'bias_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:121:31)
+INFO: [HLS 214-131] Inlining function 'scale_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:120:86)
+INFO: [HLS 214-131] Inlining function 'scale_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:120:63)
+INFO: [HLS 214-131] Inlining function 'scale_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:120:40)
+INFO: [HLS 214-131] Inlining function 'scale_raw(ap_fixed<40, 8, (ap_q_mode)5, (ap_o_mode)3, 0>)' into 'NN_live(hls::stream<hls::axis<ap_uint<32>, 0ul, 0ul, 0ul>, 0>&, ap_uint<64>*, ap_uint<32>*)' (firmware/NN_live.cpp:120:17)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_182_1' is marked as complete unroll implied by the pipeline pragma (firmware/NN_live.cpp:182:35)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_114_1' is marked as complete unroll implied by the pipeline pragma (firmware/nnet_utils/nnet_activation.h:114:23)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_182_1' (firmware/NN_live.cpp:182:35) in function 'NN_live' completely with a factor of 4 (firmware/NN_live.cpp:73:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_114_1' (firmware/nnet_utils/nnet_activation.h:114:23) in function 'nnet::sigmoid<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)0, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, sigmoid_config8>' completely with a factor of 1 (firmware/nnet_utils/nnet_activation.h:95:0)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 7.752 seconds; current allocated memory: 114.922 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.004 seconds; current allocated memory: 114.922 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.176 seconds; current allocated memory: 122.504 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.095 seconds; current allocated memory: 125.777 MB.
+INFO: [XFORM 203-102] Partitioning array 'l8' (firmware/NN_live.cpp:257) automatically.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (firmware/nnet_utils/nnet_activation.h:95:21) to (firmware/nnet_utils/nnet_activation.h:123:1) in function 'nnet::sigmoid<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)0, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, sigmoid_config8>'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (firmware/NN_live.cpp:132:9) to (firmware/NN_live.cpp:146:13) in function 'NN_live'... converting 25 basic blocks.
+INFO: [XFORM 203-11] Balancing expressions in function 'NN_live' (firmware/NN_live.cpp:57:13)...12 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.257 seconds; current allocated memory: 150.957 MB.
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.176 seconds; current allocated memory: 172.828 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'NN_live' ...
+WARNING: [SYN 201-103] Legalizing function name 'sigmoid<ap_fixed<16, 6, 5, 0, 0>, ap_fixed<18, 8, 5, 3, 0>, sigmoid_config8>' to 'sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'NN_live_Pipeline_ACC_L' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [HLS 200-486] Changing DSP latency (root=mul_ln142_2) to 3 in order to utilize available DSP registers.
+INFO: [SCHED 204-61] Pipelining loop 'ACC_L'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 11, loop 'ACC_L'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 1 seconds. CPU system time: 0 seconds. Elapsed time: 1.214 seconds; current allocated memory: 179.953 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.414 seconds; current allocated memory: 181.141 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'sigmoid<ap_fixed<16, 6, 5, 0, 0>, ap_fixed<18, 8, 5, 3, 0>, sigmoid_config8>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 5, function 'sigmoid<ap_fixed<16, 6, 5, 0, 0>, ap_fixed<18, 8, 5, 3, 0>, sigmoid_config8>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 1 seconds. CPU system time: 0 seconds. Elapsed time: 0.34 seconds; current allocated memory: 181.562 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.2 seconds; current allocated memory: 181.562 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'NN_live_Pipeline_DRAIN_L' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'DRAIN_L'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 1, loop 'DRAIN_L'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.16 seconds; current allocated memory: 181.648 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.114 seconds; current allocated memory: 181.742 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'NN_live' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.372 seconds; current allocated memory: 181.914 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 1 seconds. CPU system time: 0 seconds. Elapsed time: 0.379 seconds; current allocated memory: 182.191 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'NN_live_Pipeline_ACC_L' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'NN_live_Pipeline_ACC_L' pipeline 'ACC_L' pipeline type 'loop pipeline'
+INFO: [HLS 200-1552] Enabling free running pipeline (frp) architecture on pipeline 'ACC_L' in module 'NN_live_Pipeline_ACC_L'. Estimated max control fanout for pipeline is 4034.
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_18s_19ns_46s_46_4_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mul_18s_19ns_37_3_1': 3 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'NN_live_Pipeline_ACC_L'.
+INFO: [RTMG 210-279] Implementing memory 'NN_live_NN_live_Pipeline_ACC_L_WROM_ROM_1P_LUTRAM_1R' using distributed ROMs.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.343 seconds; current allocated memory: 186.559 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s_sigmoid_table_ROM_AUTO_1R' to 'sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s_sigmoid_tabbkb' due to the length limit 80
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s' pipeline 'sigmoid<ap_fixed<16, 6, 5, 0, 0>, ap_fixed<18, 8, 5, 3, 0>, sigmoid_config8>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s'.
+INFO: [RTMG 210-279] Implementing memory 'NN_live_sigmoid_ap_fixed_16_6_5_0_0_ap_fixed_18_8_5_3_0_sigmoid_config8_s_sigmoid_tabbkb' using auto ROMs.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 1 seconds. CPU system time: 0 seconds. Elapsed time: 1.398 seconds; current allocated memory: 191.734 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'NN_live_Pipeline_DRAIN_L' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'NN_live_Pipeline_DRAIN_L'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0 seconds. CPU system time: 1 seconds. Elapsed time: 0.293 seconds; current allocated memory: 191.914 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'NN_live' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'NN_live/in_r_V_data_V' to 'axis'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'NN_live/in_r_V_keep_V' to 'axis'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'NN_live/in_r_V_strb_V' to 'axis'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'NN_live/in_r_V_last_V' to 'axis'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'NN_live/res_o' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'NN_live/out_r' to 'bram'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'NN_live' to 'ap_ctrl_none'.
+WARNING: [RTGEN 206-101] Register 'shots' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'frame_err' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'NN_live'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.394 seconds; current allocated memory: 192.582 MB.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 1 seconds. CPU system time: 0 seconds. Elapsed time: 1.484 seconds; current allocated memory: 197.449 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0 seconds. CPU system time: 1 seconds. Elapsed time: 1.708 seconds; current allocated memory: 202.109 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for NN_live.
+INFO: [VLOG 209-307] Generating Verilog RTL for NN_live.
+INFO: [HLS 200-790] **** Loop Constraint Status: All loop constraints were satisfied.
+INFO: [HLS 200-789] **** Estimated Fmax: 666.22 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 7 seconds. CPU system time: 3 seconds. Elapsed time: 40.666 seconds; current allocated memory: 97.246 MB.
+CSYNTH DONE
+INFO: [HLS 200-112] Total CPU user time: 8 seconds. Total CPU system time: 4 seconds. Total elapsed time: 43.586 seconds; peak allocated memory: 202.410 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Tue Oct 20 23:50:16 2026...

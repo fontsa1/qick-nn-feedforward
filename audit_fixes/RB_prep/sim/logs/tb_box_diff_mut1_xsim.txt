@@ -1,0 +1,26 @@
+ECHO is off.
+ECHO is off.
+
+****** xsim v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_box_diff_mut1_sim/xsim_script.tcl
+# xsim {tb_box_diff_mut1_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+MISMATCH box at cyc 1265: ref 00010003/1 new 00010000/1 cfg 000002e1
+MISMATCH box at cyc 14288: ref fa00fa00/1 new fa00fc00/1 cfg 00000f91
+MISMATCH box at cyc 23946: ref 01800180/1 new 01800100/1 cfg 000002b0
+MISMATCH box at cyc 23947: ref 01800180/1 new 01800100/1 cfg 000002b0
+MISMATCH box at cyc 23948: ref 01800180/1 new 01800100/1 cfg 000002b0
+tb_box_diff: 400822 cycles, 530 segments, 380229 valid box outputs; box mismatches 14010; other-port mismatches 7977
+RESULT: FAIL
+$finish called at time : 724686176 ps : File "./audit_fixes/RB_prep/sim/tb_box_diff.sv" Line 72
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:10 . Memory (MB): peak = 197.992 ; gain = 0.000
+exit
+INFO: xsimkernel Simulation Memory Usage: 10812 KB (Peak: 10812 KB), Simulation CPU Usage: 10140 ms
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 02:15:55 2026...

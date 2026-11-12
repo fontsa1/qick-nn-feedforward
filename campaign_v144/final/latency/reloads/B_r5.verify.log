@@ -1,0 +1,62 @@
+Connecting to myqick at 10.1.4.105:8888 ...
+=== Firmware banner ===
+QICK running on RFSoC4x2, software version 0.2.414
+
+Firmware configuration (built Sat Nov  7 19:57:07 2026):
+
+	Global clocks (MHz): tProc dispatcher timing 491.520, RF reference 491.520
+	Groups of related clocks: [tProc core clock, tProc timing clock, DAC tile 0, DAC tile 2], [ADC tile 0, ADC tile 2]
+
+	2 signal generator channels:
+	0:	axis_signal_gen_v6 - fs=7864.320 Msps, fabric=491.520 MHz
+		envelope memory: 65536 complex samples (8.333 us)
+		32-bit DDS, range=7864.320 MHz
+		DAC tile 0, blk 0 is DAC_B
+	1:	axis_signal_gen_v6 - fs=7864.320 Msps, fabric=491.520 MHz
+		envelope memory: 65536 complex samples (8.333 us)
+		32-bit DDS, range=7864.320 MHz
+		DAC tile 2, blk 0 is DAC_A
+
+	3 readout channels:
+	0:	axis_dyn_readout_v1 - configured by tProc output 2
+		fs=4423.680 Msps, decimated=552.960 MHz, 32-bit DDS, range=4423.680 MHz
+		axis_avg_buffer v1.2 (has edge counter, no weights)
+		memory 16384 accumulated, 16384 decimated (29.630 us)
+		triggered by tport 0, pin 0, feedback to tProc input 0
+		ADC tile 0, blk 0 is ADC_D
+	1:	axis_dyn_readout_v1 - configured by tProc output 3
+		fs=4423.680 Msps, decimated=552.960 MHz, 32-bit DDS, range=4423.680 MHz
+		axis_avg_buffer v1.2 (has edge counter, no weights)
+		memory 16384 accumulated, 16384 decimated (29.630 us)
+		triggered by tport 11, pin 0, feedback to tProc input 1
+		ADC tile 0, blk 2 is ADC_C
+	2:	axis_dyn_readout_v1 - configured by tProc output 4
+		fs=4423.680 Msps, decimated=552.960 MHz, 32-bit DDS, range=4423.680 MHz
+		axis_weighted_buffer v1.3 (has edge counter, has weights)
+		memory 16384 accumulated, 16384 decimated (29.630 us), 4096 weights (7.407 us)
+		triggered by tport 12, pin 0, feedback to tProc input 2
+		ADC tile 2, blk 0 is ADC_B
+
+	8 digital output pins:
+	0:	PMOD0_0
+	1:	PMOD0_1
+	2:	PMOD0_2
+	3:	PMOD0_3
+	4:	PMOD0_4
+	5:	PMOD0_5
+	6:	PMOD0_6
+	7:	PMOD0_7
+
+	tProc: qick_processor ("v2") rev 27, core execution clock 200.000 MHz
+		memories (words): program 4096, data 16384, waveform 1024
+		external start pin: PMOD1_0
+		external stop pin: None
+
+	DDR4 memory buffer: 1073741824 samples (1.942 sec), 256 samples/transfer
+		wired to readouts [0, 1, 2]
+
+	MR buffer: 8192 samples (1.852 us), wired to readouts [0, 1, 2]
+========================
+Banner check passed: contains 'Nov  7 19:57:07'
+
+Deployment verification PASSED.

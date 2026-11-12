@@ -1,0 +1,12 @@
+
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+
+calibration: word7 marker->pulse = 38 (GEN_LAT 40)
+phase 1 (normal, clean): shots 1500, stream cycles 2542481 | LEG diffs 0 rec 0 | NEW diffs 0 (early-blank 0, other 0) rec 0, binding rejects 0
+phase 2 (normal, noise):  cumulative | LEG diffs 0 rec 0 | NEW diffs 594 (early-blank 594, other 0) rec 0, binding rejects 0
+phase 3 (abnormal):       cumulative | LEG diffs 0 rec 0 (NEW not compared)
+records compared 3739; REF windows 3739 passed 1520 blanked 2219 stale 952 late 612 cls 3753; NEW binding rejects total 306
+RESULT: PASS
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:02:54 . Memory (MB): peak = 197.598 ; gain = 0.000

@@ -1,0 +1,75 @@
+Backend: Vivado
+ClockPeriod: 10.0
+ClockUncertainty: 12.5%
+HLSConfig:
+  LayerName:
+    batchnorm1:
+      Precision:
+        bias: ap_fixed<40,8>
+        result: ap_fixed<32,16>
+        scale: ap_fixed<40,8>
+      Trace: true
+    input_1:
+      Precision: ap_fixed<32,20>
+      Trace: false
+    q_dense_1:
+      Precision:
+        bias: int<2>
+        result: ap_fixed<48,32>
+        weight: int<2>
+      Trace: true
+      accum_t: ap_fixed<48,32>
+    q_dense_1_alpha:
+      Precision: auto
+    q_dense_1_linear:
+      Precision:
+        result: ap_fixed<48,32>
+      Trace: true
+    q_output:
+      Precision:
+        bias: int<2>
+        result: ap_fixed<32,16>
+        weight: int<2>
+      Trace: true
+      accum_t: ap_fixed<32,16>
+    q_output_alpha:
+      Precision: auto
+    q_output_linear:
+      Precision:
+        result: ap_fixed<32,16>
+      Trace: true
+    relu1:
+      Precision:
+        result: ap_fixed<32,16>
+      Trace: true
+    sigmoid:
+      Precision:
+        result: ap_fixed<18,8>
+      Trace: true
+  Model:
+    BitExact: null
+    BramFactor: 1000000000
+    Precision: ap_fixed<16,6>
+    ReuseFactor: 1
+    Strategy: Resource
+    TraceOutput: false
+IOType: io_parallel
+InputData: null
+InputShapes:
+  input_1:
+  - 1152
+KerasModel: !keras_model 'C:\hls4ml_projects\hls4ml_qubit_prj_w576_box_20261013_063423/keras_model.keras'
+OutputDir: C:\hls4ml_projects\hls4ml_qubit_prj_w576_box_20261013_063423
+OutputPredictions: null
+OutputShapes:
+  layer8_out:
+  - 1
+Part: xczu48dr-ffvg1517-2-e
+ProjectName: NN
+Stamp: 31de7182
+Version: 1.0.0
+WriterConfig:
+  Namespace: null
+  TBOutputStream: both
+  WriteTar: false
+  WriteWeightsTxt: true

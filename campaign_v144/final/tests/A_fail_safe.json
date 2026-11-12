@@ -1,0 +1,36 @@
+{
+ "magic": 1195463732,
+ "params": 7,
+ "delay": 29,
+ "plat_pass": 1537.7526734656678,
+ "cases": {
+  "A_reset_word0": {
+   "word0": "0x0",
+   "shots": 40,
+   "pulse_came_back": 0,
+   "windows": 40,
+   "passed": 0,
+   "blanked": 40,
+   "plat_max_frac": 0.007112968227831168
+  },
+  "B_disabled_all_pass": {
+   "word0": "0x7d01d0e",
+   "shots": 40,
+   "pulse_came_back": 0,
+   "windows": 40,
+   "passed": 40,
+   "blanked": 0,
+   "plat_max_frac": 0.00843024658902131
+  },
+  "C_enabled_all_pass": {
+   "word0": "0x7d01d0f",
+   "shots": 40,
+   "pulse_came_back": 40,
+   "windows": 40,
+   "passed": 40,
+   "blanked": 0,
+   "plat_max_frac": 1.0079577813017393
+  }
+ },
+ "verdict": "PASS"
+}

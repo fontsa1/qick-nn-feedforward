@@ -1,0 +1,28 @@
+ECHO is off.
+ECHO is off.
+
+****** xsim v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_boxcar_final_sim/xsim_script.tcl
+# xsim {tb_boxcar_final_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+latency m0 word -> m_box_axis: 10 cycles
+segment 0 cfg 00000a31: 0 mismatches
+segment 1 cfg 00000000: 0 mismatches
+segment 2 cfg 00000f61: 0 mismatches
+segment 3 cfg 00000451: 0 mismatches
+segment 4 cfg 00000af1: 0 mismatches
+segment 5 cfg 00000f01: 0 mismatches
+segment 6 cfg 00000731: 0 mismatches
+segment 7 cfg 00000a61: 0 mismatches
+checked 23512 outputs
+RESULT: PASS
+$finish called at time : 43481496 ps : File "./audit_fixes/RB_prep/sim/tb_boxcar.sv" Line 129
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 12:42:04 2026...

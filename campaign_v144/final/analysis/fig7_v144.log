@@ -1,0 +1,2 @@
+{"saved_ns": 107.95, "raw_diff_samples": 62.691008335051635, "fabric_timestamp_saved_cycles": 61.5}
+image M=1 / 11: -0.46 -44.84 | FIR -0.15 theory -0.15

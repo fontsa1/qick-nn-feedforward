@@ -1,0 +1,97 @@
+{
+ "low": {
+  "n_loads": 10,
+  "n_A": 3,
+  "n_B": 7,
+  "n_shots": 1000,
+  "L_50": 173.9120626188592,
+  "L_50_min": 173.59644764365552,
+  "L_50_max": 174.22101399774246,
+  "counter": 175.0452112268518,
+  "segs": {
+   "S_fe": 38.35177951388888,
+   "S_nn": 18.084490740740648,
+   "S_cdc": 8.726218894676155,
+   "S_gate": 9.810384114583197,
+   "S_conv": 100.07233796296286
+  },
+  "loads": [
+   "A_r2",
+   "B_r1",
+   "B_r2",
+   "B_r3",
+   "B_r4",
+   "B_r5",
+   "A_c1",
+   "A_c2",
+   "B_c1",
+   "B_c2"
+  ]
+ },
+ "high": {
+  "n_loads": 4,
+  "n_A": 4,
+  "n_B": 0,
+  "n_shots": 400,
+  "L_50": 175.9142190918181,
+  "L_50_min": 175.62903241920475,
+  "L_50_max": 176.07697822310726,
+  "counter": 177.01551649305554,
+  "segs": {
+   "S_fe": 38.25774016203703,
+   "S_nn": 18.084490740740648,
+   "S_cdc": 8.638735170717826,
+   "S_gate": 9.897867838541526,
+   "S_conv": 102.13668258101852
+  },
+  "loads": [
+   "A_r1",
+   "A_r3",
+   "A_r4",
+   "A_r5"
+  ]
+ },
+ "step_ns": 2.0021564729588874,
+ "logic_ns": {
+  "low": 36.62109375,
+  "high": 36.62109375
+ }
+}
+wrote .\paper_figures\fig8\fig8a_loop_segments.{pdf,svg,png}
+[{"slack_ns": -72.0, "n": 40, "n_dec1": 17, "played_dec1": 0, "late": 40, "unsafe": 0, "played_dec0": 0}, {"slack_ns": -70.0, "n": 40, "n_dec1": 17, "played_dec1": 0, "late": 40, "unsafe": 0, "played_dec0": 0}, {"slack_ns": -68.0, "n": 40, "n_dec1": 17, "played_dec1": 0, "late": 40, "unsafe": 0, "played_dec0": 0}, {"slack_ns": -66.0, "n": 40, "n_dec1": 17, "played_dec1": 17, "late": 2, "unsafe": 0, "played_dec0": 0}, {"slack_ns": -64.0, "n": 40, "n_dec1": 17, "played_dec1": 17, "late": 0, "unsafe": 0, "played_dec0": 0}, {"slack_ns": -62.0, "n": 40, "n_dec1": 17, "played_dec1": 17, "late": 0, "unsafe": 0, "played_dec0": 0}, {"slack_ns": -60.0, "n": 40, "n_dec1": 17, "played_dec1": 17, "late": 0, "unsafe": 0, "played_dec0": 0}, {"slack_ns": -40.0, "n": 40, "n_dec1": 17, "played_dec1": 17, "late": 0, "unsafe": 0, "played_dec0": 0}, {"slack_ns": 0.0, "n": 40, "n_dec1": 17, "played_dec1": 17, "late": 0, "unsafe": 0, "played_dec0": 0}]
+Traceback (most recent call last):
+  File ".\paper_figures\fig8\make_fig8_combined.py", line 5, in <module>
+    import pymupdf
+ModuleNotFoundError: No module named 'pymupdf'
+(a) ridges [1.0, 10.0]; 0 deg 95.38%, 20 deg 95.18, -99 deg 46.05, -119 deg 28.06
+(d) |H| bands: {'0-5': 1.34, '5-20': 1.29, '20-60': 0.89, '60-150': 0.27, '150-277': 0.03} lags: {4: 264, 5: 1808, 6: 1410, 7: 518}
+wrote fig4_data.npz, fig4_values.json
+wrote .\paper_figures\fig4\fig4_replay_apparatus
+'created' timestamp seems very low; regarding as unix timestamp
+'modified' timestamp seems very low; regarding as unix timestamp
+{"real_peak_length": 500, "real_peak_F": 96.046, "real_770": 95.711, "synth_770": 97.563, "arms": {"real10k_3d": [94.912, [94.56, 95.263]], "v2_10k_3d": [95.03, [94.716, 95.343]], "fit30k": [95.053, [94.721, 95.385]], "fit10k": [94.924, [94.639, 95.21]], "own10k_synth50k": [95.181, [94.89, 95.471]], "real50k": [95.401, [95.117, 95.684]], "v2_50k": [95.383, [95.099, 95.667]]}}
+{"n": 19400, "E": [384, 416, 448, 480, 512, 544, 576, 608, 640, 672, 704, 736, 770], "F": [93.7, 94.329, 94.633, 94.968, 95.2, 95.334, 95.422, 95.458, 95.561, 95.546, 95.566, 95.566, 95.499], "loss_per_100ns_qubit": {"384-416": 0.605, "416-448": 0.293, "448-480": 0.322, "480-512": 0.223, "512-544": 0.129, "544-576": 0.084, "576-608": 0.035, "608-640": 0.099, "640-672": -0.015, "672-704": 0.02, "704-736": -0.0, "736-770": -0.061}, "t1_cost_per_100ns": 0.1}
+wrote .\paper_figures\fig6\fig6_streaming_classifier.{pdf,svg,png}
+{"saved_ns": 107.95, "raw_diff_samples": 62.691008335051635, "fabric_timestamp_saved_cycles": 61.5}
+image M=1 / 11: -0.46 -44.84 | FIR -0.15 theory -0.15
+Traceback (most recent call last):
+  File ".\paper_tables\table1\make_table1_comparison.py", line 33, in <module>
+    blk = rep.blocks(); tim = rep.timing()
+                              ^^^^^^^^^^^^
+  File ".\paper_tables\table3\v141_reports.py", line 49, in timing
+    adc_x2_period_ns=float(m.group(1)), adc_x2_mhz=float(m.group(2)))
+                           ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'
+Traceback (most recent call last):
+  File ".\paper_tables\table2\make_table2_fidelity.py", line 178, in <module>
+    assert all(x["p_exact"] >= 0.05 for x in _ns), "a printed 'not significantly different' no longer holds"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: a printed 'not significantly different' no longer holds
+Traceback (most recent call last):
+  File ".\paper_tables\table3\make_table3_implementation.py", line 36, in <module>
+    blk = rep.blocks(); tot = rep.totals(); tim = rep.timing()
+                                                  ^^^^^^^^^^^^
+  File ".\paper_tables\table3\v141_reports.py", line 49, in timing
+    adc_x2_period_ns=float(m.group(1)), adc_x2_mhz=float(m.group(2)))
+                           ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'

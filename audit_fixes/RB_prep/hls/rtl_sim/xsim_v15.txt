@@ -1,0 +1,35 @@
+ECHO is off.
+ECHO is off.
+
+****** xsim v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_live_sim/xsim_script.tcl
+# xsim {tb_live_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+result 0 (mode 0 win 0): logit raw 19580 decision 1, latency 11 cycles after the gate's TLAST beat
+result 1 (mode 0 win 0): logit raw 32767 decision 1, latency 11 cycles after the gate's TLAST beat
+result 2 (mode 0 win 0): logit raw 32767 decision 1, latency 11 cycles after the gate's TLAST beat
+result 12 (mode 1 win 0): logit raw 4783 decision 1, latency 11 cycles after the gate's TLAST beat
+result 13 (mode 1 win 1): logit raw -2279 decision 0, latency 11 cycles after the gate's TLAST beat
+result 14 (mode 1 win 2): logit raw 5120 decision 1, latency 11 cycles after the gate's TLAST beat
+
+=== tb_live ===
+A  gate vs buffer.sv words      : 6912/6912 captured each side, 0 mismatches
+   TLAST placement errors       : 0 (of 20736 gate words)
+B  decisions vs emulator        : 0 mismatches (of 24)
+   records (sums, probability, logit = res_o, shot): 0 mismatches
+   words offered with TREADY low: 0
+   header: shots 36 (expect 36), frame_err 0, magic 4e4e4c31
+   results seen 36 of 36 windows
+LATENCY gate TLAST beat -> res_o_ap_vld (logit + decision): 11..11 cycles = 19.9..19.9 ns at 552.96 MHz
+        (the gate adds 1 register cycle after the last sample leaves the readout)
+RESULT: PASS
+$finish called at time : 99900136 ps : File "./audit_fixes/RB_prep/hls/rtl_sim/tb_live.sv" Line 286
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 06:54:53 2026...

@@ -1,0 +1,28 @@
+latency (input edge -> output visible): 9 cycles
+cfg M=11 shift= 7: 2940 outputs, mismatches 0
+cfg M=16 shift= 0: 1440 outputs, mismatches 0
+cfg M=16 shift= 1: 1440 outputs, mismatches 0
+cfg M=16 shift= 2: 1440 outputs, mismatches 0
+cfg M=16 shift= 3: 1440 outputs, mismatches 0
+cfg M= 1 shift=10: 1440 outputs, mismatches 0
+cfg M=12 shift=15: 1440 outputs, mismatches 0
+cfg M=15 shift=15: 1440 outputs, mismatches 0
+cfg M= 7 shift=11: 1440 outputs, mismatches 0
+cfg M= 9 shift= 9: 1440 outputs, mismatches 0
+cfg M= 4 shift=15: 1440 outputs, mismatches 0
+cfg M=15 shift= 7: 1440 outputs, mismatches 0
+cfg M=10 shift=11: 1440 outputs, mismatches 0
+cfg M=15 shift= 9: 1440 outputs, mismatches 0
+cfg M=14 shift= 2: 1440 outputs, mismatches 0
+cfg M=12 shift= 1: 1440 outputs, mismatches 0
+cfg M= 1 shift=14: 1440 outputs, mismatches 0
+cfg M= 2 shift= 9: 1440 outputs, mismatches 0
+cfg M=12 shift= 9: 1440 outputs, mismatches 0
+cfg M= 8 shift=10: 1440 outputs, mismatches 0
+cfg M= 6 shift= 5: 1440 outputs, mismatches 0
+cfg M= 1 shift=13: 1440 outputs, mismatches 0
+cfg M= 6 shift= 2: 1440 outputs, mismatches 0
+total 34620 mismatches 0
+box8 at 100 MHz: -0.47 dB; MA11: -44.9 dB; combined -45.4 dB; MA11 null at 100.54 MHz
+group delay (M-1)/2 =5 samples = 9.04 ns; pipeline 9 cycles = 16.28 ns
+acc range M=16: max |acc| = 4194304 vs 23-bit signed min -4194304

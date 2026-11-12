@@ -1,0 +1,26 @@
+ECHO is off.
+ECHO is off.
+Vivado Simulator v2023.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: C:/embedded-software/Vivado/2023.1/bin/unwrapped/win64.o/xelab.exe -debug off -timescale 1ps/1ps tb_live_ext -s tb_live_ext_sim 
+Multi-threading is on. Using 14 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.NN_live_NN_live_Pipeline_ACC_L_W...
+Compiling module work.NN_live_mul_18s_19ns_37_3_1(NUM_...
+Compiling module work.NN_live_mac_muladd_18s_19ns_46s_...
+Compiling module work.NN_live_mac_muladd_18s_19ns_46s_...
+Compiling module work.NN_live_flow_control_loop_pipe_s...
+Compiling module work.NN_live_frp_pipeline_valid(Pipel...
+Compiling module work.NN_live_NN_live_Pipeline_ACC_L
+Compiling module work.NN_live_sigmoid_ap_fixed_16_6_5_...
+Compiling module work.NN_live_sigmoid_ap_fixed_16_6_5_...
+Compiling module work.NN_live_NN_live_Pipeline_DRAIN_L
+Compiling module work.NN_live
+Compiling module work.tb_live_ext
+Built simulation snapshot tb_live_ext_sim

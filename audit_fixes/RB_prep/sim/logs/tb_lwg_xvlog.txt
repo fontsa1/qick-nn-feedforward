@@ -1,0 +1,8 @@
+ECHO is off.
+ECHO is off.
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "./audit_fixes/RB_prep/sim/tb_lwg.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_lwg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "./audit_fixes/RB_prep/orig/live_window_gate.v" into library work
+INFO: [VRFC 10-311] analyzing module live_window_gate
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "./audit_fixes/RB_prep/sim/buffer.sv" into library work
+INFO: [VRFC 10-311] analyzing module buffer

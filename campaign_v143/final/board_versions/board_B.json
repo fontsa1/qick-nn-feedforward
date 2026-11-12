@@ -1,0 +1,16 @@
+{
+ "python": "3.10.4",
+ "kernel": "5.15.19-xilinx-v2022.1",
+ "machine": "aarch64",
+ "os_release": "PRETTY_NAME=\"PynqLinux, based on Ubuntu 22.04\"",
+ "pynq_image_revision": "Release 2022_10_22 93ddd21\nBoard 2022_10_22 7936aa6 https://github.com/xilinx/rfsoc-pynq",
+ "board_name": "RFSoC4x2\nRFSoC4x2",
+ "pynq": "3.0.1",
+ "qick": "0.2.414",
+ "qick_path": "/usr/local/share/pynq-venv/lib/python3.10/site-packages/qick/__init__.py",
+ "pip_qick": "Version: 0.2.414\nLocation: /usr/local/share/pynq-venv/lib/python3.10/site-packages",
+ "pip_pyro4": "Version: 4.82",
+ "uptime": "up 2 days, 5 hours, 6 minutes",
+ "host": "10.1.4.105",
+ "read_at": "2026-11-07T19:48:37"
+}

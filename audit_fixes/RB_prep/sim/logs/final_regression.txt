@@ -1,0 +1,175 @@
+129d7d753c584cd9e21716e3da395e69 *../rtl/boxcar_tap.v
+fa7b787ff049056c307b03df1450bf12 *../rtl/dac_gate.v
+4e7fc3275ec637331a0b7c1b1422bef5 *../orig/boxcar_tap.v
+fd85158b9fc42d3c60f066be309d9b22 *../orig/dac_gate.v
+5db031bd9ec801c328a6a44397eb8ba9 *../orig/live_res_cdc.v
+2a7dccf979e44c0397693366145c57f0 *../orig/live_window_gate.v
+f36fb4149190d963f621a4a737df2aa1 *../orig/rf_tap.v
+50246bb4818dc7f8b49e902b4bfa7431 *../orig/seg_stamp.v
+6b4d33a994ae4a6883e6c6b76173ee64 *../orig/trig_sync.v
+47634788a2f6574fb6ec49bc3b3cd64c *../xdc/live_res_cdc.xdc
+b42b82db207df96a494779baf8da743e *../xdc/live_res_cdc_optionB.xdc
+fd2589d4a7b44e4dcfa8dadddd384894 *../xdc/live_res_cdc_toplevel.xdc
+=== box_diff
+tb_box_diff: 400822 cycles, 530 segments, 380229 valid box outputs; box mismatches 0; other-port mismatches 0
+RESULT: PASS
+=== boxcar
+latency m0 word -> m_box_axis: 10 cycles
+segment 0 cfg 00000a31: 0 mismatches
+segment 1 cfg 00000000: 0 mismatches
+segment 2 cfg 00000f61: 0 mismatches
+segment 3 cfg 00000451: 0 mismatches
+segment 4 cfg 00000af1: 0 mismatches
+segment 5 cfg 00000f01: 0 mismatches
+segment 6 cfg 00000731: 0 mismatches
+segment 7 cfg 00000a61: 0 mismatches
+checked 23512 outputs
+RESULT: PASS
+=== box_fault
+OLD acc_i: outputs differing 2097, last at +2099 cycles, still wrong after +2000: 99
+OLD dif_i: outputs differing 2096, last at +2099 cycles, still wrong after +2000: 99
+OLD new_q: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD old_i: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD sri[4]: outputs differing 2088, last at +2099 cycles, still wrong after +2000: 99
+OLD rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+NEW acc_i: outputs differing 1, last at +3 cycles, still wrong after +2000: 0
+NEW h1_i: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW h2_q: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW g_i: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW l3i[1]: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW l2q[0]: outputs differing 1, last at +6 cycles, still wrong after +2000: 0
+NEW l1i[1]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW l1i[5]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW sri[0]: outputs differing 9, last at +15 cycles, still wrong after +2000: 0
+NEW sri[12]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW mk (mask bit 10): outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+OLD acc_i: outputs differing 1888, last at +2099 cycles, still wrong after +2000: 95
+OLD dif_i: outputs differing 1989, last at +2099 cycles, still wrong after +2000: 86
+OLD new_q: outputs differing 1969, last at +2099 cycles, still wrong after +2000: 97
+OLD old_i: outputs differing 1875, last at +2099 cycles, still wrong after +2000: 89
+OLD sri[4]: outputs differing 1945, last at +2099 cycles, still wrong after +2000: 91
+OLD rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+NEW acc_i: outputs differing 1, last at +3 cycles, still wrong after +2000: 0
+NEW h1_i: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW h2_q: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW g_i: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW l3i[1]: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW l2q[0]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW l1i[1]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW l1i[5]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW sri[0]: outputs differing 14, last at +20 cycles, still wrong after +2000: 0
+NEW sri[12]: outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW mk (mask bit 10): outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+OLD acc_i: outputs differing 2097, last at +2099 cycles, still wrong after +2000: 99
+OLD dif_i: outputs differing 2096, last at +2099 cycles, still wrong after +2000: 99
+OLD new_q: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD old_i: outputs differing 2095, last at +2099 cycles, still wrong after +2000: 99
+OLD sri[4]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+OLD rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+NEW acc_i: outputs differing 1, last at +3 cycles, still wrong after +2000: 0
+NEW h1_i: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW h2_q: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW g_i: outputs differing 1, last at +4 cycles, still wrong after +2000: 0
+NEW l3i[1]: outputs differing 1, last at +5 cycles, still wrong after +2000: 0
+NEW l2q[0]: outputs differing 1, last at +6 cycles, still wrong after +2000: 0
+NEW l1i[1]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW l1i[5]: outputs differing 1, last at +7 cycles, still wrong after +2000: 0
+NEW sri[0]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW sri[12]: outputs differing 0, last at +-1 cycles, still wrong after +2000: 0
+NEW mk (mask bit 10): outputs differing 1, last at +8 cycles, still wrong after +2000: 0
+NEW rd_i (output stage): outputs differing 1, last at +2 cycles, still wrong after +2000: 0
+=== box_dump
+latency (input edge -> output visible): 9 cycles
+total 34620 mismatches 0
+=== gate_v141
+shot 1: windows 1 passed 1 blanked 0 stale 0 decisions 1 margin 53 marker->pulse 38 flags 0000010d | pulse words out 50, non-zero 50, mismatches 0
+shot 2: windows 2 passed 1 blanked 1 stale 0 decisions 2 margin 53 marker->pulse 38 flags 00000108 | pulse words out 50, non-zero 0, mismatches 0
+shot 3: windows 3 passed 1 blanked 2 stale 1 decisions 2 margin 2147483647 marker->pulse 38 flags 0000010a | pulse words out 50, non-zero 0, mismatches 0
+shot 4: windows 4 passed 1 blanked 3 stale 1 decisions 3 margin 53 marker->pulse 38 flags 00000100 | pulse words out 50, non-zero 50, mismatches 0
+shot 5: windows 5 passed 1 blanked 4 stale 2 decisions 4 margin 2147483647 marker->pulse 38 flags 0000010a | pulse words out 50, non-zero 0, mismatches 0
+shot 6: windows 6 passed 1 blanked 5 stale 3 decisions 4 margin 2147483647 marker->pulse 38 flags 0000010a | pulse words out 50, non-zero 0, mismatches 0
+shot 7: windows 7 passed 1 blanked 6 stale 4 decisions 5 margin 2147483647 marker->pulse 38 flags 0000010a | pulse words out 50, non-zero 0, mismatches 0
+shot 8: windows 8 passed 2 blanked 6 stale 4 decisions 6 margin 53 marker->pulse 38 flags 0000010d | pulse words out 50, non-zero 50, mismatches 0
+RESULT: PASS
+=== gate_fix
+CAL rect pulse: word7 = 38 (all gates agree: 1)
+== A: blank onset vs DELAY_LEAD (DELAY = word7 - DELAY_LEAD), fresh decision 0, rect pulse of 40 words
+A  DELAY_LEAD 0: pulse words out REF 4 | NEW 2 | FS 2 | CS 2   (NEW flags 308, rejects 0, expected field 1)
+A  DELAY_LEAD 1: pulse words out REF 3 | NEW 1 | FS 1 | CS 1   (NEW flags 308, rejects 0, expected field 2)
+A  DELAY_LEAD 2: pulse words out REF 2 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 3)
+A  DELAY_LEAD 3: pulse words out REF 1 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 4)
+A  DELAY_LEAD 4: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 5)
+A  DELAY_LEAD 5: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 6)
+A  DELAY_LEAD 6: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 7)
+A  DELAY_LEAD 7: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 8)
+== A1: decision 1 (pass), DELAY_LEAD 2..7: the whole pulse must still pass
+A1 DELAY_LEAD 2, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 9)
+A1 DELAY_LEAD 3, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 10)
+A1 DELAY_LEAD 4, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 11)
+A1 DELAY_LEAD 5, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 12)
+A1 DELAY_LEAD 6, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 13)
+A1 DELAY_LEAD 7, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 14)
+== A2: pulse with a 3-word leading edge below NZ_THR, calibrated on it (as on hardware)
+CAL ramped pulse: word7 = 41
+A2 DELAY_LEAD 2, ramped pulse, decision 0: pulse words out REF 5 (low-amp 3) | NEW 3 (low-amp 3)
+A2 DELAY_LEAD 3, ramped pulse, decision 0: pulse words out REF 4 (low-amp 3) | NEW 2 (low-amp 2)
+A2 DELAY_LEAD 4, ramped pulse, decision 0: pulse words out REF 3 (low-amp 3) | NEW 1 (low-amp 1)
+A2 DELAY_LEAD 5, ramped pulse, decision 0: pulse words out REF 2 (low-amp 2) | NEW 0 (low-amp 0)
+A2 DELAY_LEAD 6, ramped pulse, decision 0: pulse words out REF 1 (low-amp 1) | NEW 0 (low-amp 0)
+A2 DELAY_LEAD 7, ramped pulse, decision 0: pulse words out REF 0 (low-amp 0) | NEW 0 (low-amp 0)
+A2 DELAY_LEAD 8, ramped pulse, decision 0: pulse words out REF 0 (low-amp 0) | NEW 0 (low-amp 0)
+== A3: decision arriving at every offset around window open (DELAY_LEAD 4), bit 0 and bit 1
+A3 bit 0, arrival offset -4: REF margin 4 stale 0 -> pulse words out 0 | NEW margin 4 stale 0 -> 0
+A3 bit 1, arrival offset -4: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset -3: REF margin 3 stale 0 -> pulse words out 0 | NEW margin 3 stale 0 -> 0
+A3 bit 1, arrival offset -3: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset -2: REF margin 2 stale 0 -> pulse words out 0 | NEW margin 2 stale 0 -> 0
+A3 bit 1, arrival offset -2: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset -1: REF margin 1 stale 0 -> pulse words out 0 | NEW margin 1 stale 0 -> 0
+A3 bit 1, arrival offset -1: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset 0: REF margin 2147483647 stale 1 -> pulse words out 0 | NEW margin 2147483647 stale 1 -> 0
+A3 bit 1, arrival offset 0: REF fresh 0 -> pulse words out 0 | NEW fresh 0 -> 0
+A3 bit 0, arrival offset 1: REF margin 2147483647 stale 1 -> pulse words out 0 | NEW margin 2147483647 stale 1 -> 0
+A3 bit 1, arrival offset 1: REF fresh 0 -> pulse words out 0 | NEW fresh 0 -> 0
+A3 bit 0, arrival offset 2: REF margin 2147483647 stale 1 -> pulse words out 0 | NEW margin 2147483647 stale 1 -> 0
+A3 bit 1, arrival offset 2: REF fresh 0 -> pulse words out 0 | NEW fresh 0 -> 0
+== B: shot binding (DELAY_LEAD 4, PASS1 only)
+B0 normal shot, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 37)
+B1 shot-k decision (bit 1) after shot k+1's trigger: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 1, expected field 39)
+B2 shot k's result (bit 0) then shot k+1's own (bit 1): pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 31d, rejects 2, expected field 40)
+B2b shot k's result (bit 1) then shot k+1's own (bit 0): pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 318, rejects 3, expected field 42)
+B3a no result (stale): pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 30a, rejects 3, expected field 43)
+B3b next shot, decision 1 (cannot be told from B3a's late one): pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 4, expected field 44)
+B3c shot after (binding back in step): pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 4, expected field 44)
+B4 decision with field +5: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 5, expected field 45)
+B4b next shot: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 6, expected field 51)
+B5 marker without its own classify trigger (contract: not covered): pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 6, expected field 46)
+== C: gate disabled (fail-open vs FAIL_SAFE)
+C1 ENABLE = 0, decision 0: pulse words out REF 40 NEW 40 FS 0 CS 40
+C2 ENABLE = 0, decision 1: pulse words out REF 40 NEW 40 FS 0 CS 40
+C3 ENABLE cleared mid-window, decision 0: pulse words out REF 31 NEW 31 FS 0 CS 0
+== D: configuration filtering (CFG_SAFE)
+D1 glitched read of word 0, no shot: non-zero output words REF 0 NEW 0 CS 0; DELAY now REF 34 CS 34
+D2 glitched read (DELAY +128 for one read) mid-window, decision 0: pulse words out REF 1 NEW 0 CS 0; windows this shot REF 2 CS 1
+D3 host rewrites DELAY mid-window, decision 0: pulse words out REF 28 NEW 28 CS 0; windows this shot REF 2 CS 1
+== E: gate reset while NN_live keeps counting (first shot rejected, then in step)
+E1 first shot after gate reset: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 1, expected field 0)
+E2 second shot: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 1, expected field 53)
+magic REF 47415433 NEW 47415434; param flags [11:8] NEW 3 FS 7 CS b
+RESULT: PASS (all expectations met)
+=== gate_diff
+calibration: word7 marker->pulse = 38 (GEN_LAT 40)
+phase 1 (normal, clean): shots 1500, stream cycles 2542481 | LEG diffs 0 rec 0 | NEW diffs 0 (early-blank 0, other 0) rec 0, binding rejects 0
+phase 2 (normal, noise):  cumulative | LEG diffs 0 rec 0 | NEW diffs 594 (early-blank 594, other 0) rec 0, binding rejects 0
+phase 3 (abnormal):       cumulative | LEG diffs 0 rec 0 (NEW not compared)
+records compared 3739; REF windows 3739 passed 1520 blanked 2219 stale 952 late 612 cls 3753; NEW binding rejects total 306
+RESULT: PASS
+=== lwg
+windows (buffer) 979, TLASTs 1739, words 1001664 (= 1739 x N? 1), word/valid mismatches vs buffer.sv 0, windows whose TLAST is not on word N: 0
+=== seg
+header: records 3, thr 2000, magic 53454733
+cfg read back: 00000a31
+RESULT: PASS
+FINAL_DONE

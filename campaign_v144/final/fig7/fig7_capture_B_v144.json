@@ -1,0 +1,16 @@
+{
+ "fs_MHz": 552.96,
+ "board": "B",
+ "banner": "Nov  7 19:57:07",
+ "cfg_at_start": {
+  "sel": 1,
+  "shift": 7,
+  "m": 11,
+  "word": 2673
+ },
+ "gain_box_over_fir_shift0_m11": 121.9188593553607,
+ "D_cycles_median": {
+  "0": 285.0,
+  "1": 223.0
+ }
+}

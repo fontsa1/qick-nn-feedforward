@@ -1,0 +1,35 @@
+ECHO is off.
+ECHO is off.
+
+****** xsim v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_gate_ref_sim/xsim_script.tcl
+# xsim {tb_gate_ref_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+shot 1: windows 1 passed 1 blanked 0 stale 0 decisions 1 margin 53 marker->pulse 38 flags 0000000d | pulse words out 50, non-zero 50, mismatches 0
+  L9 stamps: dec-cls 32  mk-cls 53  open-cls 85  open-dec 53
+shot 2: windows 2 passed 1 blanked 1 stale 0 decisions 2 margin 53 marker->pulse 38 flags 00000008 | pulse words out 50, non-zero 0, mismatches 0
+  L9 stamps: dec-cls 32  mk-cls 53  open-cls 85  open-dec 53
+shot 3: windows 3 passed 1 blanked 2 stale 1 decisions 2 margin 2147483647 marker->pulse 38 flags 0000000a | pulse words out 50, non-zero 0, mismatches 0
+  L9 stamps: dec-cls -1479  mk-cls 52  open-cls 84  open-dec 1563
+shot 4: windows 4 passed 1 blanked 3 stale 1 decisions 3 margin 53 marker->pulse 38 flags 00000000 | pulse words out 50, non-zero 50, mismatches 0
+  L9 stamps: dec-cls 32  mk-cls 53  open-cls 85  open-dec 53
+shot 5: windows 5 passed 1 blanked 4 stale 2 decisions 4 margin 2147483647 marker->pulse 38 flags 0000000a | pulse words out 50, non-zero 0, mismatches 0
+  L9 stamps: dec-cls -2644  mk-cls 52  open-cls 84  open-dec 2728
+  late decisions 1, last late by 10 cycles
+shot 6: windows 6 passed 1 blanked 5 stale 3 decisions 4 margin 2147483647 marker->pulse 38 flags 0000000a | pulse words out 50, non-zero 0, mismatches 0
+  L9 stamps: dec-cls -3216  mk-cls 52  open-cls 84  open-dec 3300
+shot 7: windows 7 passed 1 blanked 6 stale 4 decisions 5 margin 2147483647 marker->pulse 38 flags 0000000a | pulse words out 50, non-zero 0, mismatches 0
+  L9 stamps: dec-cls -3829  mk-cls 52  open-cls 84  open-dec 3913
+shot 8: windows 8 passed 2 blanked 6 stale 4 decisions 6 margin 53 marker->pulse 38 flags 0000000d | pulse words out 50, non-zero 50, mismatches 0
+  L9 stamps: dec-cls 31  mk-cls 52  open-cls 84  open-dec 53
+RESULT: PASS
+$finish called at time : 10136439 ps : File "./audit_fixes/RB_prep/sim/tb_gate.sv" Line 199
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 06:09:01 2026...

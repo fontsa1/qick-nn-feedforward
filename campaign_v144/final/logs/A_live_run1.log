@@ -1,0 +1,349 @@
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 93.91%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_0_1000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.04%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_1000_2000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.77%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_2000_3000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.05%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_3000_4000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.25%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_4000_5000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.69%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_5000_6000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.22%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_6000_7000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.68%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_7000_8000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 97.00%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_8000_9000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.16%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_9000_10000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.67%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_10000_11000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.68%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_11000_12000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.36%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_12000_13000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.64%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_13000_14000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.98%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_14000_15000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.01%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_15000_16000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.69%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_16000_17000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.89%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_17000_18000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.29%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_18000_19000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.85%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_19000_20000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.39%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_20000_21000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.58%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_21000_22000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.42%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_22000_23000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.57%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_23000_24000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.96%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_24000_25000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.34%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_25000_26000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.92%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_26000_27000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.31%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_27000_28000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.33%
+DAC clipping: 1 shots, 1 samples capped at 32766
+saved campaign_v144/final/live/A_run1_28000_29000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.23%
+DAC clipping: 1 shots, 1 samples capped at 32766
+saved campaign_v144/final/live/A_run1_29000_30000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.70%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_30000_31000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 97.54%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_31000_32000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.67%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_32000_33000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 97.07%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_33000_34000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.85%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_34000_35000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.56%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_35000_36000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.86%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_36000_37000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.79%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_37000_38000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.41%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_38000_39000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.79%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_39000_40000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.16%
+DAC clipping: 2 shots, 4 samples capped at 32766
+saved campaign_v144/final/live/A_run1_40000_41000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.62%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_41000_42000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.99%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_42000_43000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.60%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_43000_44000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.99%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_44000_45000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 94.38%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_45000_46000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 95.05%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_46000_47000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.18%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_47000_48000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.13%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_48000_49000.npz
+boxcar path: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+magic ok; frame errors 0 -> 0
+live window == boxcar buffer (ch1), sample for sample: 1000/1000
+NN_live fidelity (boxcar path, 1000 shots): 96.59%
+DAC clipping: 0 shots, 0 samples capped at 32766
+saved campaign_v144/final/live/A_run1_49000_50000.npz

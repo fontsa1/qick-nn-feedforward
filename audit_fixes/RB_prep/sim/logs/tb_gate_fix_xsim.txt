@@ -1,0 +1,92 @@
+ECHO is off.
+ECHO is off.
+
+****** xsim v2023.1 (64-bit)
+  **** SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_gate_fix_sim/xsim_script.tcl
+# xsim {tb_gate_fix_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+CAL rect pulse: word7 = 38 (all gates agree: 1)
+
+== A: blank onset vs DELAY_LEAD (DELAY = word7 - DELAY_LEAD), fresh decision 0, rect pulse of 40 words
+A  DELAY_LEAD 0: pulse words out REF 4 | NEW 2 | FS 2 | CS 2   (NEW flags 308, rejects 0, expected field 1)
+A  DELAY_LEAD 1: pulse words out REF 3 | NEW 1 | FS 1 | CS 1   (NEW flags 308, rejects 0, expected field 2)
+A  DELAY_LEAD 2: pulse words out REF 2 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 3)
+A  DELAY_LEAD 3: pulse words out REF 1 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 4)
+A  DELAY_LEAD 4: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 5)
+A  DELAY_LEAD 5: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 6)
+A  DELAY_LEAD 6: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 7)
+A  DELAY_LEAD 7: pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 308, rejects 0, expected field 8)
+
+== A1: decision 1 (pass), DELAY_LEAD 2..7: the whole pulse must still pass
+A1 DELAY_LEAD 2, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 9)
+A1 DELAY_LEAD 3, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 10)
+A1 DELAY_LEAD 4, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 11)
+A1 DELAY_LEAD 5, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 12)
+A1 DELAY_LEAD 6, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 13)
+A1 DELAY_LEAD 7, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 14)
+
+== A2: pulse with a 3-word leading edge below NZ_THR, calibrated on it (as on hardware)
+CAL ramped pulse: word7 = 41
+A2 DELAY_LEAD 2, ramped pulse, decision 0: pulse words out REF 5 (low-amp 3) | NEW 3 (low-amp 3)
+A2 DELAY_LEAD 3, ramped pulse, decision 0: pulse words out REF 4 (low-amp 3) | NEW 2 (low-amp 2)
+A2 DELAY_LEAD 4, ramped pulse, decision 0: pulse words out REF 3 (low-amp 3) | NEW 1 (low-amp 1)
+A2 DELAY_LEAD 5, ramped pulse, decision 0: pulse words out REF 2 (low-amp 2) | NEW 0 (low-amp 0)
+A2 DELAY_LEAD 6, ramped pulse, decision 0: pulse words out REF 1 (low-amp 1) | NEW 0 (low-amp 0)
+A2 DELAY_LEAD 7, ramped pulse, decision 0: pulse words out REF 0 (low-amp 0) | NEW 0 (low-amp 0)
+A2 DELAY_LEAD 8, ramped pulse, decision 0: pulse words out REF 0 (low-amp 0) | NEW 0 (low-amp 0)
+
+== A3: decision arriving at every offset around window open (DELAY_LEAD 4), bit 0 and bit 1
+A3 bit 0, arrival offset -4: REF margin 4 stale 0 -> pulse words out 0 | NEW margin 4 stale 0 -> 0
+A3 bit 1, arrival offset -4: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset -3: REF margin 3 stale 0 -> pulse words out 0 | NEW margin 3 stale 0 -> 0
+A3 bit 1, arrival offset -3: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset -2: REF margin 2 stale 0 -> pulse words out 0 | NEW margin 2 stale 0 -> 0
+A3 bit 1, arrival offset -2: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset -1: REF margin 1 stale 0 -> pulse words out 0 | NEW margin 1 stale 0 -> 0
+A3 bit 1, arrival offset -1: REF fresh 1 -> pulse words out 40 | NEW fresh 1 -> 40
+A3 bit 0, arrival offset 0: REF margin 2147483647 stale 1 -> pulse words out 0 | NEW margin 2147483647 stale 1 -> 0
+A3 bit 1, arrival offset 0: REF fresh 0 -> pulse words out 0 | NEW fresh 0 -> 0
+A3 bit 0, arrival offset 1: REF margin 2147483647 stale 1 -> pulse words out 0 | NEW margin 2147483647 stale 1 -> 0
+A3 bit 1, arrival offset 1: REF fresh 0 -> pulse words out 0 | NEW fresh 0 -> 0
+A3 bit 0, arrival offset 2: REF margin 2147483647 stale 1 -> pulse words out 0 | NEW margin 2147483647 stale 1 -> 0
+A3 bit 1, arrival offset 2: REF fresh 0 -> pulse words out 0 | NEW fresh 0 -> 0
+
+== B: shot binding (DELAY_LEAD 4, PASS1 only)
+B0 normal shot, decision 1: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 0, expected field 37)
+B1 shot-k decision (bit 1) after shot k+1's trigger: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 1, expected field 39)
+B2 shot k's result (bit 0) then shot k+1's own (bit 1): pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 31d, rejects 2, expected field 40)
+B2b shot k's result (bit 1) then shot k+1's own (bit 0): pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 318, rejects 3, expected field 42)
+B3a no result (stale): pulse words out REF 0 | NEW 0 | FS 0 | CS 0   (NEW flags 30a, rejects 3, expected field 43)
+B3b next shot, decision 1 (cannot be told from B3a's late one): pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 4, expected field 44)
+B3c shot after (binding back in step): pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 4, expected field 44)
+B4 decision with field +5: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 5, expected field 45)
+B4b next shot: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 6, expected field 51)
+   (B4b: after a foreign field the binding expects field+1 of it; see REPORT)
+B5 marker without its own classify trigger (contract: not covered): pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 6, expected field 46)
+
+== C: gate disabled (fail-open vs FAIL_SAFE)
+C1 ENABLE = 0, decision 0: pulse words out REF 40 NEW 40 FS 0 CS 40
+C2 ENABLE = 0, decision 1: pulse words out REF 40 NEW 40 FS 0 CS 40
+C3 ENABLE cleared mid-window, decision 0: pulse words out REF 31 NEW 31 FS 0 CS 0
+
+== D: configuration filtering (CFG_SAFE)
+D1 glitched read of word 0, no shot: non-zero output words REF 0 NEW 0 CS 0; DELAY now REF 34 CS 34
+D2 glitched read (DELAY +128 for one read) mid-window, decision 0: pulse words out REF 1 NEW 0 CS 0; windows this shot REF 2 CS 1
+D3 host rewrites DELAY mid-window, decision 0: pulse words out REF 28 NEW 28 CS 0; windows this shot REF 2 CS 1
+
+== E: gate reset while NN_live keeps counting (first shot rejected, then in step)
+E1 first shot after gate reset: pulse words out REF 40 | NEW 0 | FS 0 | CS 0   (NEW flags 31a, rejects 1, expected field 0)
+E2 second shot: pulse words out REF 40 | NEW 40 | FS 40 | CS 40   (NEW flags 30d, rejects 1, expected field 53)
+
+magic REF 47415433 NEW 47415434; param flags [11:8] NEW 3 FS 7 CS b
+RESULT: PASS (all expectations met)
+$finish called at time : 51603597 ps : File "./audit_fixes/RB_prep/sim/tb_gate_fix.sv" Line 218
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 06:08:23 2026...

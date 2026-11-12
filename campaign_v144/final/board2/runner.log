@@ -1,0 +1,14 @@
+2026-11-09 03:39:04 A calibrated: [calib] active = 10.1.9.26 (board A)  |k|=0.22377 arg(k)=-164.23 deg
+2026-11-09 03:46:20 A tproc box: nobranch: earliest clean margin: +0.035, L 336.3 ns;qick: earliest clean margin: +0.035, L 340.3 ns;
+2026-11-09 03:47:57 A tproc fir: nobranch: earliest clean margin: +0.030, L 439.6 ns;
+2026-11-09 03:48:34 B calibrated: [calib] active = 10.1.4.105 (board B)  |k|=0.21976 arg(k)=-142.71 deg
+2026-11-09 03:48:45 A boxcar_mr: boxcar output == model(MR input): 200/200 shots exact, 150823/150823 samples; PASS
+2026-11-09 03:48:46 A done
+2026-11-09 03:55:55 B tproc box: nobranch: earliest clean margin: +0.035, L 335.1 ns;qick: earliest clean margin: +0.035, L 340.3 ns;
+2026-11-09 03:57:32 B tproc fir: nobranch: earliest clean margin: +0.030, L 440.4 ns;
+2026-11-09 03:58:19 B boxcar_mr: boxcar output == model(MR input): 200/200 shots exact, 150840/150840 samples; PASS
+2026-11-09 03:58:19 B done
+2026-11-09 04:26:30 swap A_own:   FIDELITY (live)  95.95%   overall 96.00% [95.05, 96.77]   P(1|0) 1.96%   P(0|1) 6.14%
+2026-11-09 04:33:46 swap B_own:   FIDELITY (live)  96.25%   overall 96.30% [95.38, 97.04]   P(1|0) 1.76%   P(0|1) 5.73%
+2026-11-09 04:41:07 swap B_on_A_calibration:   FIDELITY (live)  95.68%   overall 95.75% [94.77, 96.55]   P(1|0) 1.27%   P(0|1) 7.37%
+2026-11-09 04:41:07 swap done; board B calibration restored at exit

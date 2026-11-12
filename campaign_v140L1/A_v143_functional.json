@@ -1,0 +1,503 @@
+{
+ "firmware": "Firmware configuration (built Wed Nov  4 23:39:37 2026):",
+ "summary": {
+  "PASS": 19,
+  "WARN": 1,
+  "FAIL": 2,
+  "ERROR": 0,
+  "NOT WIRED": 1,
+  "INFO": 0
+ },
+ "results": [
+  {
+   "id": "T00",
+   "name": "Firmware/software configuration",
+   "source": "00 Getting Started \u00a73",
+   "status": "PASS",
+   "criterion": "expected: 2 gens, 3 readouts, tProc v2 core 200 MHz / time 491.52 MHz, 8 pins",
+   "metrics": {
+    "sw": "0.2.414",
+    "n_gens": 2,
+    "n_ros": 3,
+    "tproc": "qick_processor",
+    "rev": 27,
+    "f_core": 200.0,
+    "f_time": 491.52,
+    "gen0_fs": 7864.32,
+    "ro0_fs": 4423.68,
+    "ro0_fout": 552.96,
+    "pins": 8,
+    "has_lfsr": 1,
+    "has_div": 1,
+    "has_arith": 1,
+    "ddr4": true,
+    "mr": true
+   },
+   "seconds": 0.0
+  },
+  {
+   "id": "T01",
+   "name": "Memory access: host and tProc",
+   "source": "00 \u00a74 (read_mem); 05 (dmem); 04 (write_dmem)",
+   "status": "PASS",
+   "criterion": "host load/read 512 random words; tProc counted loop writing 64 register-addressed words. NB: QICK's own load_mem readback check is broken for addr != 0 (upstream software bug, worked around)",
+   "metrics": {
+    "host_roundtrip_512": true,
+    "tproc_loop_writes_64": true,
+    "first_tproc_values": [
+     7,
+     10,
+     13,
+     16
+    ],
+    "tproc_counter": 1
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T02",
+   "name": "Wiring matrix (gen -> readout)",
+   "source": "06 \u00a73, 07 \u00a710 (check loopback)",
+   "status": "PASS",
+   "criterion": "gen0->ro0 must be wired; others reported (peak/median > 50 = wired)",
+   "metrics": {
+    "peak_over_median": [
+     [
+      584.0,
+      353.3,
+      4.0
+     ],
+     [
+      3.6,
+      3.2,
+      4.1
+     ]
+    ],
+    "wired": [
+     [
+      true,
+      true,
+      false
+     ],
+     [
+      false,
+      false,
+      false
+     ]
+    ]
+   },
+   "seconds": 0.4
+  },
+  {
+   "id": "T03",
+   "name": "Single const pulse: width, timing shift, repeatability",
+   "source": "01 \u00a73; 00_Send_receive (rep-to-rep)",
+   "status": "PASS",
+   "criterion": "width 0.4 us and a 0.1 us shift within 3/2 samples; 5 runs: amplitude CV < 1%, phase sd < 1 deg",
+   "metrics": {
+    "width_us": 0.401,
+    "width_err_ns": 0.95,
+    "t_shift_us": 0.103,
+    "shift_err_ns": 3.04,
+    "latency_us": 0.3163,
+    "amp_cv": 0.00013,
+    "phase_sd_deg": 0.046,
+    "edge_sd_samples": 0.107
+   },
+   "seconds": 0.3
+  },
+  {
+   "id": "T04",
+   "name": "Envelope shapes: gauss, flat_top, triangle, DRAG, custom",
+   "source": "01 \u00a74; 06 \u00a74; playing_pulses",
+   "status": "PASS",
+   "criterion": "measured |envelope| vs the program's own envelope samples (best shift+scale): normalised RMS residual < 3% each",
+   "metrics": {
+    "nrms_residual": {
+     "gauss": 0.0006,
+     "flat_top": 0.0022,
+     "triangle": 0.0006,
+     "drag": 0.0006,
+     "custom": 0.0038
+    }
+   },
+   "seconds": 2.6
+  },
+  {
+   "id": "T05",
+   "name": "Gain sweep (QickSweep1D): linearity",
+   "source": "02 \u00a73; 09 \u00a73.3 (quantization)",
+   "status": "PASS",
+   "criterion": "|IQ| vs actual gain: max deviation from a line < 1% FS, intercept < 1% FS, phase constant < 1 deg",
+   "metrics": {
+    "n": 19,
+    "slope": 2026.637,
+    "intercept_frac": 5e-05,
+    "max_dev_frac": 0.00013,
+    "phase_span_deg": 0.046,
+    "gains_first_last": [
+     0.04999,
+     0.94983
+    ]
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T06",
+   "name": "Phase sweep: commanded vs measured",
+   "source": "02 \u00a73; 06 \u00a75 (IQ mixing)",
+   "status": "PASS",
+   "criterion": "12 phases 0..330: |error| < 1 deg each, amplitude CV < 0.5%",
+   "metrics": {
+    "rms_err_deg": 0.008,
+    "max_err_deg": 0.013,
+    "amp_cv": 3e-05
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T07",
+   "name": "Frequency matching: phase coherence across runs",
+   "source": "freq_matching; 01 \u00a73 note",
+   "status": "PASS",
+   "criterion": "10 separately compiled runs at an odd frequency: phase sd < 1 deg",
+   "metrics": {
+    "freq": 487.1234567,
+    "phase_sd_deg": 0.05,
+    "amp_cv": 0.00011
+   },
+   "seconds": 0.4
+  },
+  {
+   "id": "T08",
+   "name": "Dynamic readout frequency sweep (exec_before) + electrical delay",
+   "source": "07 \u00a75, \u00a75.1",
+   "status": "PASS",
+   "criterion": "3601 points 100-1900 MHz, twice: linear phase (residual RMS < 5 deg), delay repeatable to 0.1 ns, no dropouts",
+   "metrics": {
+    "delay_ns": [
+     -30.464,
+     -30.465
+    ],
+    "resid_rms_deg": [
+     2.47,
+     2.48
+    ],
+    "resid_max_deg": [
+     9.02,
+     5.58
+    ],
+    "amp_min_over_median": [
+     0.891,
+     0.891
+    ]
+   },
+   "seconds": 0.2
+  },
+  {
+   "id": "T09",
+   "name": "Timeline semantics: delay, delay_auto, wait, collisions, swept delay",
+   "source": "03 \u00a73-\u00a76; timing",
+   "status": "PASS",
+   "criterion": "pulse separations within 3 samples (5.4 ns) of the documented timeline",
+   "metrics": {
+    "delay": {
+     "expected_us": 0.3,
+     "measured_us": 0.2992,
+     "err_ns": -0.83
+    },
+    "delay_auto": {
+     "expected_us": 0.45,
+     "measured_us": 0.4499,
+     "err_ns": -0.15
+    },
+    "collision": {
+     "expected_us": 0.5,
+     "measured_us": 0.5003,
+     "err_ns": 0.3
+    },
+    "wait": {
+     "measured_us": 0.7661,
+     "note": "b must start no earlier than wait time - a start (0.7 us)"
+    },
+    "swept_delay": {
+     "expected_us": [
+      0.15,
+      0.25,
+      0.35,
+      0.45,
+      0.55
+     ],
+     "measured_us": [
+      0.1508,
+      0.2501,
+      0.3498,
+      0.4498,
+      0.5491
+     ]
+    }
+   },
+   "seconds": 0.5
+  },
+  {
+   "id": "T10",
+   "name": "2D sweep (QickSpan), loop order, reps_innermost",
+   "source": "02 \u00a74; 09 \u00a75.1",
+   "status": "PASS",
+   "criterion": "|IQ| proportional to the 3x4 QickSpan gain grid within 2%; per-shot raw data ordered as declared",
+   "metrics": {
+    "data_shape": [
+     1,
+     3,
+     4
+    ],
+    "gain_shape": [
+     3,
+     4
+    ],
+    "max_rel_dev": 0.0002,
+    "raw_shape_innerFalse": [
+     3,
+     4,
+     1,
+     2
+    ],
+    "amp_rises_along_gain_innerFalse": true,
+    "raw_shape_innerTrue": [
+     4,
+     3,
+     1,
+     2
+    ],
+    "amp_rises_along_gain_innerTrue": true
+   },
+   "seconds": 0.2
+  },
+  {
+   "id": "T11",
+   "name": "Accumulated vs decimated buffer, per shot, exact",
+   "source": "01 \u00a73; 00_Send_receive; 08 (buffers)",
+   "status": "PASS",
+   "criterion": "sum of each shot's decimated samples == that shot's accumulated value, all shots",
+   "metrics": {
+    "shots": 40,
+    "samples_per_shot": 221,
+    "exact_matches": 40,
+    "first_shot": {
+     "dec_sum": [
+      -71391,
+      -151073
+     ],
+     "acc": [
+      -71391,
+      -151073
+     ]
+    }
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T12",
+   "name": "Feedback: read_input == buffered accumulation, per shot (sweep read_wait)",
+   "source": "04 \u00a73",
+   "status": "PASS",
+   "criterion": "with a sufficient read_wait, the tProc's read_input equals the buffer's per-shot sum (I and Q) on every shot",
+   "metrics": {
+    "shots": 200,
+    "exact_matches_by_read_wait_us": {
+     "0.0": 0,
+     "0.02": 0,
+     "0.05": 0,
+     "0.1": 195,
+     "0.2": 200
+    },
+    "min_read_wait_all_exact": 0.2
+   },
+   "seconds": 0.3
+  },
+  {
+   "id": "T13",
+   "name": "Conditional pulse (read_and_jump) decision consistency",
+   "source": "04 \u00a74, \u00a76",
+   "status": "PASS",
+   "criterion": "the conditional pulse plays exactly on the shots whose first readout has I < 0 (same-shot raw value)",
+   "metrics": {
+    "shots": 205,
+    "agree": 205,
+    "n_played": 105,
+    "n_expected": 105,
+    "ro_rotation_deg": 115.35
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T14",
+   "name": "Virtual-Z via read/write_wmem subroutine; subroutine timing; per-pulse gain",
+   "source": "05 \u00a73, \u00a75, \u00a76",
+   "status": "PASS",
+   "criterion": "phases 0/90/90/180 within 2 deg on both reps (reset works); subroutine pulse starts within 3 samples; gain ratios 1/0.5/0.25 within 1%",
+   "metrics": {
+    "rep0_phases_deg": [
+     0.0,
+     90.0,
+     90.07,
+     180.08
+    ],
+    "rep1_phases_deg": [
+     0.0,
+     90.01,
+     89.98,
+     179.96
+    ],
+    "subroutine_starts_us": [
+     0.0,
+     0.1508,
+     0.3498,
+     0.5009
+    ],
+    "gain_ratios": [
+     1.0,
+     0.5,
+     0.25
+    ]
+   },
+   "seconds": 0.6
+  },
+  {
+   "id": "T15",
+   "name": "tProc ALU, ARITH, DIV and conditional-jump tests",
+   "source": "05 (registers); tProc v2 TRM; 04_Reading_Math_Writing (v1)",
+   "status": "PASS",
+   "criterion": "every result written to dmem equals Python's (32-bit)",
+   "metrics": {
+    "n_checks": 19,
+    "mismatches": {}
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T16",
+   "name": "DDR4 buffer: capture, shot period (final_delay), equality with decimated buffer",
+   "source": "08 \u00a73; 09 \u00a75.2",
+   "status": "FAIL",
+   "criterion": "every shot's pulse in DDR4 at a constant period (> final_delay); a shot's decimated samples found bit-exactly in the DDR4 stream",
+   "metrics": {
+    "ddr_samples": 22784,
+    "pulses_found": 6,
+    "period_us": [
+     5.8877,
+     5.9165,
+     5.8875,
+     5.887,
+     5.9162
+    ],
+    "last_shot_found_exactly": true
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T17",
+   "name": "MR buffer: raw ADC capture, tone frequency",
+   "source": "08 \u00a74, \u00a76",
+   "status": "WARN",
+   "criterion": "MR data valid: two quadrature columns at fs/2 = 2211.84 Msps with the tone at 300 MHz. QICK's soccfg text (8192 samples = 1.852 us) and get_time_axis_mr() assume fs = 4423.68 Msps, so a user following the tutorial sees the tone at 2x. Documentation/software mismatch, not our change",
+   "metrics": {
+    "rows": 8192,
+    "peak_MHz_if_doc_fs": 599.94,
+    "peak_MHz_if_half_fs": 299.97,
+    "complex_peak_MHz_half_fs": -299.97,
+    "mirror_dBc": -71.8,
+    "iq_correlation": 0.188,
+    "played_MHz": 300.0
+   },
+   "seconds": 0.1
+  },
+  {
+   "id": "T18",
+   "name": "Edge counter vs software Schmitt trigger",
+   "source": "09_photon_counting (v1 demo; buffer has edge counter)",
+   "status": "PASS",
+   "criterion": "hardware edge count == number of pulses == software Schmitt count on the decimated I trace",
+   "metrics": {
+    "n0": {
+     "hw": 0,
+     "sw": 0
+    },
+    "n3": {
+     "hw": 3,
+     "sw": 3
+    },
+    "n5": {
+     "hw": 5,
+     "sw": 5
+    }
+   },
+   "seconds": 0.3
+  },
+  {
+   "id": "T19",
+   "name": "Untestable on this wiring: gen 1, readouts 1/2 (weighted buffer), time tagger, PMOD pins",
+   "source": "06/07/08; time tagger",
+   "status": "NOT WIRED",
+   "criterion": "connect a loopback (e.g. gen 1 -> readout 1) to cover these",
+   "metrics": {
+    "gen1": "DAC_A not cabled",
+    "readout1": "ADC_C not cabled",
+    "readout2_weighted": "ADC_B not cabled",
+    "time_tagger": "ADC_A not cabled",
+    "pmod": "needs a scope/logic analyser"
+   },
+   "seconds": 0.0
+  },
+  {
+   "id": "T20",
+   "name": "Readout-chain integrity: CW tone in the decimated buffer, phase-continuity glitch search",
+   "source": "integrity check (avg_buffer decimated path)",
+   "status": "PASS",
+   "criterion": "8 x 16k consecutive samples of a detuned CW tone through the readout chain: no phase jump > 10 sd, no dropout, rotation = detuning",
+   "metrics": {
+    "samples": 127040,
+    "phase_jumps": 0,
+    "amp_dropouts": 0,
+    "step_rad": 0.005716,
+    "step_expected": 0.005681
+   },
+   "seconds": 0.7
+  },
+  {
+   "id": "T20b",
+   "name": "DDR4 stream continuity: CW tone through DDR4",
+   "source": "08 \u00a73 (DDR4) + integrity check",
+   "status": "FAIL",
+   "criterion": "~12 M consecutive DDR4 samples: no discontinuity. A failure with jumps that each skip ~16 samples at 16-aligned positions means the DDR4 write path drops whole 16-sample beats",
+   "metrics": {
+    "samples": 12582609,
+    "jumps": 918,
+    "per_million": 73.0,
+    "missing_samples_hist": {
+     "15": 229,
+     "16": 648,
+     "17": 41
+    },
+    "jump_position_mod16": {
+     "15": 918
+    }
+   },
+   "seconds": 5.3
+  },
+  {
+   "id": "T21",
+   "name": "Program size and timing limits",
+   "source": "09 \u00a72",
+   "status": "PASS",
+   "criterion": "a ~1000-pulse program fits program memory and every pulse is played",
+   "metrics": {
+    "pmem_words": 1017,
+    "pmem_size": 4096,
+    "pulses_programmed": 1000,
+    "pulses_seen": 1000
+   },
+   "seconds": 0.3
+  }
+ ]
+}

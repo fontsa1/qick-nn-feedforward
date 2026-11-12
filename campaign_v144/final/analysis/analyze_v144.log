@@ -1,0 +1,24 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794228507.224000   44252 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794228510.879552   44252 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+.\.venv\Lib\site-packages\tf_keras\src\constraints.py:365: UserWarning: The `keras.constraints.serialize()` API should only be used for objects of type `keras.constraints.Constraint`. Found an instance of type <class 'qkeras.quantizers.ternary'>, which may lead to improper serialization.
+  warnings.warn(
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x0000024A288915B0> -> <hls4ml.model.types.NamedType object at 0x0000024A28891670>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x0000024A28892660> -> <hls4ml.model.types.NamedType object at 0x0000024A28892720>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+A run 1 rows 0 49999 bit-exact {'n': 50000, 'sums': 50000, 'rule': 50000, 'sigmoid': 50000, 'all': 50000} window==buffer 50000
+A run 2 rows 50000 99999 bit-exact {'n': 50000, 'sums': 50000, 'rule': 50000, 'sigmoid': 50000, 'all': 50000} window==buffer 50000
+B run 1 rows 50000 99999 bit-exact {'n': 50000, 'sums': 50000, 'rule': 50000, 'sigmoid': 50000, 'all': 50000} window==buffer 50000
+B run 2 rows 0 49999 bit-exact {'n': 50000, 'sums': 50000, 'rule': 50000, 'sigmoid': 50000, 'all': 50000} window==buffer 50000
+in-loop A: F 95.570  subset 95.406  vs idle 617/594 p 0.527  {'correct': 99400, 'not_correct': 0, 'stale': 0, 'late': 0, 'unsafe': 0, 'pulse_ne_decision': 0, 'binding_rejects': 0, 'late_rate_upper95': 3.0137697495935534e-05, 'dac_clipped_shots': 6, 'correct_subset19400': 19400, 'fresh': 99400}
+in-loop B: F 95.534  subset 95.386  vs idle 539/620 p 0.019  {'correct': 99400, 'not_correct': 0, 'stale': 0, 'late': 0, 'unsafe': 0, 'pulse_ne_decision': 0, 'binding_rejects': 0, 'late_rate_upper95': 3.0137697495935534e-05, 'dac_clipped_shots': 5, 'correct_subset19400': 19400, 'fresh': 99400}
+axi A: 95.545; live same session 95.489; vs live 89/78
+axi B: 95.447; live same session 95.484; vs live 76/83
+headline 95.60045024270826 [95.47330711307231, 95.72759337234423]
+wrote .\campaign_v144\final\analysis\v144_stats.json

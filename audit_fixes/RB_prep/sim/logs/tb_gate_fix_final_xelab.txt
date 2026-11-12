@@ -1,0 +1,19 @@
+ECHO is off.
+ECHO is off.
+Vivado Simulator v2023.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: C:/embedded-software/Vivado/2023.1/bin/unwrapped/win64.o/xelab.exe -debug off -timescale 1ps/1ps tb_gate_fix -s tb_gate_fix_final_sim 
+Multi-threading is on. Using 14 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.dac_gate_ref
+Compiling module work.dac_gate_default
+Compiling module work.dac_gate(FAIL_SAFE=1)
+Compiling module work.dac_gate(CFG_SAFE=1)
+Compiling module work.tb_gate_fix
+Built simulation snapshot tb_gate_fix_final_sim

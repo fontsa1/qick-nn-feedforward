@@ -1,0 +1,18 @@
+[calib] WARNING: root k.npy/c.npy hold 10.1.4.105, not 10.1.9.26
+stored calibration arg(k) for this load: 152.71 deg
+
+== load 0: Firmware configuration (built Sat Nov  7 19:57:07 2026): ==
+  none: one-shot programs   127.28 deg +-  0.40   reps program   127.19 +-  0.37   |IQ| 1008
+   gen: one-shot programs  -100.30 deg +- 103.97   reps program   -86.89 +- 164.11   |IQ| 1017
+    ro: one-shot programs   -33.00 deg +- 83.55   reps program  -153.99 +- 172.44   |IQ| 1008
+  both: one-shot programs    -0.66 deg +-  9.22   reps program     1.66 +-  9.30   |IQ| 1017
+
+== across loads: per-load mean phase (deg) ==
+  none:   127.28   across-load spread: std  -0.00, range   0.00   within-load std (median)  0.40
+   gen:  -100.30   across-load spread: std  -0.00, range   0.00   within-load std (median) 103.97
+    ro:   -33.00   across-load spread: std  -0.00, range   0.00   within-load std (median) 83.55
+.\analysis_scripts\diagnostics\phrst_probe.py:96: RuntimeWarning: invalid value encountered in sqrt
+  return float(np.degrees(np.angle(u.mean()))), float(np.degrees(np.sqrt(-2 * np.log(max(R, 1e-12)))))
+  both:    -0.66   across-load spread: std    nan, range   0.00   within-load std (median)  9.22
+saved campaign_v144/final/board2/A_phrst_load0.json
+NEXT: run_calibration.py (stored k/c belong to the load before this probe).

@@ -1,0 +1,16 @@
+//Numpy array shape [4]
+//Min 0.649541795254
+//Max 1.028945088387
+//Number of zeros 0
+
+#ifndef B4_H_
+#define B4_H_
+
+#ifndef __SYNTHESIS__
+batchnorm1_bias_t b4[4];
+#else
+batchnorm1_bias_t b4[4] = {0.64954179525375366210937500000000, 0.76441836357116699218750000000000, 1.02894508838653564453125000000000, 0.77537536621093750000000000000000};
+
+#endif
+
+#endif

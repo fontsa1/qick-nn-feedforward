@@ -1,0 +1,23 @@
+BANNER OK: Nov  7 19:57:07
+boxcar cfg at start: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+A. 20 shots, 664 / 664 samples; plateau FIR 1035.8, box 1334.5
+B. M= 1 shift=3: captured
+B. M= 2 shift=4: captured
+B. M= 3 shift=5: captured
+B. M= 4 shift=5: captured
+B. M= 5 shift=6: captured
+B. M= 6 shift=6: captured
+B. M= 7 shift=6: captured
+B. M= 8 shift=6: captured
+B. M= 9 shift=7: captured
+B. M=10 shift=7: captured
+B. M=11 shift=7: captured
+B. M=12 shift=7: captured
+B. M=13 shift=7: captured
+B. M=14 shift=7: captured
+B. M=15 shift=7: captured
+B. M=16 shift=7: captured
+D. sel=0: edge1 cycles median 285.0 (n=20)
+D. sel=1: edge1 cycles median 223.0 (n=20)
+boxcar cfg restored: {'sel': 1, 'shift': 7, 'm': 11, 'word': 2673}
+saved campaign_v144\final\fig7\fig7_capture_B_v144

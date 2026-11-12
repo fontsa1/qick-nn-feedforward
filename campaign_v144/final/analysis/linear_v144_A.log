@@ -1,0 +1,28 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794245181.171203    1188 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794245186.796217    1188 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+loaded (14s)
+  moments to 10000 (14s)
+  moments to 50000 (16s)
+  moments to 180000 (22s)
+  moments to 200000 (23s)
+N=10000: MF 95.365/95.308  LDA_ridge0.001 94.315/94.262  LDA_ridge0.01 94.490/94.443  LDA_ridge0.1 94.940/94.886 (26s)
+N=50000: MF 95.390/95.334  LDA_ridge0.001 95.545/95.499  LDA_ridge0.01 95.590/95.540  LDA_ridge0.1 95.615/95.561 (33s)
+N=200000: MF 95.390/95.329  LDA_ridge0.001 95.590/95.535  LDA_ridge0.01 95.610/95.556  LDA_ridge0.1 95.635/95.582 (57s)
+E=770: ridge 0.001 val 96.090  20k 95.555  19400 95.499 (80s)
+E=736: ridge 0.0001 val 96.045  20k 95.620  19400 95.566 (104s)
+E=704: ridge 0.01 val 96.110  20k 95.620  19400 95.566 (128s)
+E=672: ridge 0.0001 val 96.105  20k 95.600  19400 95.546 (152s)
+E=640: ridge 0.001 val 96.130  20k 95.615  19400 95.561 (176s)
+E=608: ridge 0.0001 val 96.110  20k 95.515  19400 95.458 (200s)
+E=576: ridge 0.0001 val 96.115  20k 95.470  19400 95.422 (222s)
+E=544: ridge 0.01 val 96.135  20k 95.380  19400 95.334 (244s)
+E=512: ridge 0.01 val 96.125  20k 95.245  19400 95.200 (265s)
+E=480: ridge 0.0001 val 96.040  20k 94.995  19400 94.968 (287s)
+E=448: ridge 0.1 val 95.925  20k 94.675  19400 94.633 (311s)
+E=416: ridge 0.1 val 95.820  20k 94.375  19400 94.329 (333s)
+E=384: ridge 0.001 val 95.570  20k 93.755  19400 93.700 (353s)
+done (353s)

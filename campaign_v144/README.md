@@ -1,0 +1,21 @@
+# v1.44 reacquisition
+
+v1.44 is the SoC built from QICK's project plus `vivado_scripts/v1.43/from_qick/` (same design as v1.43, a new place and
+route that meets timing at sign-off: WNS 0.000 ns, WHS +0.010 ns, 0 failing endpoints). Files:
+`C:/qick_projects/top/OG_build_v1.44.bit` and `.hwh` (sha256 of the .bit starts 986c861a83be8d01), reports in
+`C:/qick_projects/top/v1.44_reports/`. Banner: `Nov  7 19:57:07`.
+
+Outputs go under `campaign_v144/final/`; `campaign_v143/` is untouched. The latency closure check is centred on 1.4 ns for v1.44 (decided 2026-11-10;
+`final/latency/README.md`).
+
+- `launch_v144.ps1` starts `run_all.sh` detached. Progress: `final/run_all.log`. End marker: `final/RUN_ALL_FINISHED`.
+- `run_6_3.sh`, `run_drift_full.sh`, `run_board2.sh`, `run_board2_phrst.sh`, `run_loads.sh` are generated from the v1.43
+  scripts by `make_runners.sh`.
+
+## By hand: cold starts (2 per board)
+
+Power the boards off and on, wait for them to boot, then run once per power cycle (use c2 for the second):
+
+    bash campaign_v144/run_loads.sh campaign_v144/final/latency/cold c1
+
+The script reloads v1.44 and calibrates on each board.

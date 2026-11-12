@@ -1,0 +1,120 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794245897.803284   18684 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794245902.692203   18684 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+.\.venv\Lib\site-packages\tf_keras\src\constraints.py:365: UserWarning: The `keras.constraints.serialize()` API should only be used for objects of type `keras.constraints.Constraint`. Found an instance of type <class 'qkeras.quantizers.ternary'>, which may lead to improper serialization.
+  warnings.warn(
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x0000027E545452E0> -> <hls4ml.model.types.NamedType object at 0x0000027E54583FB0>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x0000027E545E8F20> -> <hls4ml.model.types.NamedType object at 0x0000027E545E8FE0>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_dense_1' (Dense):<hls4ml.model.types.NamedType object at 0x0000027E54694D40> -> <hls4ml.model.types.NamedType object at 0x0000027E546978F0>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+.\.venv\Lib\site-packages\hls4ml\model\graph.py:483: UserWarning: Overriding attribute 'accum_t' of layer 'q_output' (Dense):<hls4ml.model.types.NamedType object at 0x0000027E5470CAD0> -> <hls4ml.model.types.NamedType object at 0x0000027E5470CB90>
+  self.graph[name] = self.make_node(kind, name, layer, inputs, outputs)
+campaign_v144/final/live\A_run1_0_1000.npz
+campaign_v144/final/live\A_run1_1000_2000.npz
+campaign_v144/final/live\A_run1_2000_3000.npz
+campaign_v144/final/live\A_run1_3000_4000.npz
+campaign_v144/final/live\A_run1_4000_5000.npz
+campaign_v144/final/live\A_run1_5000_6000.npz
+campaign_v144/final/live\A_run1_6000_7000.npz
+campaign_v144/final/live\A_run1_7000_8000.npz
+campaign_v144/final/live\A_run1_8000_9000.npz
+campaign_v144/final/live\A_run1_9000_10000.npz
+campaign_v144/final/live\A_run1_10000_11000.npz
+campaign_v144/final/live\A_run1_11000_12000.npz
+campaign_v144/final/live\A_run1_12000_13000.npz
+campaign_v144/final/live\A_run1_13000_14000.npz
+campaign_v144/final/live\A_run1_14000_15000.npz
+campaign_v144/final/live\A_run1_15000_16000.npz
+campaign_v144/final/live\A_run1_16000_17000.npz
+campaign_v144/final/live\A_run1_17000_18000.npz
+campaign_v144/final/live\A_run1_18000_19000.npz
+campaign_v144/final/live\A_run1_19000_20000.npz
+campaign_v144/final/live\A_run1_20000_21000.npz
+campaign_v144/final/live\A_run1_21000_22000.npz
+campaign_v144/final/live\A_run1_22000_23000.npz
+campaign_v144/final/live\A_run1_23000_24000.npz
+campaign_v144/final/live\A_run1_24000_25000.npz
+campaign_v144/final/live\A_run1_25000_26000.npz
+campaign_v144/final/live\A_run1_26000_27000.npz
+campaign_v144/final/live\A_run1_27000_28000.npz
+campaign_v144/final/live\A_run1_28000_29000.npz
+campaign_v144/final/live\A_run1_29000_30000.npz
+campaign_v144/final/live\A_run1_30000_31000.npz
+campaign_v144/final/live\A_run1_31000_32000.npz
+campaign_v144/final/live\A_run1_32000_33000.npz
+campaign_v144/final/live\A_run1_33000_34000.npz
+campaign_v144/final/live\A_run1_34000_35000.npz
+campaign_v144/final/live\A_run1_35000_36000.npz
+campaign_v144/final/live\A_run1_36000_37000.npz
+campaign_v144/final/live\A_run1_37000_38000.npz
+campaign_v144/final/live\A_run1_38000_39000.npz
+campaign_v144/final/live\A_run1_39000_40000.npz
+campaign_v144/final/live\A_run1_40000_41000.npz
+campaign_v144/final/live\A_run1_41000_42000.npz
+campaign_v144/final/live\A_run1_42000_43000.npz
+campaign_v144/final/live\A_run1_43000_44000.npz
+campaign_v144/final/live\A_run1_44000_45000.npz
+campaign_v144/final/live\A_run1_45000_46000.npz
+campaign_v144/final/live\A_run1_46000_47000.npz
+campaign_v144/final/live\A_run1_47000_48000.npz
+campaign_v144/final/live\A_run1_48000_49000.npz
+campaign_v144/final/live\A_run1_49000_50000.npz
+campaign_v144/final/live\A_run2_50000_51000.npz
+campaign_v144/final/live\A_run2_51000_52000.npz
+campaign_v144/final/live\A_run2_52000_53000.npz
+campaign_v144/final/live\A_run2_53000_54000.npz
+campaign_v144/final/live\A_run2_54000_55000.npz
+campaign_v144/final/live\A_run2_55000_56000.npz
+campaign_v144/final/live\A_run2_56000_57000.npz
+campaign_v144/final/live\A_run2_57000_58000.npz
+campaign_v144/final/live\A_run2_58000_59000.npz
+campaign_v144/final/live\A_run2_59000_60000.npz
+campaign_v144/final/live\A_run2_60000_61000.npz
+campaign_v144/final/live\A_run2_61000_62000.npz
+campaign_v144/final/live\A_run2_62000_63000.npz
+campaign_v144/final/live\A_run2_63000_64000.npz
+campaign_v144/final/live\A_run2_64000_65000.npz
+campaign_v144/final/live\A_run2_65000_66000.npz
+campaign_v144/final/live\A_run2_66000_67000.npz
+campaign_v144/final/live\A_run2_67000_68000.npz
+campaign_v144/final/live\A_run2_68000_69000.npz
+campaign_v144/final/live\A_run2_69000_70000.npz
+campaign_v144/final/live\A_run2_70000_71000.npz
+campaign_v144/final/live\A_run2_71000_72000.npz
+campaign_v144/final/live\A_run2_72000_73000.npz
+campaign_v144/final/live\A_run2_73000_74000.npz
+campaign_v144/final/live\A_run2_74000_75000.npz
+campaign_v144/final/live\A_run2_75000_76000.npz
+campaign_v144/final/live\A_run2_76000_77000.npz
+campaign_v144/final/live\A_run2_77000_78000.npz
+campaign_v144/final/live\A_run2_78000_79000.npz
+campaign_v144/final/live\A_run2_79000_80000.npz
+campaign_v144/final/live\A_run2_80000_81000.npz
+campaign_v144/final/live\A_run2_81000_82000.npz
+campaign_v144/final/live\A_run2_82000_83000.npz
+campaign_v144/final/live\A_run2_83000_84000.npz
+campaign_v144/final/live\A_run2_84000_85000.npz
+campaign_v144/final/live\A_run2_85000_86000.npz
+campaign_v144/final/live\A_run2_86000_87000.npz
+campaign_v144/final/live\A_run2_87000_88000.npz
+campaign_v144/final/live\A_run2_88000_89000.npz
+campaign_v144/final/live\A_run2_89000_90000.npz
+campaign_v144/final/live\A_run2_90000_91000.npz
+campaign_v144/final/live\A_run2_91000_92000.npz
+campaign_v144/final/live\A_run2_92000_93000.npz
+campaign_v144/final/live\A_run2_93000_94000.npz
+campaign_v144/final/live\A_run2_94000_95000.npz
+campaign_v144/final/live\A_run2_95000_96000.npz
+campaign_v144/final/live\A_run2_96000_97000.npz
+campaign_v144/final/live\A_run2_97000_98000.npz
+campaign_v144/final/live\A_run2_98000_99000.npz
+campaign_v144/final/live\A_run2_99000_100000.npz
+subset19400 95.391 95.355 62 55 0.579 0.036
+all99400 95.547 95.463 343 259 0.001 0.085

@@ -1,0 +1,10 @@
+A. {'m': 11, 'edge_fir_samples': 287.349, 'edge_box_samples': 224.33, 'saved_samples': 62.675, 'saved_sd': 0.499, 'saved_ns': 113.34, 'box_over_fir_gain_shift0': 122.98, 'shift_chosen': 7, 'gain_after_shift': 0.9608}
+B. M= 1 shift=3: box image -1.1 dBc (floor -88.1), fir image -0.7 dBc
+B. M= 4 shift=5: box image -10.1 dBc (floor -99.7), fir image -0.7 dBc
+B. M= 8 shift=6: box image -13.9 dBc (floor -104.3), fir image -0.7 dBc
+B. M=11 shift=7: box image -46.0 dBc (floor -103.4), fir image -0.7 dBc
+B. M=16 shift=7: box image -29.5 dBc (floor -106.5), fir image -0.7 dBc
+C. sel=0 (FIR): NN_live window == buffer 0 on 0/30 shots, offsets {}
+C. sel=1 (boxcar): NN_live window == buffer 1 on 30/30 shots, offsets {0: 30}
+D. {0: {'edge1_cycles_median': 286.0, 'n': 20}, 1: {'edge1_cycles_median': 225.5, 'n': 20}, 'saved_cycles': 60.5, 'saved_ns': 109.41}
+saved campaign_v144/final/latency/reloads/A_r1.box_probe.json | cfg left at {'sel': 0, 'shift': 7, 'm': 11, 'word': 2672}

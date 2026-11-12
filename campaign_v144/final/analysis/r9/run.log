@@ -1,0 +1,207 @@
+=== start Mon Nov  9 10:42:16 MST 2026
+=== generators done Mon Nov  9 10:42:16 MST 2026
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246136.932460   29584 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246141.844787   29584 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+real10k_d0              20260901 vl 0.18672 F20k 94.730 F19400 94.685 ep 10   20s
+real10k_d0              20260902 vl 0.18310 F20k 95.115 F19400 95.040 ep  9   16s
+real10k_d0              20260903 vl 0.19448 F20k 94.915 F19400 94.844 ep 10   16s
+real10k_d0              20260904 vl 0.19985 F20k 95.165 F19400 95.107 ep  7   13s
+real10k_d0              20260905 vl 0.19263 F20k 95.095 F19400 95.019 ep  9   15s
+real10k_d0              20260906 vl 0.16579 F20k 94.690 F19400 94.633 ep 10   15s
+real10k_d0              20260907 vl 0.18712 F20k 94.665 F19400 94.628 ep 12   16s
+real10k_d0              20260908 vl 0.19156 F20k 95.310 F19400 95.257 ep  7   13s
+real10k_d0              20260909 vl 0.17982 F20k 94.555 F19400 94.489 ep 11   16s
+real10k_d0              20260910 vl 0.18596 F20k 94.770 F19400 94.706 ep 11   16s
+v2_10k_d0               20260901 vl 0.11257 F20k 95.125 F19400 95.061 ep 13   18s
+v2_10k_d0               20260902 vl 0.11928 F20k 95.035 F19400 94.968 ep 15   24s
+v2_10k_d0               20260903 vl 0.11636 F20k 94.945 F19400 94.891 ep 19   29s
+v2_10k_d0               20260904 vl 0.11771 F20k 95.080 F19400 95.020 ep 20   29s
+v2_10k_d0               20260905 vl 0.11887 F20k 95.090 F19400 95.030 ep 17   25s
+v2_10k_d0               20260906 vl 0.11461 F20k 94.935 F19400 94.880 ep 21   26s
+v2_10k_d0               20260907 vl 0.11374 F20k 95.215 F19400 95.154 ep 11   17s
+v2_10k_d0               20260908 vl 0.11233 F20k 95.120 F19400 95.056 ep 18   26s
+v2_10k_d0               20260909 vl 0.12223 F20k 95.060 F19400 94.994 ep 15   26s
+v2_10k_d0               20260910 vl 0.11401 F20k 94.915 F19400 94.850 ep 22   28s
+done .\audit_fixes\R9\..\..\campaign_v144\final\analysis\r9\results\t10k_d0
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246558.004900   40552 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246563.900259   40552 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+real10k_d1              20260901 vl 0.19763 F20k 95.020 F19400 94.978 ep  9   14s
+real10k_d1              20260902 vl 0.21395 F20k 94.960 F19400 94.895 ep  8   12s
+real10k_d1              20260903 vl 0.19155 F20k 94.980 F19400 94.937 ep  9   15s
+real10k_d1              20260904 vl 0.18969 F20k 95.030 F19400 94.988 ep  8   12s
+real10k_d1              20260905 vl 0.20483 F20k 95.165 F19400 95.107 ep 10   13s
+real10k_d2              20260901 vl 0.19497 F20k 94.870 F19400 94.798 ep 10   13s
+real10k_d2              20260902 vl 0.18464 F20k 94.630 F19400 94.576 ep 11   14s
+real10k_d2              20260903 vl 0.17011 F20k 95.065 F19400 95.009 ep  8   12s
+real10k_d2              20260904 vl 0.18491 F20k 95.000 F19400 94.937 ep  8   12s
+real10k_d2              20260905 vl 0.20569 F20k 94.825 F19400 94.756 ep 10   13s
+v2_10k_d1               20260901 vl 0.11812 F20k 95.310 F19400 95.252 ep 10   13s
+v2_10k_d1               20260902 vl 0.11891 F20k 95.150 F19400 95.097 ep 14   17s
+v2_10k_d1               20260903 vl 0.10755 F20k 95.065 F19400 95.009 ep 17   19s
+v2_10k_d1               20260904 vl 0.10873 F20k 95.090 F19400 95.025 ep 14   16s
+v2_10k_d1               20260905 vl 0.11541 F20k 95.155 F19400 95.092 ep 20   21s
+v2_10k_d2               20260901 vl 0.10720 F20k 95.100 F19400 95.040 ep 14   16s
+v2_10k_d2               20260902 vl 0.10919 F20k 95.055 F19400 94.999 ep 16   19s
+v2_10k_d2               20260903 vl 0.13702 F20k 94.950 F19400 94.891 ep 15   18s
+v2_10k_d2               20260904 vl 0.12702 F20k 95.050 F19400 94.984 ep 14   17s
+v2_10k_d2               20260905 vl 0.12276 F20k 95.140 F19400 95.086 ep 15   17s
+done .\audit_fixes\R9\..\..\campaign_v144\final\analysis\r9\results\t10k_draws
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246880.248358   27532 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794246885.042562   27532 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+fit10k_p0               20260901 vl 0.09375 F20k 95.085 F19400 95.025 ep 12   17s
+fit10k_p0               20260902 vl 0.09663 F20k 94.895 F19400 94.824 ep 15   17s
+fit10k_p0               20260903 vl 0.10237 F20k 94.900 F19400 94.850 ep 16   16s
+fit10k_p0               20260904 vl 0.10088 F20k 94.915 F19400 94.850 ep 17   17s
+fit10k_p0               20260905 vl 0.10181 F20k 95.010 F19400 94.958 ep 21   19s
+fit10k_p1               20260901 vl 0.08055 F20k 95.000 F19400 94.942 ep 11   12s
+fit10k_p1               20260902 vl 0.09856 F20k 94.935 F19400 94.875 ep 13   13s
+fit10k_p1               20260903 vl 0.09153 F20k 94.895 F19400 94.844 ep 18   18s
+fit10k_p1               20260904 vl 0.10066 F20k 95.055 F19400 94.994 ep 13   13s
+fit10k_p1               20260905 vl 0.10218 F20k 95.155 F19400 95.107 ep 21   19s
+fit10k_p2               20260901 vl 0.09324 F20k 95.055 F19400 94.994 ep 11   12s
+fit10k_p2               20260902 vl 0.10728 F20k 94.860 F19400 94.798 ep 19   18s
+fit10k_p2               20260903 vl 0.10930 F20k 94.880 F19400 94.819 ep 11   12s
+fit10k_p2               20260904 vl 0.10365 F20k 94.955 F19400 94.896 ep 12   13s
+fit10k_p2               20260905 vl 0.10385 F20k 95.150 F19400 95.092 ep 22   25s
+done .\audit_fixes\R9\..\..\campaign_v144\final\analysis\r9\results\t10k_fit10k
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794247136.174626   50388 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794247140.330501   50388 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+fit30k_p0               20260901 vl 0.10372 F20k 95.180 F19400 95.107 ep 11   14s
+fit30k_p0               20260902 vl 0.10456 F20k 95.095 F19400 95.025 ep 15   15s
+fit30k_p0               20260903 vl 0.10208 F20k 95.120 F19400 95.040 ep 13   13s
+fit30k_p0               20260904 vl 0.10691 F20k 95.155 F19400 95.087 ep 19   18s
+fit30k_p0               20260905 vl 0.10500 F20k 95.110 F19400 95.030 ep 21   19s
+fit30k_p1               20260901 vl 0.10589 F20k 95.010 F19400 94.947 ep 15   15s
+fit30k_p1               20260902 vl 0.10895 F20k 94.985 F19400 94.927 ep 18   17s
+fit30k_p1               20260903 vl 0.10725 F20k 95.095 F19400 95.030 ep 14   15s
+fit30k_p1               20260904 vl 0.11514 F20k 94.920 F19400 94.855 ep 15   15s
+fit30k_p1               20260905 vl 0.11951 F20k 95.180 F19400 95.128 ep 16   16s
+fit30k_p2               20260901 vl 0.11788 F20k 95.255 F19400 95.205 ep 11   12s
+fit30k_p2               20260902 vl 0.11735 F20k 95.290 F19400 95.231 ep 10   12s
+fit30k_p2               20260903 vl 0.11753 F20k 95.125 F19400 95.056 ep 13   14s
+fit30k_p2               20260904 vl 0.10682 F20k 95.035 F19400 94.994 ep 19   18s
+fit30k_p2               20260905 vl 0.11261 F20k 95.190 F19400 95.133 ep 23   20s
+done .\audit_fixes\R9\..\..\campaign_v144\final\analysis\r9\results\t10k_fit30k
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794247381.129555   16628 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794247385.413249   16628 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+own10k_synth10k         20260901 vl 0.09531 F20k 94.935 F19400 94.880 ep 10   13s
+own10k_synth10k         20260902 vl 0.09497 F20k 94.630 F19400 94.576 ep 18   17s
+own10k_synth10k         20260903 vl 0.10122 F20k 94.775 F19400 94.736 ep 17   16s
+own10k_synth10k         20260904 vl 0.09713 F20k 94.895 F19400 94.834 ep 14   14s
+own10k_synth10k         20260905 vl 0.09175 F20k 94.745 F19400 94.679 ep 17   16s
+own10k_synth10k         20260906 vl 0.08494 F20k 94.645 F19400 94.618 ep 20   18s
+own10k_synth10k         20260907 vl 0.08823 F20k 94.840 F19400 94.798 ep 16   15s
+own10k_synth10k         20260908 vl 0.09757 F20k 94.900 F19400 94.855 ep 17   17s
+own10k_synth10k         20260909 vl 0.09079 F20k 94.885 F19400 94.834 ep 22   19s
+own10k_synth10k         20260910 vl 0.09826 F20k 94.855 F19400 94.788 ep 14   14s
+done .\audit_fixes\R9\..\..\campaign_v144\final\analysis\r9\results\t10k_own
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794247554.024595   49904 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794247558.265105   49904 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\backend.py:1400: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From .\.venv\Lib\site-packages\tf_keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+real50k                 20260901 vl 0.16949 F20k 95.550 F19400 95.494 ep  7   30s
+real50k                 20260902 vl 0.18817 F20k 95.470 F19400 95.406 ep  8   30s
+real50k                 20260903 vl 0.17532 F20k 95.380 F19400 95.319 ep  9   33s
+real50k                 20260904 vl 0.16860 F20k 95.505 F19400 95.463 ep  8   31s
+real50k                 20260905 vl 0.18103 F20k 95.375 F19400 95.318 ep  8   30s
+real50k                 20260906 vl 0.17985 F20k 95.440 F19400 95.396 ep  8   31s
+real50k                 20260907 vl 0.17615 F20k 95.490 F19400 95.432 ep  6   26s
+real50k                 20260908 vl 0.18555 F20k 95.430 F19400 95.380 ep  7   29s
+real50k                 20260909 vl 0.17402 F20k 95.475 F19400 95.411 ep  8   33s
+real50k                 20260910 vl 0.16587 F20k 95.445 F19400 95.386 ep 10   40s
+v2_50k                  20260901 vl 0.09380 F20k 95.470 F19400 95.411 ep  9   34s
+v2_50k                  20260902 vl 0.09082 F20k 95.430 F19400 95.370 ep 12   45s
+v2_50k                  20260903 vl 0.09305 F20k 95.455 F19400 95.396 ep 12   47s
+v2_50k                  20260904 vl 0.09739 F20k 95.415 F19400 95.355 ep  9   36s
+v2_50k                  20260905 vl 0.09989 F20k 95.425 F19400 95.365 ep 11   43s
+v2_50k                  20260906 vl 0.09280 F20k 95.420 F19400 95.360 ep  9   35s
+v2_50k                  20260907 vl 0.09548 F20k 95.435 F19400 95.375 ep  9   43s
+v2_50k                  20260908 vl 0.10363 F20k 95.460 F19400 95.411 ep  8   34s
+v2_50k                  20260909 vl 0.10212 F20k 95.460 F19400 95.406 ep 10   39s
+v2_50k                  20260910 vl 0.09691 F20k 95.435 F19400 95.380 ep 19   69s
+own10k_synth50k         20260901 vl 0.07793 F20k 95.285 F19400 95.236 ep  9   35s
+own10k_synth50k         20260902 vl 0.07879 F20k 95.170 F19400 95.128 ep 10   39s
+own10k_synth50k         20260903 vl 0.07757 F20k 95.290 F19400 95.246 ep 17   65s
+own10k_synth50k         20260904 vl 0.07991 F20k 95.245 F19400 95.195 ep 10   39s
+own10k_synth50k         20260905 vl 0.08366 F20k 95.220 F19400 95.179 ep 17   62s
+own10k_synth50k         20260906 vl 0.07349 F20k 95.155 F19400 95.112 ep 21   76s
+own10k_synth50k         20260907 vl 0.07625 F20k 95.160 F19400 95.107 ep  8   31s
+own10k_synth50k         20260908 vl 0.08046 F20k 95.245 F19400 95.195 ep 14   50s
+own10k_synth50k         20260909 vl 0.07771 F20k 95.285 F19400 95.231 ep  9   35s
+own10k_synth50k         20260910 vl 0.08067 F20k 95.230 F19400 95.179 ep 16   60s
+real10k_plus_own50k     20260901 vl 0.09733 F20k 94.980 F19400 94.927 ep 11   48s
+real10k_plus_own50k     20260902 vl 0.09839 F20k 95.160 F19400 95.118 ep 15   64s
+real10k_plus_own50k     20260903 vl 0.09273 F20k 95.145 F19400 95.097 ep 14   60s
+real10k_plus_own50k     20260904 vl 0.09247 F20k 95.040 F19400 94.994 ep 14   59s
+real10k_plus_own50k     20260905 vl 0.10023 F20k 95.250 F19400 95.195 ep  8   36s
+real10k_plus_own50k     20260906 vl 0.09410 F20k 95.090 F19400 95.045 ep 13   55s
+real10k_plus_own50k     20260907 vl 0.09694 F20k 95.145 F19400 95.097 ep 13   59s
+real10k_plus_own50k     20260908 vl 0.10096 F20k 95.225 F19400 95.174 ep 13   57s
+real10k_plus_own50k     20260909 vl 0.09860 F20k 95.190 F19400 95.133 ep 12   53s
+real10k_plus_own50k     20260910 vl 0.08873 F20k 95.120 F19400 95.087 ep 12   52s
+done .\audit_fixes\R9\..\..\campaign_v144\final\analysis\r9\results\t50k
+=== all done Mon Nov  9 11:35:54 MST 2026

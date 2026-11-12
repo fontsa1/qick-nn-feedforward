@@ -1,0 +1,151 @@
+ECHO is off.
+ECHO is off.
+NOTE: Using modified tcl85t.dll from https://gitenterprise.xilinx.com/ACT/vitis_hls_tcl
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2023.1 (64-bit)
+  **** SW Build 3854077 on May  4 2023
+  **** IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+  **** SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source C:/embedded-software/Vitis_HLS/2023.1/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running 'C:/embedded-software/Vitis_HLS/2023.1/bin/unwrapped/win64.o/vitis_hls.exe'
+INFO: [HLS 200-10] For user 'fonte' on host 'yugger' (Windows NT_amd64 version 6.2) on Tue Oct 20 23:47:29 -0600 2026
+INFO: [HLS 200-10] In directory './neural_net4_live576s'
+Sourcing Tcl script 'csim_live.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset NN_live_prj 
+INFO: [HLS 200-10] Opening and resetting project './neural_net4_live576s/NN_live_prj'.
+INFO: [HLS 200-1510] Running: set_top NN_live 
+INFO: [HLS 200-1510] Running: add_files firmware/NN_live.cpp -cflags -std=c++14 
+INFO: [HLS 200-10] Adding design file 'firmware/NN_live.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb NN_live_test.cpp -cflags -std=c++14 -Wno-unknown-pragmas 
+INFO: [HLS 200-10] Adding test bench file 'NN_live_test.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb tb_ref_nn.cpp -cflags -std=c++14 -Wno-unknown-pragmas 
+INFO: [HLS 200-10] Adding test bench file 'tb_ref_nn.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb firmware/weights 
+INFO: [HLS 200-10] Adding test bench file 'firmware/weights' to the project
+INFO: [HLS 200-1510] Running: add_files -tb tb_data 
+INFO: [HLS 200-10] Adding test bench file 'tb_data' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution1 -flow_target vivado 
+INFO: [HLS 200-10] Creating and opening solution './neural_net4_live576s/NN_live_prj/solution1'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2023.1;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu48dr-ffvg1517-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu48dr-ffvg1517-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 1.808 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 1.808ns.
+INFO: [HLS 200-1510] Running: set_clock_uncertainty 12.5% 
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.226ns.
+INFO: [HLS 200-1510] Running: config_compile -name_max_length 80 
+INFO: [XFORM 203-1161] The maximum of name length is set to 80.
+INFO: [HLS 200-1510] Running: config_export -format ip_catalog -version 1.5 
+INFO: [HLS 200-1510] Running: csim_design 
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+INFO: [HLS 200-2036] Building debug C Simulation binaries
+   Compiling ../../../../tb_ref_nn.cpp in debug mode
+   Compiling ../../../../NN_live_test.cpp in debug mode
+   Compiling ../../../../firmware/NN_live.cpp in debug mode
+   Generating csim.exe
+In file included from C:/embedded-software/Vitis_HLS/2023.1/include/floating_point_v7_1_bitacc_cmodel.h:149:0,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_fpo.h:143,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/hls_half_fpo.h:18,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_half.h:25,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_private.h:52,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_common.h:666,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_fixed.h:9,
+                 from ../../../../firmware/NN.h:4,
+                 from ../../../../firmware/NN.cpp:3,
+                 from ../../../../tb_ref_nn.cpp:13:
+C:/embedded-software/Vitis_HLS/2023.1/include/gmp.h:58:0: warning: "__GMP_LIBGMP_DLL" redefined
+ #define __GMP_LIBGMP_DLL  0
+ 
+In file included from C:/embedded-software/Vitis_HLS/2023.1/include/hls_fpo.h:143:0,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/hls_half_fpo.h:18,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_half.h:25,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_private.h:52,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_common.h:666,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_fixed.h:9,
+                 from ../../../../firmware/NN.h:4,
+                 from ../../../../firmware/NN.cpp:3,
+                 from ../../../../tb_ref_nn.cpp:13:
+C:/embedded-software/Vitis_HLS/2023.1/include/floating_point_v7_1_bitacc_cmodel.h:141:0: note: this is the location of the previous definition
+ #define __GMP_LIBGMP_DLL 1
+ 
+In file included from C:/embedded-software/Vitis_HLS/2023.1/include/floating_point_v7_1_bitacc_cmodel.h:149:0,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_fpo.h:143,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/hls_half_fpo.h:18,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_half.h:25,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_private.h:52,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_common.h:666,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_int.h:10,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_axi_sdata.h:42,
+                 from ../../../../firmware/NN_live.h:4,
+                 from ../../../../NN_live_test.cpp:26:
+C:/embedded-software/Vitis_HLS/2023.1/include/gmp.h:58:0: warning: "__GMP_LIBGMP_DLL" redefined
+ #define __GMP_LIBGMP_DLL  0
+ 
+In file included from C:/embedded-software/Vitis_HLS/2023.1/include/hls_fpo.h:143:0,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/hls_half_fpo.h:18,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_half.h:25,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_private.h:52,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_common.h:666,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_int.h:10,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_axi_sdata.h:42,
+                 from ../../../../firmware/NN_live.h:4,
+                 from ../../../../NN_live_test.cpp:26:
+C:/embedded-software/Vitis_HLS/2023.1/include/floating_point_v7_1_bitacc_cmodel.h:141:0: note: this is the location of the previous definition
+ #define __GMP_LIBGMP_DLL 1
+ 
+In file included from C:/embedded-software/Vitis_HLS/2023.1/include/floating_point_v7_1_bitacc_cmodel.h:149:0,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_fpo.h:143,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/hls_half_fpo.h:18,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_half.h:25,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_private.h:52,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_common.h:666,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_int.h:10,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_axi_sdata.h:42,
+                 from ../../../../firmware/NN_live.h:4,
+                 from ../../../../firmware/NN_live.cpp:42:
+C:/embedded-software/Vitis_HLS/2023.1/include/gmp.h:58:0: warning: "__GMP_LIBGMP_DLL" redefined
+ #define __GMP_LIBGMP_DLL  0
+ 
+In file included from C:/embedded-software/Vitis_HLS/2023.1/include/hls_fpo.h:143:0,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/hls_half_fpo.h:18,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/hls_half.h:25,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_private.h:52,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/etc/ap_common.h:666,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_int.h:10,
+                 from C:/embedded-software/Vitis_HLS/2023.1/include/ap_axi_sdata.h:42,
+                 from ../../../../firmware/NN_live.h:4,
+                 from ../../../../firmware/NN_live.cpp:42:
+C:/embedded-software/Vitis_HLS/2023.1/include/floating_point_v7_1_bitacc_cmodel.h:141:0: note: this is the location of the previous definition
+ #define __GMP_LIBGMP_DLL 1
+ 
+shot     0  live 0.990234  ref 0.990234  emu 0.990234  acc [23139 22348 -15301 24972]
+shot     1  live 0.097656  ref 0.097656  emu 0.097656  acc [-10236 -10255 7581 -6780]
+shot     2  live 0.993164  ref 0.993164  emu 0.993164  acc [25917 23962 -20843 26754]
+shot  5000  live 0.051758  ref 0.051758  emu 0.051758  acc [-14849 -14340 9677 -18103]
+short window      : frame_err 0 -> 1, dropped pass ok, next window scored ok
+missing TLAST     : frame_err 1 -> 2, dropped pass ok, next window scored ok
+
+=== NN_live csim: 6400 shots ===
+decision rule over all logits  : 0 mismatches (of 65536)
+sigmoid output vs hls4ml NN()  : 0 mismatches
+first-layer sums vs w2 . x     : 0 mismatches (of 25600)
+sigmoid output vs emulator     : 0 mismatches (of 5400)
+res_o logit / decision / record: 0 mismatches
+capture region                 : 0 mismatches
+header counters                : ok
+framing fault handling         : ok
+fidelity (live)                : 95.36%
+fidelity (emulator, same shots): 95.67%
+RESULT: PASS
+INFO [HLS SIM]: The maximum depth reached by any hls::stream() instance in the design is 1727
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 116.588 seconds; current allocated memory: 1.172 MB.
+INFO: [HLS 200-112] Total CPU user time: 2 seconds. Total CPU system time: 2 seconds. Total elapsed time: 124.242 seconds; peak allocated memory: 118.207 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Tue Oct 20 23:49:30 2026...

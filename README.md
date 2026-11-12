@@ -16,9 +16,9 @@ Run every script from this folder's root; paths in the scripts are relative to i
 
 | Path | What it holds |
 |---|---|
-| `firmware_v1.44/` | The block design as built (`d_1.bd`: QICK's design with our delta), hardware handoff (`.hwh`) and the Vivado build log. The bitstream is a release asset (`DATA_MANIFEST.csv`, with sha256) |
-| `neural_net4_live576/rtl/`, `neural_net4_live576/constraints/` | Our RTL: `boxcar_tap.v` (low-latency decimation), `dac_gate.v` (pulse gate), `live_res_cdc.v` (decision clock crossing), `trig_sync.v`, `seg_stamp.v` / `rf_tap.v` (timestamps and taps for measurement), `live_rec_wreg.v`; CDC constraints |
-| `neural_net4_live/rtl/live_window_gate.v` | Window gate in front of NN_live |
+| `rtl/` | **Our RTL**, the eight modules the build adds to QICK's design: `live_window_gate.v` (window gate in front of NN_live), `boxcar_tap.v` (low-latency decimation), `dac_gate.v` (pulse gate on the DAC stream), `live_res_cdc.v` (decision clock crossing), `trig_sync.v` (classify-trigger synchronizer), `seg_stamp.v` / `rf_tap.v` (timestamps and taps for the latency measurement), `live_rec_wreg.v`; and the CDC constraint (`constraints/live_res_cdc.xdc`). Copies of the files the build script reads from `neural_net4_live/` and `neural_net4_live576/`, identical byte for byte |
+| `firmware_v1.44/` | The block design as built (`d_1.bd`: QICK's design with our delta), the bitstream (`OG_build_v1.44.bit`, sha256 `986c861a83be8d01d72db967af894e3d01de2b1c861021d1b5821bc183d7b7c6`), hardware handoff (`.hwh`) and the Vivado build log |
+| `neural_net4_live576/rtl/`, `neural_net4_live576/constraints/`, `neural_net4_live/rtl/` | Where the build script reads our RTL and constraint from (`rtl/` holds the same files); also `live_res_axis.v`, which the build does not use, and two unused variants of the CDC constraint |
 | `neural_net4_live576box/` | Test-vector generator for NN_live on the boxcar path (`make_tb_data.py`) |
 | `neural_net4_live576s/` | NN_live HLS source (`firmware/NN_live.cpp`), C testbench and vectors, Vitis HLS scripts, hls4ml config, ROM generator; packaged core `NN_live 1.5` (zip) with its C-sim and synthesis logs |
 | `neural_net4_tlast/` | NN_axi HLS source (hls4ml network + wrapper), testbench, scripts, synthesis reports; packaged core `NN_axi 1.41` (zip) |
@@ -97,8 +97,8 @@ interconnect. None of them changes the hardware.
 **The exact design.** `firmware_v1.44/d_1.bd` is the block design as built for v1.44. It doesn't depend on QICK's
 project scripts, only on QICK's IP repository at `779dffa`, so it still works if a later QICK release reorganises its
 standard design. To use it, create a project for `xczu48dr-ffvg1517-2-e` with board part
-`realdigital.org:rfsoc4x2:part0:1.0`. Add QICK's `firmware/ip` and the two cores as IP repositories, add our RTL, add
-the block design, then QICK's `ios.xdc` and `timing.xdc` and our `live_res_cdc.xdc`.
+`realdigital.org:rfsoc4x2:part0:1.0`. Add QICK's `firmware/ip` and the two cores as IP repositories, add our RTL (the eight files in `rtl/`),
+add the block design, then QICK's `ios.xdc` and `timing.xdc` and our `rtl/constraints/live_res_cdc.xdc`.
 
 **HLS cores (optional).** The packaged cores are included. To rebuild them, run `vitis_hls -f csim_live.tcl`,
 `csynth_live.tcl` and `export_live.tcl` in `neural_net4_live576s/`, and the `*_tlast.tcl` scripts in
@@ -111,8 +111,10 @@ routed timing and utilization reports are in `paper_tables/table3/data/`.
 
 ## Running on a board
 
-PYNQ image on the RFSoC 4x2, with QICK installed. Copy the bitstream and `.hwh` to the board and run
-`host/nnqick_server.py` there, with `QICK_NS_HOST` set to the board's address. Host scripts reach the board through
+PYNQ image on the RFSoC 4x2, with QICK installed. Copy `firmware_v1.44/OG_build_v1.44.bit` and its `.hwh`
+to the same folder on the board (by default `/home/xilinx/jupyter_notebooks/`) and run `host/nnqick_server.py` there,
+or open `host/start_nameserver.ipynb` in the board's Jupyter, with `QICK_NS_HOST` set to the board's address and
+`QICK_BITFILE` to the bitstream's path if it is elsewhere. Host scripts reach the board through
 Pyro4 (`QICK_NS_HOST`) and its Jupyter server (`PYNQ_JUPYTER_PASSWORD`, default `xilinx`). The replay channel is a coax
 loopback from DAC tile to ADC tile on the same board (paper Sec. IV). Calibrate with `tools/run_calibration.py`, then follow
 `campaign_v144/run_all.sh`.

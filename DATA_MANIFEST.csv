@@ -261,4 +261,3 @@ y_50k.npy,200128,f73d0811938cfc471c2b2d2a2981a83e4fc13c6e5e82bb5e9dc756d7e0b1c9e
 y_50k_heldout.npy,200128,20b026880eabf25a37561c30865da72afbf3fa1bc6f303c0dbd162ded374688d,,derived from the public dataset (Zenodo 14427490); regenerate with make_test_subsets.py / the dataset scripts
 y_50k_heldout_measnoise.npy,200128,c68d32d8e15ba87f50a01205f25fcdc1cded7cc6e4e9d7c06b5a245d05dc9533,,derived from the public dataset (Zenodo 14427490); regenerate with make_test_subsets.py / the dataset scripts
 y_synth_v2.npy,200128,9c1ff73d9a2c96d413f1630a7c848891e25702ae4e6c2af9bd795599048d3241,,derived from the public dataset (Zenodo 14427490); regenerate with make_test_subsets.py / the dataset scripts
-firmware_v1.44/OG_build_v1.44.bit,34437473,986c861a83be8d01d72db967af894e3d01de2b1c861021d1b5821bc183d7b7c6,,"v1.44 bitstream (built 2026-11-07, banner 'Sat Nov  7 19:57:07 2026'); publish as a release asset"

@@ -16,6 +16,15 @@
 // The output is registered, one cycle behind; the content is unchanged.
 // m_axis_tready is ignored: the source cannot be stalled, and any word the
 // consumer misses surfaces there as a window without TLAST on word N-1.
+//
+// Debug outputs (v1.40L4, task 4.1f segment timestamps): copies of existing
+// signals for seg_stamp and the ILA; they change nothing above. Names avoid the
+// *_tdata/*_tvalid pattern so the module reference does not infer an interface.
+//   dbg_trig    the synchronized trigger (trig_r), the one the state machine uses
+//   dbg_first   one-cycle strobe, aligned with the first word's m_axis beat
+//   dbg_last    = m_axis_tlast (registered)
+//   dbg_data    = m_axis_tdata: the registered input stream, every cycle
+//   dbg_dvalid  the registered input tvalid, every cycle
 
 `timescale 1ns / 1ps
 
@@ -39,7 +48,13 @@ module live_window_gate #(
     output reg         m_axis_tlast,
     output wire [3:0]  m_axis_tkeep,
     output wire [3:0]  m_axis_tstrb,
-    input  wire        m_axis_tready
+    input  wire        m_axis_tready,
+
+    output wire        dbg_trig,
+    output reg         dbg_first,
+    output wire        dbg_last,
+    output wire [31:0] dbg_data,
+    output reg         dbg_dvalid
 );
 
     (* ASYNC_REG = "TRUE" *) reg [1:0] trig_sync;
@@ -60,12 +75,16 @@ module live_window_gate #(
             m_axis_tdata  <= 32'd0;
             m_axis_tvalid <= 1'b0;
             m_axis_tlast  <= 1'b0;
+            dbg_first     <= 1'b0;
+            dbg_dvalid    <= 1'b0;
         end else begin
             trig_sync <= {trig_sync[0], trigger};
 
             m_axis_tdata  <= s_axis_tdata;
             m_axis_tvalid <= take;
             m_axis_tlast  <= done;
+            dbg_first     <= take && (cnt == 16'd0);
+            dbg_dvalid    <= s_axis_tvalid;
 
             case (state)
                 S_TRIG: if (trig_r) state <= S_MEMW;
@@ -81,6 +100,10 @@ module live_window_gate #(
             end
         end
     end
+
+    assign dbg_trig = trig_r;
+    assign dbg_last = m_axis_tlast;
+    assign dbg_data = m_axis_tdata;
 
     assign m_axis_tkeep = 4'hF;
     assign m_axis_tstrb = 4'hF;

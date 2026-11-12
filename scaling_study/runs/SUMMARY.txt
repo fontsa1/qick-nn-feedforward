@@ -1,0 +1,10 @@
+Tue Oct 27 01:20:59 -0600 2026 SUMMARY N=1 mode=pb WNS=0.171 WHS=0.015 WNS_clk_adc=0.171 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=0
+Tue Oct 27 01:31:30 -0600 2026 SUMMARY N=2 mode=pb WNS=0.103 WHS=0.009 WNS_clk_adc=0.103 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=8224
+Tue Oct 27 01:44:46 -0600 2026 SUMMARY N=4 mode=pb WNS=0.002 WHS=0.011 WNS_clk_adc=0.002 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=16148
+Tue Oct 27 02:13:35 -0600 2026 SUMMARY ZL N=4 mode=pb WNS=0.038 WHS=0.012 WNS_clk_adc=0.038 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=16380
+Tue Oct 27 02:19:51 -0600 2026 SUMMARY N=8 mode=pb WNS=-0.011 WHS=0.010 WNS_clk_adc=-0.011 failing_unit=9 worst_unit=-0.011 failing_harness=0 worst_harness=none luts=32744
+Tue Oct 27 02:48:03 -0600 2026 SUMMARY ZL N=8 mode=pb WNS=0.006 WHS=0.009 WNS_clk_adc=0.006 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=32666
+Tue Oct 27 03:20:08 -0600 2026 SUMMARY N=16 mode=free WNS=0.002 WHS=0.010 WNS_clk_adc=0.002 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=64895
+Tue Oct 27 03:26:03 -0600 2026 SUMMARY T N=8 mode=pb WNS=0.029 WHS=0.011 WNS_clk_adc=0.029 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=33152
+Tue Oct 27 03:41:38 -0600 2026 SUMMARY T N=4 mode=pb WNS=0.063 WHS=0.010 WNS_clk_adc=0.063 failing_unit=0 worst_unit=none failing_harness=0 worst_harness=none luts=16120
+Tue Oct 27 05:21:59 -0600 2026 SUMMARY N=32 mode=free WNS=-0.183 WHS=0.001 WNS_clk_adc=-0.16 failing_unit=1103 worst_unit=-0.183 failing_harness=142 worst_harness=-0.156 luts=129487

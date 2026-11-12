@@ -1,0 +1,287 @@
+{
+ "per_unit": {
+  "classifier": {
+   "lut": 2437,
+   "ff": 3231,
+   "bram": 0.5,
+   "dsp": 4
+  },
+  "dac_gate": {
+   "lut": 858,
+   "ff": 2388,
+   "bram": 0.0,
+   "dsp": 0
+  },
+  "record_memory": {
+   "lut": 22,
+   "ff": 22,
+   "bram": 8.0,
+   "dsp": 0
+  },
+  "front_end": {
+   "none": {
+    "lut": 0,
+    "ff": 0,
+    "bram": 0.0,
+    "dsp": 0
+   },
+   "fir_free": {
+    "lut": 1921,
+    "ff": 4093,
+    "bram": 16.0,
+    "dsp": 35
+   },
+   "stock": {
+    "lut": 6219,
+    "ff": 11868,
+    "bram": 16.0,
+    "dsp": 157
+   }
+  }
+ },
+ "device_capacity": {
+  "lut": 425280,
+  "ff": 850560,
+  "bram": 1080.0,
+  "dsp": 4272
+ },
+ "v141_used": {
+  "lut": 232498.0,
+  "ff": 338272.0,
+  "bram": 513.0,
+  "dsp": 542.0
+ },
+ "free": {
+  "v1.41 as built": {
+   "lut": 192782.0,
+   "ff": 512288.0,
+   "bram": 567.0,
+   "dsp": 3730.0
+  },
+  "v1.41 minus NN_axi and time tagger": {
+   "lut": 332929.0,
+   "ff": 713411.0,
+   "bram": 580.5,
+   "dsp": 3744.0
+  }
+ },
+ "n_max": {
+  "v1.41 as built | front end none | record yes": {
+   "unit": {
+    "lut": 3317,
+    "ff": 5641,
+    "bram": 8.5,
+    "dsp": 4
+   },
+   "limits": {
+    "lut": 58,
+    "ff": 90,
+    "bram": 66,
+    "dsp": 932
+   },
+   "n_max": 58,
+   "binding": [
+    "lut"
+   ]
+  },
+  "v1.41 as built | front end none | record no": {
+   "unit": {
+    "lut": 3295,
+    "ff": 5619,
+    "bram": 0.5,
+    "dsp": 4
+   },
+   "limits": {
+    "lut": 58,
+    "ff": 91,
+    "bram": 1134,
+    "dsp": 932
+   },
+   "n_max": 58,
+   "binding": [
+    "lut"
+   ]
+  },
+  "v1.41 as built | front end fir_free | record yes": {
+   "unit": {
+    "lut": 5238,
+    "ff": 9734,
+    "bram": 24.5,
+    "dsp": 39
+   },
+   "limits": {
+    "lut": 36,
+    "ff": 52,
+    "bram": 23,
+    "dsp": 95
+   },
+   "n_max": 23,
+   "binding": [
+    "bram"
+   ]
+  },
+  "v1.41 as built | front end fir_free | record no": {
+   "unit": {
+    "lut": 5216,
+    "ff": 9712,
+    "bram": 16.5,
+    "dsp": 39
+   },
+   "limits": {
+    "lut": 36,
+    "ff": 52,
+    "bram": 34,
+    "dsp": 95
+   },
+   "n_max": 34,
+   "binding": [
+    "bram"
+   ]
+  },
+  "v1.41 as built | front end stock | record yes": {
+   "unit": {
+    "lut": 9536,
+    "ff": 17509,
+    "bram": 24.5,
+    "dsp": 161
+   },
+   "limits": {
+    "lut": 20,
+    "ff": 29,
+    "bram": 23,
+    "dsp": 23
+   },
+   "n_max": 20,
+   "binding": [
+    "lut"
+   ]
+  },
+  "v1.41 as built | front end stock | record no": {
+   "unit": {
+    "lut": 9514,
+    "ff": 17487,
+    "bram": 16.5,
+    "dsp": 161
+   },
+   "limits": {
+    "lut": 20,
+    "ff": 29,
+    "bram": 34,
+    "dsp": 23
+   },
+   "n_max": 20,
+   "binding": [
+    "lut"
+   ]
+  },
+  "v1.41 minus NN_axi and time tagger | front end none | record yes": {
+   "unit": {
+    "lut": 3317,
+    "ff": 5641,
+    "bram": 8.5,
+    "dsp": 4
+   },
+   "limits": {
+    "lut": 100,
+    "ff": 126,
+    "bram": 68,
+    "dsp": 936
+   },
+   "n_max": 68,
+   "binding": [
+    "bram"
+   ]
+  },
+  "v1.41 minus NN_axi and time tagger | front end none | record no": {
+   "unit": {
+    "lut": 3295,
+    "ff": 5619,
+    "bram": 0.5,
+    "dsp": 4
+   },
+   "limits": {
+    "lut": 101,
+    "ff": 126,
+    "bram": 1161,
+    "dsp": 936
+   },
+   "n_max": 101,
+   "binding": [
+    "lut"
+   ]
+  },
+  "v1.41 minus NN_axi and time tagger | front end fir_free | record yes": {
+   "unit": {
+    "lut": 5238,
+    "ff": 9734,
+    "bram": 24.5,
+    "dsp": 39
+   },
+   "limits": {
+    "lut": 63,
+    "ff": 73,
+    "bram": 23,
+    "dsp": 96
+   },
+   "n_max": 23,
+   "binding": [
+    "bram"
+   ]
+  },
+  "v1.41 minus NN_axi and time tagger | front end fir_free | record no": {
+   "unit": {
+    "lut": 5216,
+    "ff": 9712,
+    "bram": 16.5,
+    "dsp": 39
+   },
+   "limits": {
+    "lut": 63,
+    "ff": 73,
+    "bram": 35,
+    "dsp": 96
+   },
+   "n_max": 35,
+   "binding": [
+    "bram"
+   ]
+  },
+  "v1.41 minus NN_axi and time tagger | front end stock | record yes": {
+   "unit": {
+    "lut": 9536,
+    "ff": 17509,
+    "bram": 24.5,
+    "dsp": 161
+   },
+   "limits": {
+    "lut": 34,
+    "ff": 40,
+    "bram": 23,
+    "dsp": 23
+   },
+   "n_max": 23,
+   "binding": [
+    "bram",
+    "dsp"
+   ]
+  },
+  "v1.41 minus NN_axi and time tagger | front end stock | record no": {
+   "unit": {
+    "lut": 9514,
+    "ff": 17487,
+    "bram": 16.5,
+    "dsp": 161
+   },
+   "limits": {
+    "lut": 34,
+    "ff": 40,
+    "bram": 35,
+    "dsp": 23
+   },
+   "n_max": 23,
+   "binding": [
+    "dsp"
+   ]
+  }
+ }
+}

@@ -12,6 +12,38 @@ Run every script from this folder's root; paths in the scripts are relative to i
 (`campaign_v140L1/`, `campaign_v143/`, `audit_fixes/`). The paths below say what each one holds.
 
 
+## Layout
+
+| Path | What it holds |
+|---|---|
+| `firmware_v1.44/` | The block design as built (`d_1.bd`: QICK's design with our delta), hardware handoff (`.hwh`) and the Vivado build log. The bitstream is a release asset (`DATA_MANIFEST.csv`, with sha256) |
+| `neural_net4_live576/rtl/`, `neural_net4_live576/constraints/` | Our RTL: `boxcar_tap.v` (low-latency decimation), `dac_gate.v` (pulse gate), `live_res_cdc.v` (decision clock crossing), `trig_sync.v`, `seg_stamp.v` / `rf_tap.v` (timestamps and taps for measurement), `live_rec_wreg.v`; CDC constraints |
+| `neural_net4_live/rtl/live_window_gate.v` | Window gate in front of NN_live |
+| `neural_net4_live576box/` | Test-vector generator for NN_live on the boxcar path (`make_tb_data.py`) |
+| `neural_net4_live576s/` | NN_live HLS source (`firmware/NN_live.cpp`), C testbench and vectors, Vitis HLS scripts, hls4ml config, ROM generator; packaged core `NN_live 1.5` (zip) with its C-sim and synthesis logs |
+| `neural_net4_tlast/` | NN_axi HLS source (hls4ml network + wrapper), testbench, scripts, synthesis reports; packaged core `NN_axi 1.41` (zip) |
+| `vivado_scripts/v1.43/from_qick/` | Building our design from QICK's: `nnqick_from_qick.tcl`, the block-design delta, and the implementation script. These made v1.44 |
+| `vivado_scripts/v1.43/` | The same design built earlier in our own project (v1.43): block-design edit (stage 1) and implementation with the full report set (stage 2). Kept for reference |
+| `audit_fixes/RB_prep/sim/`, `audit_fixes/RB_prep/hls/rtl_sim/` | RTL simulation: custom blocks against reference models (`final_regression.sh`), and window gate + NN_live kernel on a continuous stream (`run_tb.sh`), with logs |
+| `scaling_study/` | Multi-classifier resource count (`resource_scaling.py`) and out-of-context timing runs (`run_ooc*.tcl`, `rtl/`); findings |
+| `host/` | Board-side server: `nnqick_server.py` (same as `start_nameserver.ipynb`). This holds the QICK metadata patches for the added blocks, the `NNQickSoc` class and the Pyro server |
+| `board_tools/` | Host tools: deploy and verify a bitstream, Jupyter access, server start, calibration storage |
+| `notebooks/` | Notebook versions of the main workflows (see Notebooks below) |
+| `tools/` | Top-level scripts: replay-channel calibration (`run_calibration.py`), replay (`run_loopback.py`), test subsets (`make_test_subsets.py`), the leakage audit (`verify_no_leakage.py`), the synthetic-data generator (`qubit_synth_lib.py`, `generate_*.py`), and the on-board scoring harness |
+| `calibration/` | Replay-channel calibration (`k.npy`, `c.npy`: the active pair, written by `run_calibration.py`) and the two label-free domain maps (`k2_loopback.npy` / `c2_loopback.npy` on the FIR path, `box_domain_map.json` on the boxcar path) |
+| `data/` | Labels and manifests of the test subsets and replays (`test20k_real_*`, `test100k_real_y.npy`, `loopback20k_real_*`, `domain_calib_y.npy`); the arrays themselves are regenerated or fetched into this folder (see Data) |
+| `results/` | Small result files that the analyses read back (three-way comparison, calibration ablation, raw reference) |
+| `analysis_scripts/diagnostics/` | Every board measurement: fidelity scoring, bit-exact checks, loop latency, tProc path, boxcar check, functional suite, safety tests, drift |
+| `analysis_scripts/analysis/`, `analysis_scripts/characterization/` | Offline analyses: fixed-point emulator, linear baselines, calibration ablation, three-way comparison; readout-path characterization |
+| `analysis_scripts/bd_delta/` | Generates our block-design delta from QICK's design and checks that QICK's design plus the delta matches ours |
+| `campaign_v144/` | The v1.44 data campaign: both boards at once (`run_all.sh`, per board `run_6_3.sh`), second board session (`run_board2*.sh`), 3 h drift (`run_drift_full.sh`), reload and cold-start latency (`run_loads.sh`), and the offline analyses (`run_analyses.sh`) |
+| `audit_fixes/R18/`, `audit_fixes/R9/`, `audit_fixes/R3_R2/`, `audit_fixes/R10/`, `campaign_v140L1/` | In-loop campaign, synthetic-data study, linear baselines, fixed-point scoring, architecture and window sweeps (scripts called by the campaign and the analysis) |
+| `analysis_scripts/acquisition/` | Training-set construction (domain maps) and model training/export (`export_signed_domain_model.py`) |
+| `models/` | The three deployed networks: NN_live on the boxcar path (`..._w576_box`), NN_live on the FIR path (`..._w576`), NN_axi (`model_v140_200k_...`) |
+| `campaign_v144/final/analysis/` | Analysis of the v1.44 data, and the results ledger: `make_v144_ledger.py` writes `paper_notes/V144_RESULTS.md`, `check_paper_v144.py` checks a draft's numbers against it |
+| `campaign_v143/` | Files of the v1.43 campaign that the v1.44 scripts still read, among them the results ledger's row template (`final/analysis/v143_results.json`) |
+| `paper_figures/fig1..fig8/`, `paper_tables/` | One generator per figure and table, with its values file and outputs |
+
 ## Rebuilding the firmware
 
 Tools: Vivado and Vitis HLS 2023.1; QICK firmware sources at commit `779dffa`

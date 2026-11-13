@@ -1,4 +1,4 @@
-// boxcar_tap: low-latency readout path for NN_live (task 4.1h, v1.40L7;
+// boxcar_tap: low-latency readout path for NN_live
 // v1.41 / R.16: non-recursive moving sum, same output bit for bit and cycle for cycle).
 //
 // axis_dyn_readout_v1_0 mixes the ADC stream down with its DDS (m0_axis, 8

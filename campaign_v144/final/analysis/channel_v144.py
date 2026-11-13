@@ -1,5 +1,5 @@
 """Class SNR of the replay channel, with its definition: rms separation of the class means over rms noise around them, per complex sample,
-19,400 rows. Source: test traces through the domain map. Replayed: v1.44 NN_axi session. Lags come from paper_figures/fig4/fig4_data.py.
+19,400 rows. Source: test traces through the domain map. Replayed: v1.44 NN_axi session. Lags come from fig2_lags_v144.json (fig4_lags_v144.py).
 Writes campaign_v144/final/analysis/channel_v144.json."""
 import json
 import numpy as np

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Full reacquisition on v1.44 (2026-11-08): the bitstream built from QICK's project + the delta Tcl, which meets timing at
-# sign-off. Same design and same measurements as v1.43; every output goes under campaign_v144/final. Unattended.
+# Full v1.44 data campaign (bitstream built from QICK's project plus the delta Tcl). Every output goes under
+# campaign_v144/final. Unattended.
 #   bash campaign_v144/run_all.sh     (start with launch_v144.ps1). Rerunning resumes finished chunks.
 # Both boards in parallel: load, calibrate, small tests, gate sweep, main campaign, 3 h drift, tProc path, cal repeats.
 # Then one at a time: calibration swap, 5 reloads per board for the latency groups, phase across loads.

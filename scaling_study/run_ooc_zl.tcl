@@ -1,9 +1,8 @@
-# 4.5b ZL variant (gate output register moved to NN_live res_o; not deployed) -- out-of-context timing sweep of N classifier units (FINAL_TASKS 4.5b).
-# Usage: vivado -mode batch -source run_ooc.tcl -tclargs <N> <pb|free> [<N> <pb|free> ...]
-# Each pair: synth ooc_top with NU=N (out_of_context), optional pblock = v1.41's pb_live
-# (CLOCKREGION_X4Y3:X5Y4, the region next to the ADC tiles where NN_live sits today), then
-# opt / place (Default) / phys_opt (AggressiveExplore) / route (Default), as build_v1.41.tcl.
-# Writes runs/N<N>_<pb>/ : utilization, timing summary, failing-endpoint list, bus skew, SUMMARY line.
+# Out-of-context timing sweep of N classifier units, ZL variant (gate output register moved to NN_live res_o; not deployed).
+# Usage: vivado -mode batch -source run_ooc_zl.tcl -tclargs <N> <pb|free> [<N> <pb|free> ...]
+# Each pair: synth ooc_top with NU=N (out_of_context), optional pblock pb_live (CLOCKREGION_X4Y3:X5Y4, next to the
+# ADC tiles, as in the deployed build), then opt / place (Default) / phys_opt (AggressiveExplore) / route (Default).
+# Writes runs/N<N>_<pb>_zl/ : utilization, timing summary, failing-endpoint list, bus skew, SUMMARY line.
 set HERE [file normalize [file dirname [info script]]]
 set PART xczu48dr-ffvg1517-2-e
 set HLS  [file normalize "$HERE/../neural_net4_live576s/NN_live_prj/solution1/impl/verilog"]

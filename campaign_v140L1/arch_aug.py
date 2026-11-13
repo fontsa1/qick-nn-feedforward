@@ -1,7 +1,6 @@
-"""Can loopback-matched augmentation bring the nonlinear arms' gain through the
-loopback? Follow-up to arch_sweep2.py --src, which found every nonlinear arm
-+0.20..+0.34 over LDA on test20k_real_X (domain-mapped, not played) and
--0.0..-0.9 on loopback20k_real (the same shots after DAC -> ADC).
+"""Nonlinear arms retrained on training shots passed through a fitted loopback channel model, scored on loopback
+shots. Un-augmented reference: arch_sweep2.py --src (nonlinear arms +0.20..+0.34 over LDA on the domain-mapped source
+shots, -0.0..-0.9 on the same shots after DAC -> ADC).
 
 Measured loopback channel (loopback20k_real vs the mapped source shot):
 the window starts 3-5 samples later (jittering per shot), and a large

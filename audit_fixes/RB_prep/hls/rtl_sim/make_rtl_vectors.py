@@ -1,6 +1,6 @@
-"""Vectors for tb_live.sv (576-sample window, NN_live 1.3/1.4): K real windows
-from tb_data/live_words.bin with a v1.40 emulator value, and their expected
-outputs.
+"""Vectors for tb_live.sv: K real 576-sample windows from <LIVE>/tb_data/live_words.bin that have an emulator
+value, and their expected outputs. LIVE is the NN_live HLS project folder (tb_data/ from its make_tb_data.py,
+firmware/weights/).
 
 windows.hex  : K*576 lines, one 32-bit word each (Q<<16 | I)
 expected.hex : K lines: sigmoid output raw bits (18), then the four

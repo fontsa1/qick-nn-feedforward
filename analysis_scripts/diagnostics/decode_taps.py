@@ -38,8 +38,7 @@ PRE_TAIL_BASE = INLOC_PRE_BASE                                       # 789
 PRE_HEAD_BASE = PRE_TAIL_BASE + N_PRE_TAIL_WORDS                     # 1327
 INLOC_FRAC = 12          # input_t = ap_fixed<32,20>
 
-# The dense-input tap still samples at DBG_IN_STRIDE across the FULL window,
-# so it keeps coverage of the tail PRE cannot reach.
+# The dense-input tap samples at DBG_IN_STRIDE across the full window, covering the tail PRE does not reach.
 N_INLOC_PAIRS = 96
 N_INLOC = 2 * N_INLOC_PAIRS                                          # 192
 INLOC_STRIDE = 8                                                     # in PAIRS

@@ -1,5 +1,5 @@
 #!/bin/bash
-# tb_live (copied from neural_net4_live576s/rtl_sim) against an HLS syn/verilog dir. From hls/rtl_sim:
+# tb_live.sv (live_window_gate + HLS NN_live) against an HLS syn/verilog dir. From hls/rtl_sim:
 #   ./run_tb_rb.sh <syn/verilog dir> <tag>
 set -e
 HLSV=$1; TAG=$2

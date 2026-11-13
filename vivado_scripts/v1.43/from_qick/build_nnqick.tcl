@@ -1,6 +1,6 @@
 #################################################################
 # Implementation of the v1.43 design, for a project made by nnqick_from_qick.tcl (QICK's d_1 design plus our delta).
-# Same flow as vivado_scripts/v1.43/build_v1.43.tcl, the script we ran: the same checks, synthesis, pblock,
+# Same flow as vivado_scripts/v1.43/build_v1.43.tcl: the same checks, synthesis, pblock,
 # implementation-only constraint on the dac_gate blank path, place/route/phys_opt directives and report set. Differences:
 # the block design name is read from the project instead of fixed to OG_build, and repository paths are relative to
 # this script. Outputs keep our names (OG_build_v1.43.bit / .hwh) so the host tools find them.
@@ -13,7 +13,7 @@ set REPO [file normalize [file dirname [file normalize [info script]]]/../../..]
 set TAG v1.43
 set BUILD_T0 [clock seconds]
 
-# ---- provenance (R.21): repo commit and dirty state, source hashes
+# ---- provenance: repo commit and dirty state, source sizes
 set PROV [open ${TAG}_provenance.txt w]
 puts $PROV "build $TAG started [clock format $BUILD_T0 -format {%Y-%m-%d %H:%M:%S}]"
 puts $PROV "vivado [version -short]"
@@ -34,7 +34,7 @@ close $PROV
 puts "STEP: provenance written to ${TAG}_provenance.txt"
 
 set_param general.maxThreads 2
-puts "STEP: maxThreads capped at [get_param general.maxThreads] (TIMING_CLOSURE_REFERENCE #11)"
+puts "STEP: maxThreads capped at [get_param general.maxThreads]"
 
 puts "STEP: opening project"
 set XPR [glob -nocomplain *.xpr]
@@ -57,7 +57,7 @@ foreach cell {qick_time_tagger_0 axi_dma_tt axis_register_slice_5} {
 }
 if {[get_bd_intf_nets -of_objects [get_bd_intf_pins NN_live_0/out_r_PORTA]] ne [get_bd_intf_nets -of_objects [get_bd_intf_pins live_rec_wreg_0/s_bram]]} { puts "FATAL: live_rec_wreg_0 not on NN_live_0/out_r_PORTA"; exit 1 }
 if {[get_bd_intf_nets -of_objects [get_bd_intf_pins live_rec_wreg_0/m_bram]] ne [get_bd_intf_nets -of_objects [get_bd_intf_pins axi_bram_ctrl_live_bram/BRAM_PORTB]]} { puts "FATAL: live_rec_wreg_0 not on the record BRAM"; exit 1 }
-puts "V142_BD: NN_axi_0 1.41, time tagger absent, live_rec_wreg_0 in place"
+puts "BD_CHECK: NN_axi_0 1.41, time tagger absent, live_rec_wreg_0 in place"
 set lvlnv [get_property VLNV [get_bd_cells NN_live_0]]
 puts "NN_live_0 VLNV: $lvlnv"
 if {![string match "*:1.5" $lvlnv]} { puts "FATAL: NN_live_0 is $lvlnv, not 1.5"; exit 1 }
@@ -125,7 +125,7 @@ report_utilization -file ${TAG}_post_synth_utilization.rpt
 report_utilization -hierarchical -file ${TAG}_post_synth_util_hier.rpt
 puts "STEP: post-synth utilization written"
 
-# ---- R.16 bus-skew constraint: did the scoped file bind? If not, apply it here.
+# ---- bus-skew constraint: did the scoped file bind? If not, apply it here.
 proc cdc_cells {inst kind} {
     if {$kind eq "from"} {
         return [get_cells -quiet -hier -regexp ".*/${inst}/(inst/)?(tog_reg|hold_reg\\\[\[0-9\]+\\\])"]
@@ -136,7 +136,7 @@ set bsk [report_bus_skew -return_string]
 set nbound [regexp -all {live_res_cdc_[01]} $bsk]
 puts "BUSSKEW_SCOPED: report_bus_skew mentions live_res_cdc $nbound time(s)"
 if {$nbound == 0} {
-    puts "STEP: scoped live_res_cdc.xdc did not bind; applying set_bus_skew in memory (option A fallback)"
+    puts "STEP: scoped live_res_cdc.xdc did not bind; applying set_bus_skew in memory"
     foreach inst {live_res_cdc_0 live_res_cdc_1} {
         set fr [cdc_cells $inst from]
         set to [cdc_cells $inst to]
@@ -169,7 +169,7 @@ add_cells_to_pblock pb_live $live_cells
 puts "PBLOCK: pb_live <- [join $live_cells { }]"
 if {[catch {report_utilization -pblocks pb_live -file ${TAG}_pblock_post_synth_util.rpt} e]} { puts "WARNING: pblock utilization report failed ($e)" }
 
-# ---- v1.43: tighter target on the dac_gate blank path during place and route only
+# ---- tighter target on the dac_gate blank path during place and route only
 set blank_cells [get_cells -hier -filter {NAME =~ *dac_gate_0/inst/blank_reg* && IS_SEQUENTIAL}]
 if {[llength $blank_cells] == 0} { puts "FATAL: no dac_gate blank registers found"; exit 1 }
 set dclk [get_clocks RFDAC2_CLK]
@@ -252,8 +252,8 @@ if {[catch {
     set rp [get_timing_paths -through [get_cells -hier -filter {NAME =~ *rf_tap_0/*}] -max_paths 1 -setup]
     set tp [get_timing_paths -from [get_cells -hier -filter {NAME =~ *trig_sync_0/*}] -max_paths 1 -setup]
     set np [get_timing_paths -through [get_cells -hier -filter {NAME =~ *NN_live_0/*}] -max_paths 1 -setup]
-    puts "V141_TIMING: rf_tap_0 [get_property SLACK $rp]; trig_sync_0 out [get_property SLACK $tp]; NN_live_0 [get_property SLACK $np]"
-} e]} { puts "WARNING: v1.41 timing summary failed ($e)" }
+    puts "TAP_TIMING: rf_tap_0 [get_property SLACK $rp]; trig_sync_0 out [get_property SLACK $tp]; NN_live_0 [get_property SLACK $np]"
+} e]} { puts "WARNING: tap timing summary failed ($e)" }
 if {[catch {
     set bp [get_timing_paths -through [get_cells -hier -filter {NAME =~ *boxcar_tap_0/*}] -max_paths 1 -setup]
     puts "BOXCAR_TIMING: worst through boxcar_tap_0 [get_property SLACK $bp]"
@@ -278,14 +278,14 @@ report_timing -through [get_cells -hier -filter {NAME =~ *NN_axi_0/*}] -max_path
 if {[catch {
     set wp [get_timing_paths -to [get_cells -hier -filter {NAME =~ *axi_bram_ctrl_live_bram/*}] -max_paths 1 -setup]
     set xp [get_timing_paths -through [get_cells -hier -filter {NAME =~ *NN_axi_0/*}] -max_paths 1 -setup]
-    puts "V142_TIMING: worst into live record BRAM [get_property SLACK $wp]; worst through NN_axi_0 [get_property SLACK $xp]"
-} e]} { puts "WARNING: v1.42 timing summary failed ($e)" }
+    puts "LIVE_REC_TIMING: worst into live record BRAM [get_property SLACK $wp]; worst through NN_axi_0 [get_property SLACK $xp]"
+} e]} { puts "WARNING: record-path timing summary failed ($e)" }
 
 puts "STEP: write_bitstream"
 write_bitstream -force -file OG_build_${TAG}.bit
 puts "BUILD_COMPLETE_${TAG}"
 
-# ---- full report set (FINAL_TASKS 6.2), after the bitstream so a failure here cannot cost the build
+# ---- full report set, after the bitstream so a failure here cannot cost the build
 foreach {name cmd} {
     methodology        {report_methodology -file ${TAG}_routed_methodology.rpt}
     cdc_summary        {report_cdc -file ${TAG}_routed_cdc_all.rpt}

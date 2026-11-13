@@ -9,7 +9,7 @@ Both triggers travel the same tProc -> buffer path and both signals pass the sam
 
 is the time from the window's last sample (sample index N-1, at t_trig1 + (N-1)/fs) to the conditional pulse's 50%
 point (an interpolated sample index on the same grid), both at the buffer. --lbuf-ref window_end (or env
-QICK_LBUF_REF=window_end, which also reaches gate_probe / seg_probe / tproc_savings through l_buf) measures from the
+QICK_LBUF_REF=window_end, which also reaches gate_probe through l_buf) measures from the
 window end t_trig1 + N/fs instead, 1/fs = 1.808 ns later. A sample at the ADC pin reaches the buffer d_in later and a
 pulse leaving the DAC pin reaches it d_cable + d_in later, so
 
@@ -36,7 +36,7 @@ import conditional_pulse_demo as C              # noqa: E402  (brings up soc)
 
 A, h, S, soc, soccfg = C.A, C.h, C.S, C.soc, C.soccfg
 CFG0, FS_RO = C.CFG0, C.FS_RO                   # FS_RO in MHz (samples / us)
-N_WIN = int(__import__("os").environ.get("QICK_LIVE_N", 770))   # live window, samples (L3: 576)
+N_WIN = int(__import__("os").environ.get("QICK_LIVE_N", 770))   # live window, samples (576 in the deployed build)
 TICK = 1.0 / soccfg["tprocs"][0]["f_time"]       # tProc timestamp unit, us
 # L_buf reference: "last_sample" = t1 + (N-1)/fs (default); "window_end" = t1 + N/fs.
 LBUF_REFS = ("last_sample", "window_end")
@@ -202,7 +202,7 @@ def main():
     ap.add_argument("--out", default="campaign_v140L1/A_L2_latency_loop.npz")
     ap.add_argument("--lbuf-ref", choices=LBUF_REFS, default=LBUF_REF,
                     help="L_buf reference: last window sample instant (default) or window end "
-                         "(the convention of runs before 2026-10-20; 1/fs = 1.808 ns smaller L_buf)")
+                         "(1/fs = 1.808 ns smaller L_buf)")
     a = ap.parse_args()
     LBUF_REF = a.lbuf_ref
     print(f"L_buf reference: {LBUF_REF}")

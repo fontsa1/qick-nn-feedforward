@@ -1,7 +1,7 @@
 """Generates paper_notes/V144_RESULTS.md and v144_results.json: the only list of results the paper may call v1.44.
 
-Port of campaign_v143/final/analysis/make_v143_ledger.py. It lists the same results in the same order (the v1.43 ledger is
-the template), so the two files can be compared row by row.
+Lists the same results in the same order as campaign_v143/final/analysis/make_v143_ledger.py, so the two ledgers can be
+compared row by row.
 
 The rules that keep other results out:
   1. Nobody edits the .md. It is written here, and --verify fails if it or any source file has changed since.

@@ -1,4 +1,4 @@
-"""R18: in-loop fidelity campaign -- NN_live's decision acting on the DAC through dac_gate, every shot scored.
+"""In-loop fidelity campaign -- NN_live's decision acting on the DAC through dac_gate, every shot scored.
 
 The program is gate_probe.py's (GateProg): the conditional pulse is scheduled unconditionally on gen 0 with the
 gate's window marker; dac_gate passes it if NN_live decided 1 for this shot and blanks it otherwise (PASS1 = 1,
@@ -6,13 +6,12 @@ PASS0 = 0, stale -> blank). The returning pulse is captured on the loopback ADC.
 "a pulse came back", scored against the trace's label -- the classification as the loop delivers it, with every
 loop failure (stale, late, wrong shot) counted as an error. Also per shot: the gate record (passed / stale /
 decision bit / margin / late counter / binding rejects), NN_live's own record, seg_stamp timestamps (loop split),
-L_buf, and the capture itself (R19: energy on blanked shots).
+L_buf, and the capture itself.
 
 Traces are replayed exactly as box_live_capture.py does for the classification campaigns (same k/c predistortion,
 same dataset-wide DAC scale from the 20k set, --clip-dac behaviour), so a row's in-loop decision can be paired with
 its gate-idle decision from the 100k campaign. The gate is calibrated on the domain-map rows 1000:1008 (never
-scored). Setup values follow the v1.41 loop measurement: QICK_LIVE_N=576, --pre 0.15, --nn-advance 0.1135,
-margin 0.035 us, slack -0.064 us (the quoted 177.1 / 176.0 ns operating point).
+scored). Defaults: QICK_LIVE_N=576, --pre 0.15, --nn-advance 0.1135, margin 0.035 us, slack -0.064 us.
 
 Checkpoints every --save-every shots to --out (rerun with --resume to continue after an interruption).
 
@@ -26,7 +25,7 @@ from pathlib import Path
 import numpy as np
 
 if os.environ.get("QICK_LIVE_N") != "576":
-    raise SystemExit("set QICK_LIVE_N=576 (v1.41 window); without it the window lands 351 ns late (see INVALID_N770)")
+    raise SystemExit("set QICK_LIVE_N=576; without it the window lands 351 ns late")
 ROOT = Path(__file__).resolve().parents[2]
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT / "analysis_scripts" / "diagnostics"))
@@ -88,7 +87,7 @@ def main():
     ap.add_argument("--margin", type=float, default=0.035)
     ap.add_argument("--pre", type=float, default=0.15)
     ap.add_argument("--nn-advance", type=float, default=0.1135)
-    ap.add_argument("--rf-thr", type=int, default=2048, help="rf_tap_0 threshold (v1.41 loop run: 2048)")
+    ap.add_argument("--rf-thr", type=int, default=2048, help="rf_tap_0 threshold")
     ap.add_argument("--x", default="data/test100k_real_X.npy")
     ap.add_argument("--y", default="data/test100k_real_y.npy")
     ap.add_argument("--scale-ref", default="data/test20k_real_X.npy")
@@ -125,8 +124,8 @@ def main():
     print(f"gate GAT4: EARLY_BLANK {g10 >> 8 & 1} SHOT_BIND {g10 >> 9 & 1} FAIL_SAFE {g10 >> 10 & 1} "
           f"CFG_SAFE {g10 >> 11 & 1}; marker -> pulse {sorted(set(mp))} cycles, DELAY {delay}; plateau {plat_pass:.0f}")
     if delay != 29:
-        print(f"WARNING: DELAY {delay} differs from the v1.41 loop run (29)")
-    # half the |I|+|Q| plateau (the R18 and R18_full runs used half the |IQ| plateau); seg_stamp only observes
+        print(f"WARNING: DELAY {delay}, expected 29")
+    # half the |I|+|Q| plateau (the recorded runs used half the |IQ| plateau); seg_stamp only observes
     seg_thr = G.seg_threshold([wf(r)[0] for r in CAL_ROWS[:4]], dict(base, cp_slack=0.0))
     print(f"seg thr {seg_thr} (half the |I|+|Q| plateau)")
     soc.seg_write(1, seg_thr); soc.seg_write(4, a.rf_thr)

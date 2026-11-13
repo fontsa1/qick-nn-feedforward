@@ -1,11 +1,6 @@
 `timescale 1ns / 1ps
-// classifier_unit_zl: one qubit's streaming classifier and feed-forward gate for the out-of-context scaling study: the
-// deployed blocks (boxcar_tap, trig_sync, live_window_gate_zl, NN_live, live_res_cdc x2, dac_gate) wired as in the
-// block design. One unit per readout tone. Starts at the readout's mixed stream (axis_dyn_readout m0); the
-// per-tone mixer is QICK's and is not included, nor are readout 1's capture buffer, seg_stamp and rf_tap.
-// Input registers model the readout's registered output.
-// Variant: the window gate's output register is replaced by a register on NN_live's result, before both
-// CDCs; same end-to-end latency. Not deployed.
+// classifier_unit_zl: classifier_unit with live_window_gate_zl; the gate's output register is replaced by a register
+// on NN_live's result before both CDCs (same end-to-end latency). Scaling study only, not deployed.
 module classifier_unit_zl (
     input  wire         clk_adc,     // clk_adc0_x2, 552.96 MHz
     input  wire         rstn_adc,

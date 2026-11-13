@@ -28,13 +28,9 @@ def wait_for_reboot_and_reconnect(
     settle_delay_s=15,
 ):
     """Poll for the QICK Pyro4 server coming back after a reboot you've
-    already triggered elsewhere. A genuine reboot takes real wall-clock
-    time (boot + the nameserver/daemon notebook needs to actually start
-    running again, matching this project's own precedent -- a confirmed
-    real reboot showed ~75s uptime shortly after coming back) -- don't
-    treat the FIRST successful connection as necessarily meaning the
-    reboot fully completed; a brief settle delay + one more reconnect
-    attempt afterward is cheap insurance.
+    already triggered elsewhere. The first successful connection may come
+    before the server notebook is fully up, so after it the function waits
+    settle_delay_s and reconnects once more.
 
     Returns (soc, soccfg) on success, raises TimeoutError on failure.
     """
@@ -69,13 +65,8 @@ def wait_for_reboot_and_reconnect(
     print(soccfg)
     print("=====================================")
     print(
-        "\nNote: this script cannot independently confirm /proc/uptime is "
-        "genuinely small (that requires board-side code execution, the "
-        "same gap noted in this file's module docstring) -- if you need "
-        "that specific confirmation, check it manually via whatever "
-        "board-side access you used to trigger the reboot. A successful "
-        "reconnect after your own reboot trigger is still strong evidence "
-        "on its own."
+        "\nNote: the reboot itself is not verified from the board side "
+        "(/proc/uptime); check it there if needed."
     )
     return soc, soccfg
 

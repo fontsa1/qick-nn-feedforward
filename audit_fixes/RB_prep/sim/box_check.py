@@ -1,3 +1,4 @@
+"""Checks boxcar_tap's outputs in box_dump.txt (written by tb_box_dump.sv) against a numpy model."""
 import numpy as np
 rows=[l.split() for l in open('box_dump.txt')]
 cyc=np.array([int(r[0]) for r in rows]); rst=np.array([int(r[1]) for r in rows])

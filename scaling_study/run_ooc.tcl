@@ -1,8 +1,7 @@
-# 4.5b -- out-of-context timing sweep of N classifier units (FINAL_TASKS 4.5b).
+# Out-of-context timing sweep of N classifier units.
 # Usage: vivado -mode batch -source run_ooc.tcl -tclargs <N> <pb|free> [<N> <pb|free> ...]
-# Each pair: synth ooc_top with NU=N (out_of_context), optional pblock = v1.41's pb_live
-# (CLOCKREGION_X4Y3:X5Y4, the region next to the ADC tiles where NN_live sits today), then
-# opt / place (Default) / phys_opt (AggressiveExplore) / route (Default), as build_v1.41.tcl.
+# Each pair: synth ooc_top with NU=N (out_of_context), optional pblock pb_live (CLOCKREGION_X4Y3:X5Y4, next to the
+# ADC tiles, as in the deployed build), then opt / place (Default) / phys_opt (AggressiveExplore) / route (Default).
 # Writes runs/N<N>_<pb>/ : utilization, timing summary, failing-endpoint list, bus skew, SUMMARY line.
 set HERE [file normalize [file dirname [info script]]]
 set PART xczu48dr-ffvg1517-2-e

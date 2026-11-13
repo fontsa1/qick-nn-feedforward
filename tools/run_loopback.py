@@ -7,7 +7,7 @@ be scored on identical hardware-acquired traces.
 
 PHASE CONTRACT: the per-shot rotation is baked into the waveform by the
 generator (and is intrinsic to real measured data), so the DAC pulse phase is
-held at 0 and Phi is never sent. See run_loopback_measnoise5000.py's docstring.
+held at 0 and Phi is never sent.
 
 Shot ORDER is whatever the input file has. Use tools/make_test_subsets.py to build a
 shuffled, class-balanced subset first -- firing a class-ordered file confounds

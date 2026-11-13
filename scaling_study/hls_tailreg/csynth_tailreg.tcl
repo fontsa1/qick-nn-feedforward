@@ -1,5 +1,5 @@
-# 4.5b experiment (not deployed): NN_live 1.5 source, unchanged, synthesized with a tighter clock
-# uncertainty so the scheduler splits the fused tail. Usage: vitis_hls -f csynth_tailreg.tcl -tclargs <uncertainty%> <prj>
+# Scaling study (not deployed): the NN_live 1.5 source synthesized with a tighter clock uncertainty, so the
+# scheduler splits the fused tail. Usage: vitis_hls -f csynth_tailreg.tcl -tclargs <uncertainty%> <prj>
 set unc [lindex $argv end-1]
 set prj [lindex $argv end]
 open_project -reset $prj

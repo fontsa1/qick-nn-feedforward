@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Load-to-load latency study, v1.43 (2026-11-05). Small test: 100 + 40 shots per load, plus sensitivity on each
-# board's first load. usage: run_loads.sh <outdir> <label> [<label> ...]; boards alternate so load is not tied to time.
+# Load-to-load latency study: 100 + 40 shots per bitstream load, plus a sensitivity run on each board's first load.
+# Boards alternate so load order is not tied to time.  usage: run_loads.sh <outdir> <label> [<label> ...]
 cd "${REPO_ROOT:-.}"
 PY="${PYTHON:-python}"; D=analysis_scripts/diagnostics; TOP=C:/qick_projects/top; V43="Nov  4 23:39:37"   # set PYTHON to your environment's interpreter, e.g. PYTHON=.venv/bin/python
 O=$1; shift; mkdir -p $O

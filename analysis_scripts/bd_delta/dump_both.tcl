@@ -1,5 +1,5 @@
-# 1) QICK's qick_tprocv2_4x2_standard project at 779dffa, built in this script's folder; 2) our v1.43 project, opened read-only.
-# Edit these two paths. Keep this folder's path short on Windows (260-character limit).
+# Dumps two block designs with dump_bd: QICK's qick_tprocv2_4x2_standard (commit 779dffa, rebuilt in this script's
+# folder from proj.tcl) and our v1.43 project (opened read-only). Edit these two paths. Keep this folder's path short on Windows (260-character limit).
 set QICK_PROJ C:/qick/firmware/projects/qick_tprocv2_4x2_standard
 set OUR_XPR C:/qick_projects/top/top.xpr
 set here [file dirname [file normalize [info script]]]

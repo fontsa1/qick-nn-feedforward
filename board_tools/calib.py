@@ -20,6 +20,8 @@ USAGE
 
 Switching boards from the shell, without recalibrating:
 
+    python board_tools/calib.py activate <host>
+
 """
 import os
 import shutil
@@ -34,7 +36,7 @@ ACTIVE = CALDIR / "ACTIVE"
 LEGACY_K = ROOT / "calibration/k.npy"
 LEGACY_C = ROOT / "calibration/c.npy"
 
-DEFAULT_HOST = "10.1.9.26"          # board A -- every historical result
+DEFAULT_HOST = "10.1.9.26"          # board A
 KNOWN = {"10.1.9.26": "board A", "10.1.4.105": "board B"}
 
 def host_from_env(host=None):

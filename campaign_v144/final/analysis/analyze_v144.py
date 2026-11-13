@@ -1,5 +1,5 @@
 """Statistics of the v1.44 campaign, with the methods of
-(campaign_v140L1/check_live_bitexact.py, live20k_stats.py, audit_fixes/R18_full/analyze_full.py, r3_stats).
+campaign_v140L1/check_live_bitexact.py and live20k_stats.py, audit_fixes/R18_full/analyze_full.py and audit_fixes/R3_R2/r3_stats.py.
 
 Reads only campaign_v144/final/{live,axi,inloop}. Run 1 = each board's own half (A rows 0-49,999, B rows 50,000-99,999),
 run 2 = the halves swapped, so every trace is scored on both boards. Headline set = run 1, minus rows 1000-1599.

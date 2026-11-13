@@ -273,8 +273,8 @@ def generate_shot(state, model, add_noise, n=770, noise_mode="measured", rng=Non
     noise_mode:
       "measured" (default) -- coloured noise matching the real 0528 PSD,
           which also reproduces the per-shot common-mode offset.
-      "white"    -- the previous per-timestep-Cholesky model, kept so the
-          earlier datasets (x_50k_noisy, x_50k_heldout) remain reproducible.
+      "white"    -- independent noise per timestep (per-timestep Cholesky
+          factor); generates x_50k_noisy and x_50k_heldout.
     """
     params = model["params0"] if state == 0 else model["params1"]
     if rng is None:

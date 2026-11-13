@@ -45,8 +45,8 @@ CHUNK = 20000
 # The number of rows the classifier trains on (export_signed_domain_model.py and phase0_calibration_ablation.py);
 # the generator's fit pool starts at exactly TRAIN_N.
 TRAIN_N = 10000
-GEN_FIT_LO, GEN_FIT_HI = 10000, 110000   # tools/generate_synth_holdout_v2.py:33
-SCORED_N = 400          # LEGACY (--legacy-check-c): the old 400-shot headline, rows 0:400
+GEN_FIT_LO, GEN_FIT_HI = 10000, 110000   # as in tools/generate_synth_holdout_v2.py
+SCORED_N = 400          # --legacy-check-c: check C on rows 0:400 only
 CALIB_SLICE = (1000, 1600)
 # Check C: the headlines score test20k rows 0..19,999. The full 20k contains the 600 domain-map calibration rows,
 # so the headline set is the 19,400 rows outside CALIB_SLICE.
@@ -204,7 +204,7 @@ def check_g_test100k(h_train, h_calib, X20, lo, hi):
 def main():
     print(__doc__.split("Run from")[0])
     if LEGACY_C:
-        print("(--legacy-check-c: check C uses the pre-2026-10-20 400-shot scored range)")
+        print("(--legacy-check-c: check C on rows 0:400 only)")
     print("=" * 74)
 
     # ---------- A: the two real pools share no shot -------------------------
@@ -392,7 +392,7 @@ def main():
            pass_detail="the recorded coefficients are the label-free global "
                        "fit; data/domain_calib_y.npy is present on disk but enters "
                        "no fitted quantity. The per-class alternative is "
-                       "worth +0.01 points (2026-10-01 ablation), so nothing "
+                       "worth +0.01 points (phase0_calibration_ablation.py), so nothing "
                        "is given up by not using it.")
 
     # ---------- verdict ------------------------------------------------------

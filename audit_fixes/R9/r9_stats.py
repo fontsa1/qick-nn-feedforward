@@ -1,4 +1,4 @@
-"""R9 statistics: arm table + paired differences with CIs.
+"""Synthetic-vs-real training study: arm table and paired differences with CIs.
 
 Inputs: results/*.json + *_probs.npz written by r9_train_eval.py.
 Scored sets: 19,400 rows of loopback20k_real (rows 1000:1600 excluded; headline) and 20k (footnote).
@@ -49,12 +49,12 @@ GROUPS = {
     "real10k_d0": dict(label="real 10k (rows 0:10k)", fit="-", draws=[sel("real10k_d0", S10)]),
     "v2_10k_d0": dict(label="synthetic 10k (x_synth_v2[0:10k])", fit="100k",
                       draws=[sel("v2_10k_d0", S10)]),
-    "real10k_d0_s5": dict(label="real 10k (rows 0:10k), task33 seeds only", fit="-",
+    "real10k_d0_s5": dict(label="real 10k (rows 0:10k), first 5 seeds", fit="-",
                           draws=[sel("real10k_d0", S5)]),
-    "v2_10k_d0_s5": dict(label="synthetic 10k (x_synth_v2[0:10k]), task33 seeds only", fit="100k",
+    "v2_10k_d0_s5": dict(label="synthetic 10k (x_synth_v2[0:10k]), first 5 seeds", fit="100k",
                          draws=[sel("v2_10k_d0", S5)]),
-    "real50k_s5": dict(label="real 50k, task33 seeds only", fit="-", draws=[sel("real50k", S5)]),
-    "v2_50k_s5": dict(label="synthetic 50k, task33 seeds only", fit="100k", draws=[sel("v2_50k", S5)]),
+    "real50k_s5": dict(label="real 50k, first 5 seeds", fit="-", draws=[sel("real50k", S5)]),
+    "v2_50k_s5": dict(label="synthetic 50k, first 5 seeds", fit="100k", draws=[sel("v2_50k", S5)]),
     "real10k_3d": dict(label="real 10k, 3 row blocks", fit="-",
                        draws=[sel("real10k_d0", S5), sel("real10k_d1", S5), sel("real10k_d2", S5)]),
     "v2_10k_3d": dict(label="synthetic 10k, 3 slices of x_synth_v2", fit="100k",

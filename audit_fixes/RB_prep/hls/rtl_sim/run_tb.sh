@@ -1,7 +1,6 @@
 #!/bin/bash
 # RTL sim of live_window_gate + an HLS NN_live (tb_live.sv). Usage, from rtl_sim/:
-#   ./run_tb.sh ../../neural_net4_live576s     (NN_live 1.4)
-#   ./run_tb.sh ../../neural_net4_live576r     (NN_live 1.3)
+#   ./run_tb.sh <HLS project dir>     e.g. ../../neural_net4_live576s
 set -e
 HLSV=$1/NN_live_prj/solution1/syn/verilog
 TAG=$(basename $1)

@@ -139,7 +139,7 @@ for b in "AB":
 pair("NN_axi", "Boards A vs B", S["axi"]["A_vs_B"], stats_file)
 fid("NN_axi", "Both boards pooled, 38,800 shots", S["axi"]["both_boards_pooled"], stats_file)
 
-# Timing argument in Sec. X: NN_live vs NN_axi on the same 20,000 rows of one board
+# Timing argument: NN_live vs NN_axi on the same 20,000 rows of one board
 for b in "AB":
     I, P, Y = [], [], []
     for f in glob.glob(f"{D}axi/{b}_axi_*.npz"):

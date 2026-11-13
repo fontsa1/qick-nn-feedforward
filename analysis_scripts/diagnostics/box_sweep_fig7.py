@@ -1,4 +1,4 @@
-"""Fig. 7b measured frequency response (v1.41): image level vs image frequency, both readout paths.
+"""Fig. 7b measured frequency response: image level vs image frequency, both readout paths.
 
 A real tone at the readout frequency f, mixed with the readout DDS at f, gives a DC component and a -2f image of
 equal amplitude in the mixed stream (both come from the same real ADC signal, so the analog chain's response cancels
@@ -7,9 +7,9 @@ response at 2f, as in box_probe_fig7.py part B, which measured it at 2f = 100 MH
 across 0-200 MHz.
   For each f: QICK's FIR path (readout 0 -> avg buffer 0) and the boxcar path (readout 1 -> boxcar_tap -> avg
   buffer 1) captured together on the same shots, with the boxcar at M = 1 (box-8 only) and M = 11 (deployed);
-  3 shots of a 7 us plateau each. Raw traces saved; the image level is fitted offline (make_fig7_boxcar.py).
-The boxcar cfg found at start is restored at exit. Refuses to run on anything but v1.41.
-Writes paper_figures/fig7/fig7_sweep_<board>_v143.npz (+ .json summary).
+  3 shots of a 7 us plateau each. Raw traces saved; the image level is fitted offline.
+The boxcar cfg found at start is restored at exit. Refuses to run unless the firmware banner contains $QICK_FIG7_BANNER (default: v1.43's).
+Writes $QICK_FIG7_DIR/fig7_sweep_<board>_v143.npz (+ .json summary).
 
 """
 import argparse
@@ -25,7 +25,7 @@ sys.path.insert(0, str(ROOT / "board_tools"))
 import deploy_and_verify as D                                    # noqa: E402
 from qick.asm_v2 import AveragerProgramV2                        # noqa: E402
 
-BANNER = __import__("os").environ.get("QICK_FIG7_BANNER", "built Wed Nov  4 23:39:37 2026")                        # v1.43, final
+BANNER = __import__("os").environ.get("QICK_FIG7_BANNER", "built Wed Nov  4 23:39:37 2026")                        # v1.43
 OUTDIR = Path(__import__("os").environ.get("QICK_FIG7_DIR", ROOT / "paper_figures" / "fig7"))
 FS = 552.96
 # readout frequency f; the image sits at 2f. Uniform 1 MHz grid in f (2 MHz in 2f) plus the M = 11 nulls

@@ -5,8 +5,7 @@ rows [1000:1600] of `test20k_real_X`, excluded from every scored set) and applie
 classifier trains on data in the domain the loopback chain delivers.
 
 --fit global (default) is label-free: one complex affine fit to the mean trajectory over all shots. --fit perclass
-stacks the two class-mean trajectories and uses `data/domain_calib_y.npy` (test-file labels); it is kept only to
-reproduce earlier artifacts. Measured with phase0_calibration_ablation.py (3 arms x 2 windows x 3 seeds, on 20,000
+stacks the two class-mean trajectories and uses `data/domain_calib_y.npy` (test-file labels). Measured with phase0_calibration_ablation.py (3 arms x 2 windows x 3 seeds, on 20,000
 real shots played through the DAC and back through the ADC):
 
     raw, no map at all                    94.76 +/- 0.15
@@ -52,7 +51,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fit", choices=["global", "perclass"], default="global",
                     help="global (default, LABEL-FREE, no F1 leakage) or "
-                         "perclass (historical; consumes test-file labels)")
+                         "perclass (consumes test-file labels)")
     a = ap.parse_args()
 
     acquired = np.load("data/domain_calib_acquired.npy")

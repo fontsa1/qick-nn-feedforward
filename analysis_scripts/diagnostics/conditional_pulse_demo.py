@@ -51,7 +51,7 @@ def live_len(cf):
 # a 770-sample readout would still be running when the second capture (the
 # conditional pulse) is triggered, and QICK queues that capture behind it
 # ("Readout time 1 appears to conflict with previous readout"), which breaks
-# the loop-latency timing. The readout then equals the live window, as on L2.
+# the loop-latency timing. The readout then equals the live window.
 import os as _os                                # noqa: E402
 if _os.environ.get("QICK_LIVE_N"):
     CFG0 = dict(CFG0, readout_length=live_len(CFG0))
@@ -149,7 +149,7 @@ def main():
     ap.add_argument("--start", type=int, default=0)
     ap.add_argument("--dataset", default="test20k_real_X")
     ap.add_argument("--margin", type=float, default=0.1,
-                    help="us after the nominal window end before DPORT_RD (fresh from 0.02)")
+                    help="us after the nominal window end before DPORT_RD")
     ap.add_argument("--slack", type=float, default=0.2,
                     help="us from DPORT_RD to the scheduled conditional pulse")
     ap.add_argument("--thr", type=int, default=16,

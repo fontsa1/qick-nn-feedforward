@@ -1,6 +1,6 @@
 #!/bin/bash
 # v1.44 offline analyses, in dependency order. Log: campaign_v144/final/analysis/run_analyses.log. No board access.
-# Not here: loop_groups_data_v144.py (needs the latency closure question settled and the cold starts).
+# Not here: loop_groups_data_v144.py (needs the cold-start data), make_v144_ledger.py, check_paper_v144.py.
 cd "${REPO_ROOT:-.}"
 export PYTHONIOENCODING=utf-8 OMP_NUM_THREADS=4 TF_NUM_INTRAOP_THREADS=4
 PY="${PYTHON:-python}"; A=campaign_v144/final/analysis; LOG=$PWD/$A/run_analyses.log   # set PYTHON to your environment's interpreter, e.g. PYTHON=.venv/bin/python

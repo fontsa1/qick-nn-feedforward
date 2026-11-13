@@ -14,7 +14,7 @@
 //   m_nn        to the NN_live window gate: boxcar if cfg[0], else FIR (combinational mux).
 //   m_box_axis  the boxcar stream, to readout 1's buffers, so acquire_decimated() on readout 1 returns what
 //               NN_live classifies when cfg[0] = 1.
-//   cfg         [0] NN input select (1 = boxcar), [7:4] shift, [12:8] M - 1. A change clears the moving sum
+//   cfg         [0] NN input select (1 = boxcar), [7:4] shift, [11:8] M - 1. A change in [12:0] clears the moving sum
 //               (16 cycles to refill).
 
 `timescale 1ns / 1ps

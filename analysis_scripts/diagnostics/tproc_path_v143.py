@@ -1,9 +1,9 @@
 """The tProc-programmed feed-forward path on v1.43: the program waits for NN_live's result, reads it, and plays the conditional
-pulse itself, with no gate. The gate's counterpart is L_50 (Fig. 8). The paper's earlier 454.5 ns dates from the L5 build, on the FIR path.
+pulse itself, with no gate. The gate's counterpart is L_50 (Fig. 8).
 
 Same measurement as latency_loop.l_buf and gate_probe.one: window's last sample to the pulse's 50% point, both on readout 0's
 (FIR) time base. Boxcar path (the deployed one, --path box): NN_live's trigger and t_dec move earlier by nn_adv, as in
-gate_probe.GateProg. FIR path (--path fir): the original program, for comparison with L5. On the FIR path the boxcar network
+gate_probe.GateProg. FIR path (--path fir): the same program without the advance, for comparison. On the FIR path the boxcar network
 scores a stream it was not trained on, so only the timing means anything there.
 
 For each variant and margin: natural decisions, freshness, branch == decision, played pulse == branch, and forced branches.

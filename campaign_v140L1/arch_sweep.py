@@ -11,7 +11,7 @@ the validation slice (early stopping and seed choice only). Scored on
             (not loopback-acquired, so a domain-mapped proxy, but 5x the shots)
 
 Arms (BatchNormalization + ReLU after every hidden layer, sigmoid output):
-  t4        ternary 1540-4-1, the deployed recipe (task33 build_model)
+  t4        ternary 1540-4-1, the deployed recipe (task33_three_way_comparison.build_model)
   t64_32    ternary 1540-64-32-1, every layer ternary
   t64_q8    ternary 1540-64, then 8-bit (quantized_bits(8,0)) 64-32-1
   f64_32    float 1540-64-32-1 (upper bound for this shape)

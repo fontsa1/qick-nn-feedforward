@@ -12,8 +12,7 @@
 #define b10 ref_b10
 #include "firmware/NN.cpp"
 
-// The four-unit tail on hls4ml's own types (layer2_t, not NN_live's narrowed
-// l2n_t), from given first-layer sums: the logit and the probability.
+// The four-unit tail on hls4ml's own types (layer2_t), from given first-layer sums: the logit and the probability.
 void ref_tail(const long acc[4], int *logit_raw, int *prob_raw) {
     layer2_t l2[4];
     for (int u = 0; u < 4; u++) l2[u] = acc[u];

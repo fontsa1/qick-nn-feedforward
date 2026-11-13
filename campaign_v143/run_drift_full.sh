@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Full 3-hour drift check (two earlier attempts lost their connection on both boards on 2026-11-06; partial data stays in
-# final/drift and final/drift_rerun). drift_probe.py now reconnects and scores TLAST windows with --no-align. Paired score of
-# 6000 shots at start and end, on the start calibration. Output in final/drift_full. Boards as loaded, no redeploy.
+# 3-hour drift check: paired score of 6000 shots at start and end, on the start calibration. drift_probe.py reconnects
+# after a dropped connection and scores TLAST windows with --no-align. Output in final/drift_full. Boards as loaded, no redeploy.
 #   bash campaign_v143/run_drift_full.sh A|B
 set -u
 cd "$(dirname "$0")/.."

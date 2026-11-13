@@ -1,21 +1,13 @@
-"""R3: the linear-baseline numbers that are scored on loopback20k_real (the replayed 20k
-test subset), recomputed with per-shot predictions so they can be reported on the
-19,400-row headline set (rows 1000:1600 excluded) and on the full 20k.
+"""Linear baselines (matched filter, ridge LDA) scored on loopback20k_real with per-shot predictions, on the
+19,400-row set (rows 1000:1600 excluded) and on the full 20k:
+  (a) analysis_scripts/analysis/linear_baselines.py: train rows [0:N) of 0528_X_train_0_770 through (k2, c2),
+      N = 10k/50k/200k; MF w = mu1 - mu0; LDA pooled covariance + ridge lam*tr(S)/d*I, lam in
+      {1e-3, 1e-2, 1e-1}; threshold chosen on the training scores; reported per ridge.
+  (b) campaign_v140L1/window_tradeoff.py LDA arm: train rows [0:180k), ridge in {1e-4..1e-1} chosen on validation
+      rows [180k:200k), window [0, E) for E on the 32-sample grid; paired against E = 640.
 
-Two recipes, reproduced as they are in the repo (no protocol change here; R6 fixes
-the ridge selection):
-  (a) analysis_scripts/analysis/linear_baselines.py  (PAPER §8.3 table, §3.5, §14.1):
-      train rows [0:N) of 0528_X_train_0_770 through (k2, c2), N = 10k/50k/200k;
-      MF w = mu1 - mu0; LDA pooled covariance + ridge lam*tr(S)/d*I, lam in
-      {1e-3, 1e-2, 1e-1}; threshold chosen on the training scores. The quoted LDA
-      number is the best ridge on the test set -- reported per ridge here.
-  (b) campaign_v140L1/window_tradeoff.py LDA arm (PAPER §8.4, §7.4 "95.55% replayed"):
-      train rows [0:180k), ridge in {1e-4..1e-1} chosen on validation rows [180k:200k),
-      window [0, E) for E on the 32-sample grid; paired against E = 640.
-
-Memory-light: the training pool is held once as float32 (1.2 GB); class moments are
-accumulated in float64 in 10k-row chunks; the window-E covariance is the leading
-2E x 2E block of the full one (window = first E complex samples).
+The training pool is held once as float32 (1.2 GB); class moments accumulate in float64 in 10k-row chunks; the
+window-E covariance is the leading 2E x 2E block of the full one.
 
 Writes r3_linear.json and r3_linear_preds.npz (per-shot decisions) in this folder.
 """

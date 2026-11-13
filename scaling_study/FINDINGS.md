@@ -1,18 +1,19 @@
-# 4.5a / 4.5b — multi-classifier scaling feasibility: findings
+# Multi-classifier scaling: findings
 
-Run 2026-10-27 (FINAL_TASKS 4.5). Offline and out-of-context (OOC) only; no board work, no full build.
+Out-of-context (OOC) synthesis and implementation only; no board work, no full build.
 Device xczu48dr-ffvg1517-2-e, Vivado 2023.1. All numbers below are from files in this folder.
 
 ## Files
 
 | file | what |
 |---|---|
-| `resource_scaling.py` → `resource_scaling.json` | 4.5a: per-unit cost from the routed v1.41 reports, resource-limited N |
-| `rtl/classifier_unit.v` | one qubit's unit, exactly the v1.41 blocks wired as in the BD: boxcar_tap → trig_sync → live_window_gate (N = 576) → NN_live 1.5 → live_res_cdc ×2 → dac_gate (GAT4), plus the record RAM |
-| `rtl/live_record_ram.v` | NN_live's 8 × RAMB36 record memory **with the planned write-port register stage** (4.1m fix) |
-| `rtl/ooc_top.v`, `ooc.xdc`, `run_ooc.tcl`, `launch_ooc.bat` | N-unit OOC harness: BUFG clocks, v1.41 clock periods and setup uncertainty, QICK's asynchronous clock groups, the scoped live_res_cdc bus-skew constraint; v1.41's place/phys_opt/route directives |
-| `rtl/*_zl.v`, `run_ooc_zl.tcl` | **ZL variant (experiment only, not deployed):** gate output register removed, NN_live's `res_o` registered before the CDCs — same total latency |
-| `runs/N<N>_<pb\|free>[_zl]/` | per run: utilization, timing, failing endpoints (unit-internal vs harness), bus skew, routed .dcp |
+| `resource_scaling.py` → `resource_scaling.json` | per-unit cost from the routed v1.41 reports, resource-limited N |
+| `rtl/classifier_unit.v` | one qubit's unit, the v1.41 blocks wired as in the BD: boxcar_tap → trig_sync → live_window_gate (N = 576) → NN_live 1.5 → live_res_cdc ×2 → dac_gate (GAT4), plus the record RAM |
+| `rtl/live_record_ram.v` | NN_live's 8 × RAMB36 record memory with a register stage on the write port |
+| `rtl/ooc_top.v`, `ooc.xdc`, `run_ooc.tcl` | N-unit OOC harness: BUFG clocks, v1.41 clock periods and setup uncertainty, QICK's asynchronous clock groups, the scoped live_res_cdc bus-skew constraint; v1.41's place/phys_opt/route directives |
+| `rtl/*_zl.v`, `run_ooc_zl.tcl` | **ZL variant (not deployed):** gate output register removed, NN_live's `res_o` registered before the CDCs — same total latency |
+| `rtl/*_t.v`, `run_ooc_t.tcl`, `hls_tailreg/` | **T variant (not deployed):** NN_live re-synthesized with one extra tail stage, register-free gate |
+| `runs/N<N>_<pb\|free>[_zl\|_t]/` | per run: utilization, timing, failing endpoints (unit-internal vs harness), bus skew, routed .dcp |
 | `runs/SUMMARY.txt` | one line per run |
 
 Harness fidelity: synthesized unit = routed v1.41 within 3% per block (NN_live 1,343 vs 1,352 LUT; boxcar 1,105 vs
@@ -20,7 +21,7 @@ Harness fidelity: synthesized unit = routed v1.41 within 3% per block (NN_live 1
 debug taps to seg_stamp, seg_stamp/rf_tap and averaging buffer 1 (diagnostic/verification) are not included.
 Both CDC instances bound the 2 ns bus-skew constraint in every run (met).
 
-## 4.5a — resources
+## Resources
 
 Per unit (routed v1.41): classifier (NN_live + boxcar + gate + trig_sync + 2 CDC) 2,437 LUT, 3,231 FF, 4 DSP,
 0.5 BRAM tile; dac_gate 858 LUT, 2,388 FF; record memory (verification) 8 BRAM tiles. Per-tone front ends (QICK's):
@@ -39,7 +40,7 @@ Our logic is never the binding cost once a per-tone front end is counted: QICK's
 for its DDS tables; 35–157 DSP) is. Resources allow ~20–35 qubits on this device; the RFSoC4x2's converter count
 limits feed-forward outputs long before that.
 
-## 4.5b — timing vs N (OOC, setup at 552.96 MHz, clk_adc0_x2 1.809 ns)
+## Timing vs N (OOC, setup at 552.96 MHz, clk_adc0_x2 1.809 ns)
 
 `pb` = all units constrained to v1.41's pb_live (CLOCKREGION_X4Y3:X5Y4, next to the ADC tiles: 36,480 LUT,
 96 BRAM tiles, so ≤ 11 units fit); `free` = whole device.
@@ -57,7 +58,7 @@ limits feed-forward outputs long before that.
 | 4 | pb | T | +0.063 | 0 / 0 | |
 | 8 | pb | T | +0.029 | 0 / 0 | |
 
-RTL variants (experiments only, nothing deployed changed):
+RTL variants (nothing deployed changed):
 * **v1.41** — the deployed blocks.
 * **ZL** — gate output register removed, `res_o` registered in the unit before the CDCs. Same end-to-end cycle
   count as v1.41.
@@ -68,11 +69,11 @@ RTL variants (experiments only, nothing deployed changed):
   estimated Fmax 668 MHz. Not functionally re-verified (csim source identical; RTL sim / bit-exact not run).
 
 **Every near-critical and failing path is the same one: NN_live's fused tail.** The last iteration computes the
-four rectified units, the signed sums and the saturating select in one cycle (`NN_live.cpp:188–209`; 4–6 logic
-levels, 3–4 CARRY8, ~0.55–0.67 ns of logic) and drives both `res_o` — combinationally into the two CDC hold
-registers — and the saturated-logit register `lr_1_reg` inside NN_live. Nothing in the failing set involves another
-unit, the stream fan-out or the clock crossings themselves. Margin shrinks with packing density because routing
-around the carry chains gets longer, not because units interact.
+four rectified units, the signed sums and the saturating select in one cycle (the `final_word` branch of ACC_L in
+`NN_live.cpp`; 4–6 logic levels, 3–4 CARRY8, ~0.55–0.67 ns of logic) and drives both `res_o` — combinationally into
+the two CDC hold registers — and the saturated-logit register `lr_1_reg` inside NN_live. Nothing in the failing set
+involves another unit, the stream fan-out or the clock crossings themselves. Margin shrinks with packing density
+because routing around the carry chains gets longer, not because units interact.
 
 The same path family fails in the **integrated** v1.41 build at N = 1 (`live_res_cdc_0` hold_reg −0.042 ns, NN_live
 internal −0.141), i.e. QICK's congestion costs ~0.2 ns against the OOC N = 1 margin of +0.171.
@@ -91,18 +92,17 @@ Unconstrained placement does not buy margin: at N = 16 over the whole device the
 (+0.002). The tail's margin is a property of the kernel at 552.96 MHz (~0.0–0.17 ns depending on placement), not of
 crowding alone.
 
-## What this means for 4.5c (integrated N = 2–3 build)
+## Integrated multi-unit build
 
 Not built. With the v1.41 RTL the decision path of every unit sits at ~0 to +0.17 ns out of context, and the same
-path already fails at N = 1 inside the real design (−0.042 ns; QICK's congestion costs ~0.2 ns). An integrated build
-with 2–3 units would almost certainly show failing endpoints on each unit's decision path, which is the opposite of
-the claim 4.5c is meant to support. The T variant gains 0.04–0.06 ns out of context at the same end-to-end latency,
-still less than the ~0.2 ns integration penalty measured at N = 1, and it changes the deployed design (NN_live,
-gate, re-verification), so it is a user decision.
+path already fails at N = 1 inside the real design (−0.042 ns; QICK's congestion costs ~0.2 ns), so an integrated
+build with 2–3 units would be expected to show failing endpoints on each unit's decision path. The T variant gains
+0.04–0.06 ns out of context at the same end-to-end latency, still less than the ~0.2 ns integration penalty measured
+at N = 1, and it changes the deployed design (NN_live, gate, re-verification).
 
-## v1.43 recount (2026-11-07)
+## v1.43 resource recount
 
-`SCALING_OUT=resource_scaling_v143.json python scaling_study/resource_scaling.py` (v141_reports now reads the v1.43 reports;
-v1.43 has no time tagger, and its record memory includes live_rec_wreg_0). With a per-tone front end: 18-35 units
-(full stock readout, as built: 18, LUT-bound; DDS/mixer only, without NN_axi and record memory: 35, BRAM-bound). The unit's RTL is unchanged since
-these OOC runs (sources last committed 2026-10-21, NN_live 1.5), so the timing results above apply to v1.43 as they are.
+`SCALING_OUT=resource_scaling_v143.json python scaling_study/resource_scaling.py`, with v141_reports reading the v1.43
+reports (v1.43 has no time tagger, and its record memory includes live_rec_wreg_0). With a per-tone front end: 18-35 units
+(full stock readout, as built: 18, LUT-bound; DDS/mixer only, without NN_axi and record memory: 35, BRAM-bound). The
+unit's RTL is unchanged in v1.43 (NN_live 1.5), so the timing results above apply to v1.43.

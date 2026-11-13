@@ -5,7 +5,7 @@ label-free domain map, float32 path), scored on the 20,000 acquired shots,
 threshold chosen on the training data (never on the eval set). Reports:
   MF   matched filter: w = mu1 - mu0 (complex), real part of <z, w>
   LDA  Fisher discriminant with full 1540x1540 pooled covariance (+ ridge)
-and, for reference, the old convention: MF fitted on half of the eval set itself.
+and, for reference, an MF fitted on half of the eval set and scored on the other half.
 """
 import sys
 from pathlib import Path
@@ -44,8 +44,8 @@ for N in (10000, 50000, 200000):
         out.append((lam, fid((Xev @ wl > tl).astype(int), yev)))
     print(f"N={N:6d}: MF {f_mf:.2f}%   LDA " + "  ".join(f"(ridge {l:g}) {f:.2f}%" for l, f in out), flush=True)
 
-# old convention: half-split of the eval set itself
+# MF fitted on half of the eval set
 n = len(yev) // 2
 m0, m1 = Xev[:n][yev[:n] == 0].mean(0), Xev[:n][yev[:n] == 1].mean(0); w = m1 - m0
 s = Xev @ w; t = 0.5 * (m0 @ w + m1 @ w)
-print(f"old convention (MF fit on eval[:10000], scored on eval[10000:]): {fid((s[n:] > t).astype(int), yev[n:]):.2f}%")
+print(f"half-split (MF fit on eval[:10000], scored on eval[10000:]): {fid((s[n:] > t).astype(int), yev[n:]):.2f}%")

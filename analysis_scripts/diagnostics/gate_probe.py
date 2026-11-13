@@ -185,9 +185,9 @@ def main():
     ap.add_argument("--pre", type=float, default=0.05, help="capture 2 opens this long before t_dec (us)")
     ap.add_argument("--out", default="campaign_v140L1/A_L6b_gate_probe.npz")
     ap.add_argument("--nn-advance", type=float, default=0.0,
-                    help="v1.40L8 boxcar path: NN_live's input runs this much (us) ahead of "
-                         "readout 0's FIR; sets box_config sel = 1. Use 0.1135 (55 ticks, 111.9 ns), the value "
-                         "of every run since L9 (0.1078 is L8's; box_probe.py measures the path at ~115 ns)")
+                    help="boxcar path: NN_live's input runs this much (us) ahead of "
+                         "readout 0's FIR; sets box_config sel = 1. Use 0.1135 (55 ticks, 111.9 ns); "
+                         "box_probe.py measures the path at ~115 ns")
     ap.add_argument("--box-shift", type=int, default=7)
     ap.add_argument("--box-m", type=int, default=11)
     ap.add_argument("--split", action="store_true",
@@ -195,7 +195,7 @@ def main():
     ap.add_argument("--rf-thr", type=int, default=0, help="rf_tap_0 threshold (0: calibrate)")
     ap.add_argument("--lbuf-ref", choices=L.LBUF_REFS, default=L.LBUF_REF,
                     help="L_buf reference: last window sample instant (default) or window end "
-                         "(pre-2026-10-20 convention, 1/fs = 1.808 ns smaller)")
+                         "(1/fs = 1.808 ns smaller)")
     a = ap.parse_args()
     L.LBUF_REF = a.lbuf_ref
     print(f"L_buf reference: {L.LBUF_REF}")

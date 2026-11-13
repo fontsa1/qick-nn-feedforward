@@ -1,8 +1,8 @@
-"""Task 4.3: within-session calibration drift on ONE bitstream load.
+"""Calibration drift within one bitstream load.
 
 Every --interval seconds, on the board named by QICK_NS_HOST:
   phase   arg(k) from the phrst_probe fixed-pulse probe, mode "none" only (a
-          phrst program would itself move arg(k); see 4.4): 20 one-shot programs
+          phrst program would itself move arg(k); see phrst_probe.py): 20 one-shot programs
           + one 50-rep program. The probe phase equals the calibration's arg(k).
   gain    plateau |IQ| (proportional to |k|)
   offset  mean IQ of a window with a zero-gain pulse (the c term's analogue)
@@ -12,7 +12,7 @@ Every --interval seconds, on the board named by QICK_NS_HOST:
 at the start and the end, both with the START calibration (stored k/c are not
 touched), to measure the stale-calibration cost directly.
 
-Both boards can run at once (one process each):
+Both boards can run at once (one process each, QICK_NS_HOST picks the board).
 """
 import argparse
 import json

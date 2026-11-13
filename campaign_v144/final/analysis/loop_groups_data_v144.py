@@ -16,10 +16,9 @@ SPLIT_NS = 175.0                # between the groups: 173.96-174.38 and 175.64-1
 
 
 def closure(p, r):
-    """latency_protocol.py's path_minus_adv centre (3.2 ns) is v1.43's box_probe path (115.1 ns) minus the advance (111.9 ns).
-    The boxcar path moves by one sample between place-and-route runs (v1.42 113.24, v1.43 115.1, v1.44 113.3 ns), so on v1.44 the
-    centre is 113.3 - 111.9 = 1.4 ns, same +/- 1.0 ns. That check guards against a stale advance (0.1078 us gives about 7 ns).
-    Every other closure check must pass as written; see campaign_v144/final/latency/README.md."""
+    """path_minus_adv is centred on 1.4 ns for v1.44 (boxcar path 113.3 ns minus the 111.9 ns advance), +/- 1.0 ns;
+    latency_protocol.py's default centre, 3.2 ns, is v1.43's. Every other closure check must pass as written; see
+    campaign_v144/final/latency/README.md."""
     bad = [c for c in r["checks"] if not c["ok"]]
     if [c["name"] for c in bad] not in ([], ["path_minus_adv"]):
         raise SystemExit(f"{p} failed closure checks: {[c['name'] for c in bad]}")

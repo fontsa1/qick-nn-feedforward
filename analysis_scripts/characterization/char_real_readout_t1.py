@@ -1,12 +1,6 @@
 """
-Follow-up to char_real_readout_noise.py's Q6 (mid-trace state
-transitions) was underpowered -- per-sample SNR is only ~0.2, so a K=40
-smoothing window gives ~1.3 sigma and the resulting "state per window"
-assignments were dominated by noise (54.7% of |1> shots "never looked
-excited", exponential fit rejected at p=1.7e-55). Those numbers measured
-the estimator, not the qubit.
-
-This redoes it with a matched filter and an explicit null model.
+Mid-readout decay (T1) in the real readout data, with a matched filter and an explicit null model. Per-sample SNR
+is only ~0.2, so per-window state assignment is noise-dominated; this tests the matched-filter projection instead.
 
 Method:
   w(t) = m1(t) - m0(t), the optimal linear discriminant per sample.
@@ -25,8 +19,7 @@ Method:
 
 Also reports the OPTIMAL achievable single-shot fidelity on the real data
 (full-trace matched filter, cross-validated), which is the ceiling any
-classifier on this dataset can reach and the number our synthetic data
-should be tuned to reproduce.
+classifier on this dataset can reach.
 
 """
 import numpy as np
@@ -89,8 +82,8 @@ def main():
     print("  per-sample SNR |m1-m0|/sigma      = %.4f"
           % (np.mean(np.abs(w)) / np.std(ev0 - m0)))
     print("\n  => this is the ceiling. Any classifier on this dataset, on-chip or")
-    print("     offline, is bounded by it, and our synthetic generator should be")
-    print("     tuned so its own ceiling matches.")
+    print("     offline, is bounded by it; compare a synthetic generator's")
+    print("     own ceiling against it.")
 
     # ------------------------------------------------ half-split T1 test
     hdr("T1 TEST: half-split matched filter, with a noise null and an asymmetry control")

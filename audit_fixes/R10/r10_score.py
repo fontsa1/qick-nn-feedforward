@@ -1,10 +1,8 @@
-"""R10 step 4a: bit-accurate (hls4ml C++, the deployed precision config) scoring of a model on the
-paired L7 campaign's captures (loopback20k_box_A.npz), all 20,000 rows; the 19,400-row headline
-(rows 1000:1600 removed) is taken in r10_stats.py.
+"""Bit-accurate scoring (hls4ml C++, the deployed precision config) of a model on the rows of an acquired capture
+(default loopback20k_box_A.npz), all 20,000 rows; r10_stats.py takes the 19,400-row set (rows 1000:1600 removed).
 
-Uses analysis_scripts/analysis/fixed_point_emulator.py's own fixed_point_model() (same make_hls_config as
-the export, same Windows compile patch) and task33's hw_raw_transform, i.e. the project's emulator.
-
+Uses fixed_point_model() from analysis_scripts/analysis/fixed_point_emulator.py (same make_hls_config as the export)
+and hw_raw_transform from task33_three_way_comparison.py.
 """
 import argparse
 import os

@@ -1,11 +1,11 @@
-"""In-loop fidelity on the full test split, both boards: R18's 19,400 rows (rows 0-19,999 minus the domain-map
-rows) plus the 80,000 further rows (rows 20,000-99,999, both passes).
+"""In-loop fidelity on the full test split, both boards: rows 0-19,999 minus the domain-map rows (19,400) plus rows
+20,000-99,999 (both passes).
 
 Per board: in-loop F on the 99,400 and on the fresh 80k; loop failures (stale, late, unsafe, pulse != decision,
 binding rejects); late-rate 95% upper bound; paired against the same board's gate-idle NN_live on identical
 rows (A: campaign_v140L1/A_v141_100k_merged_0_50000 + A_v141_100k_swap_merged_50000_100000; B: the swap run's
 0-50k + B_v141_100k_merged_50000_100000); loop latency over passed shots (median, order-statistic 95% CI);
-blanked-shot plateau / pass plateau (R19 input). Boards A vs B paired on identical rows.
+blanked-shot plateau / pass plateau. Boards A vs B paired on identical rows.
 Each run's in-loop answer uses that run's own always-pass plateau (calibrated at its start).
 
 Writes audit_fixes/R18_full/inloop_full_stats.json.

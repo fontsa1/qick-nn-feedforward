@@ -1,4 +1,4 @@
-"""R9: refit the v2 synthetic generator on smaller real pools (training split only).
+"""Refit the v2 synthetic generator on smaller pools of real training rows.
 
 Uses qubit_synth_lib exactly as tools/generate_synth_holdout_v2.py does (same fit,
 same noise_mode="measured", same warm start), only the fit-pool rows, the number
@@ -36,10 +36,8 @@ sys.path.insert(0, str(REPO)); sys.path.insert(0, str(REPO / "tools"))
 from qubit_synth_lib import (fit_cavity_and_noise_model, generate_dataset,  # noqa: E402
                              matched_filter_ceiling)
 
-# Copied verbatim from generate_holdout_measured_noise.FULL_POOL_WARM_START (only the
-# least-squares warm start; in noise_mode="measured" the cavity fit affects nothing but
-# the Phi bookkeeping array). Copied, not imported, so this script does not depend on
-# the module that writes x_50k_heldout_measnoise, which is not used.
+# Least-squares warm start, as tools/generate_holdout_measured_noise.FULL_POOL_WARM_START (with noise_mode="measured"
+# the cavity fit only affects the Phi array).
 FULL_POOL_WARM_START = [
     1.01720706e+07, -4.54101244e+04, 3.64588334e+06, -3.07607069e-02,
     2.98501165e-02, 2.70625462e-02, -4.07594194e-02, 9.14256911e-02,

@@ -1,13 +1,14 @@
 """Resource scaling of the classifier unit.
 
-Per-unit cost from a routed hierarchical utilization report (paper_tables/table3/data, xczu48dr-ffvg1517-2-e), and
+Per-unit cost from a routed hierarchical utilization report (xczu48dr-ffvg1517-2-e), and
 the largest number of units that fits in the resources the build leaves free, for three per-tone front ends:
   none      -- the unit only (all units share an existing readout stream; the lower bound)
   fir_free  -- + a DDS/mixer front end: axis_dyn_readout_v1_1 as routed (its FIR output m1 is unconnected, so the
                FIR is trimmed): what the boxcar path needs per tone
   stock     -- + a full stock readout (axis_dyn_readout_v1_0, FIR included), if every tone keeps QICK's FIR path
 and two baselines: the design as built, and without NN_axi and the time tagger (a scaling build would drop them).
-Writes resource_scaling.json (or $SCALING_OUT) and prints a table. The report set is the one v141_reports reads.
+Writes resource_scaling.json (or $SCALING_OUT) and prints a table. Needs paper_tables/table3/v141_reports.py and the
+routed reports it reads (not in this repository).
 """
 import json
 import sys
@@ -38,11 +39,11 @@ def add(*cs):
 
 core = cost(["NN_live_0", "boxcar_tap_0", "live_gate_0", "live_res_cdc_0", "live_res_cdc_1", "trig_sync_0"])
 gate = cost(["dac_gate_0"])
-record = cost([n for n in ("axi_bram_ctrl_live", "axi_bram_ctrl_live_bram", "live_rec_wreg_0") if n in B])  # v1.43 adds the write register
+record = cost([n for n in ("axi_bram_ctrl_live", "axi_bram_ctrl_live_bram", "live_rec_wreg_0") if n in B])  # live_rec_wreg_0 from v1.43
 fe = dict(none=dict(lut=0, ff=0, bram=0.0, dsp=0),
           fir_free=cost(["axis_dyn_readout_v1_1"]),
           stock=cost(["axis_dyn_readout_v1_0"]))
-dropped = cost([n for n in ("NN_axi_0", "qick_time_tagger_0", "axi_dma_tt", "axis_register_slice_5") if n in B])  # v1.43 has no time tagger
+dropped = cost([n for n in ("NN_axi_0", "qick_time_tagger_0", "axi_dma_tt", "axis_register_slice_5") if n in B])  # the time tagger is absent from v1.43
 
 free = {"as built": {k: CAP[k] - USED[k] for k in CAP},
         "minus NN_axi (and time tagger if present)": {k: CAP[k] - USED[k] + dropped[k] for k in CAP}}

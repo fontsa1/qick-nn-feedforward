@@ -126,11 +126,10 @@ def read_capture(stride=1, scaling_factor=1, taps=False):
         return vals, prob
     if not TAPS_PRESENT:
         raise SystemExit(
-            "taps=True requested, but the debug taps were REMOVED in v1.39 "
-            "(task 2.1).\nSlots 771+ no longer hold tap data, so this would "
-            "return noise as measurements.\nScoring does not need them -- use "
-            "score_armed_fidelity.py, which reads only slot 770.\nTo read taps "
-            "you need a pre-v1.39 bitstream plus QICK_TAPS_PRESENT=1.")
+            "taps=True requested, but this firmware has no debug taps: "
+            "slots 771+ are not tap data.\nScoring does not need them -- use "
+            "score_armed_fidelity.py, which reads only slot 770.\nTaps need "
+            "firmware built with NN()'s debug ports plus QICK_TAPS_PRESENT=1.")
     tw = np.array([soc.nn_read_bram((DT.DBG_BASE + i) * 4) & 0xFFFFFFFF
                    for i in range(DT.N_DBG_TOTAL)], dtype=np.uint32)
     # in_local readbacks (firmware with debug ports only): PRE = in_local[0..1001] after LOAD_L, read word for
@@ -216,21 +215,17 @@ def main():
                     help="captured shots per dataset (each is 1541 Pyro reads)")
     ap.add_argument("--chunk", type=int, default=500,
                     help="rows fed to prepare_chunk before slicing to --shots. "
-                         "MUST match the scored runs (500): prepare_chunk "
-                         "renormalises by np.max(np.abs(out)) over the WHOLE "
-                         "chunk, so preparing 10 rows would fire different "
-                         "amplitudes than the 500-shot runs we are trying to "
-                         "explain, and the captures would not be comparable.")
+                         "prepare_chunk normalises by the peak over the whole "
+                         "chunk, so this must equal the chunk size of the run "
+                         "being compared (500).")
     ap.add_argument("--scaling-factor", type=int, default=1)
     ap.add_argument("--onset-threshold", type=int, default=40)
     ap.add_argument("--lag-probe-shots", type=int, default=6,
                     help="shots used to MEASURE the BRAM readback lag before "
                          "capturing anything (see measure_readback_lag)")
     ap.add_argument("--force-lag", type=int, default=None,
-                    help="skip the measured lag and assume this one instead. "
-                         "The harness hard-codes 1 (pred[1:] vs y[:-1]); this "
-                         "exists to reproduce that pairing deliberately, not "
-                         "to paper over a probe that disagrees with it.")
+                    help="skip the measured lag and use this one "
+                         "(onchip_test_harness.py assumes 1: pred[1:] vs y[:-1])")
     ap.add_argument("--out", default="classifier_input_captures.npz")
     a = ap.parse_args()
 
@@ -332,7 +327,7 @@ def main():
         store[f"{name}__raw_rb"] = raw_rb
         store[f"{name}__preload"] = preload
         store[f"{name}__raw_X"] = X
-        # the waveform actually fired, needed to test caps against our intent
+        # the waveform actually fired
         store[f"{name}__fired"] = D.astype(np.float32)
         # The taps are written right after the sigmoid in the same pass, so they carry the sigmoid's lag:
         # caps[i] pairs with probs[i+SIG_LAG] and tapwords[i+SIG_LAG]; the tapped layer10 must equal the sigmoid

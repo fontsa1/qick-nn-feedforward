@@ -1,8 +1,6 @@
-# Supervisor for build_v1.43.tcl (2026-11-04).
-# Liveness = log/file growth only (Vivado build-hang rule), never CPU. Watched: the build's stdout and
-# Vivado logs, everything under top.runs (runme.log, OOC runs, .Xil realtime/tmp worker dirs) and the
-# project's .Xil. 30 min with no write anywhere -> kill this build's own process tree (by PID, never by
-# image name) and relaunch. Vivado exiting without BUILD_COMPLETE_v1.43 -> relaunch. At most 3 attempts.
+# Supervisor for build_v1.43.tcl. Liveness is file growth, not CPU: the build's stdout and Vivado logs,
+# everything under top.runs (runme.log, OOC runs, .Xil realtime/tmp worker dirs) and the project's .Xil.
+# 30 min with no write anywhere -> kill this build's process tree and relaunch. Vivado exiting without BUILD_COMPLETE_v1.43 -> relaunch. At most 3 attempts.
 # Events go to supervise_v1.43_status.log, one line each.
 $ErrorActionPreference = 'Continue'
 $top = 'C:\qick_projects\top'

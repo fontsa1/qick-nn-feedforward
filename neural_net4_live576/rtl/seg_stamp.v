@@ -20,7 +20,7 @@
 //   word 0  records written
 //   word 1  thr, |I|+|Q| threshold (host)
 //   word 2  magic 0x53454733 ("SEG3")
-//   word 3  cfg (host), driven out to boxcar_tap: [0] NN input 0 = FIR, 1 = boxcar; [7:4] shift; [12:8] M - 1
+//   word 3  cfg (host), driven out to boxcar_tap: [0] NN input 0 = FIR, 1 = boxcar; [7:4] shift; [11:8] M - 1
 //   word 4  rf_thr (host), driven out to rf_tap: [15:0]
 //   words 16 + 16*(k mod N_REC), record k:
 //     +0 shot (trigger count, from 1)   +1 trig (absolute counter)
@@ -116,7 +116,7 @@ module seg_stamp #(
     reg [7:0]  low_cnt;
     reg        post_last;              // the sample in mag came after last (t_mag > last)
 
-    // writer: 8 record words, then the header, then the magic
+    // writer: the 16-word record (10 fields, zero padded), then the record count (word 0), then the magic (word 2)
     reg        wr_busy;
     reg [4:0]  wr_k;
     reg [31:0] wr_rec_base;

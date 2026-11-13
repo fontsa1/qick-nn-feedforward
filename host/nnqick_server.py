@@ -47,7 +47,7 @@ def _bd2_trace_dma(self, direction, start_block, start_port):
             raise RuntimeError("tracing port %s from block %s: expected to find axi_dma or axis_switch, found %s instead" % (start_port, start_block, blocktype))
 
 _qickip.QickMetadata.trace_dma = _bd2_trace_dma
-print("BD 2.0 patch applied: QickMetadata.trace_dma now passes through axis_broadcaster nodes")
+print("trace_dma patch applied: QickMetadata.trace_dma passes through axis_broadcaster nodes")
 # --- end axis_broadcaster patch ---
 
 # --- NN_live tracer patch: hide live_gate_0 from QICK's net tracing; it shares trig_0_o with axis_avg_buffer_0.
@@ -125,7 +125,7 @@ def _l9_trace_sig(self, blockname, portname):
 
 _qickip.QickMetadata.trace_bus = _l9_trace_bus
 _qickip.QickMetadata.trace_sig = _l9_trace_sig
-print("v1.40L9 patch applied: rf_tap_0 and trig_sync_0 aliased for QickMetadata tracing")
+print("rf_tap/trig_sync patch applied: rf_tap_0 and trig_sync_0 aliased for QickMetadata tracing")
 # --- end rf_tap / trig_sync tracer patch ---
 
 class NNQickSoc(QickSoc):
@@ -287,10 +287,7 @@ class NNQickSoc(QickSoc):
         return self.NN_axi_0.mmio.read(0x28)
 
     def nn_set_onset_threshold(self, value):
-        # Raw MMIO, bypassing register_map -- the same TypeError
-        # ("__int__ returned non-int (type str)") seen on out_reset in
-        # v1.8.0 also hits onset_threshold's register_map getter, so use
-        # the already-proven-reliable raw-MMIO pattern instead.
+        # Raw MMIO: the register_map getter raises TypeError on this register.
         self.NN_axi_0.mmio.write(0x50, value)
         return self.NN_axi_0.mmio.read(0x50)
 
@@ -319,7 +316,7 @@ ns_proc = subprocess.Popen(
 # wait for the nameserver to actually come up
 time.sleep(5)
 
-# start the qick proxy server (this blocks forever, same as before)
+# start the qick proxy server (this blocks forever)
 start_server(
     bitfile=bitfile,
     proxy_name=proxy_name,

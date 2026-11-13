@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# FINAL_TASKS 6.3 on v1.43, the final SoC (user decision 2026-11-05; the RTL review finishes afterwards).
-#   bash campaign_v144/run_6_3.sh A|B      one process per board, boards as loaded (no redeploy)
-# Order: calibrate + 20-shot in-loop smoke (stops the board's run unless 20/20 on the v1.43 banner), in-loop on the full
-# split, NN_live run 1, NN_live run 2 (halves swapped), NN_axi TLAST on the 20k set, Fig. 7 capture and sweep, drift check.
+# Main data campaign on v1.44, one board per process, boards as loaded (no redeploy).
+#   bash campaign_v144/run_6_3.sh A|B
+# Order: calibrate + 20-shot in-loop smoke (stops the board's run unless 20/20 on the v1.44 banner), in-loop on the full
+# split, NN_live run 1, NN_live run 2 (halves swapped), NN_axi TLAST on the 20k set, Fig. 7 capture and sweep.
 # Recalibrated before each phase. Rerunning resumes: finished chunks are skipped, the in-loop run uses its checkpoint.
-# Watchdog: a log silent for 15 min gets its own python tree killed (by PID, never by image name), then a retry.
+# Watchdog: a log silent for 15 min has its python process tree killed, then a retry.
 set -u
 cd "$(dirname "$0")/.."
 B=$1

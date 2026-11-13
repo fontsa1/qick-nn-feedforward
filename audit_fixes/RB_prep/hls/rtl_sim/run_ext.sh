@@ -1,5 +1,6 @@
 #!/bin/bash
-# ./run_ext.sh <syn/verilog dir> <tag> [EXPECT_WRAP]
+# tb_live_ext.sv (extreme inputs) against an HLS syn/verilog dir. From hls/rtl_sim:
+#   ./run_ext.sh <syn/verilog dir> <tag> [EXPECT_WRAP]
 HLSV=$1; TAG=$2; DEF=${3:+-d $3}
 V=/c/embedded-software/Vivado/2023.1/bin
 rm -f *.dat; cp -f $HLSV/*.dat .

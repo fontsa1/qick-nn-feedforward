@@ -1,4 +1,4 @@
-"""Task 3.3: real-only vs synthetic-only vs combined training (Fig. 12).
+"""Real-only vs synthetic-only vs combined training (Fig. 12).
 
 All arms use the deployed recipe exactly (export_signed_domain_model.py): the
 ternary 1540 -> 4 -> 1 network, the label-free domain map (k2, c2) applied to
@@ -7,8 +7,7 @@ the raw training data, the signed hw_raw_transform, Adam 1e-3, batch 32, up to
 of the arm's OWN training data. All arms are scored on the same independent
 test set: `data/loopback20k_real.npy`, 20,000 real shots played through the DAC and
 analog loopback and back through the ADC -- the deployment domain, fed to the
-model with no map, exactly as eval_labelfree_model_on_acquired.py does for the
-deployed model's 95.34%.
+model with no map.
 
 Arms:
     real_10k      0528_X_train_0_770[:10000]          (the deployed model's data)

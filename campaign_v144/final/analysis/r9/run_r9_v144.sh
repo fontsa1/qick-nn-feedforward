@@ -1,6 +1,6 @@
 #!/bin/bash
-# R9 full pipeline: generator validation + refits, then training arms. Sequential, 4 threads.
-# Launch (detached):  nohup bash audit_fixes/R9/run_all.sh > audit_fixes/R9/logs/run_all.log 2>&1 &
+# Synthetic-data study on the v1.44 replay set: generator validation and refits, then the training arms.
+# Sequential, 4 threads. Results in campaign_v144/final/analysis/r9/results.
 # Each step skips itself if its output already exists (safe to relaunch after an interruption).
 set -u
 cd "${REPO_ROOT:-.}"/audit_fixes/R9; R=../../campaign_v144/final/analysis/r9/results; export R9_EVAL_X=../../campaign_v144/final/analysis/replay20k_A.npy OMP_NUM_THREADS=4 TF_NUM_INTRAOP_THREADS=4
@@ -17,7 +17,7 @@ run () {  # run OUT seeds... -- arms...
   if [ -f $R/$out.done ]; then echo "skip $out"; return; fi
   $PY r9_train_eval.py --out $R/$out "$@" && touch $R/$out.done
 }
-# 10k arms, draw 0 with 10 seeds (reproduces + extends task33 real_10k / synth_10k)
+# 10k arms, draw 0 with 10 seeds
 run t10k_d0 --seeds $S10 --arms real10k_d0=real:0:10000 v2_10k_d0=v2:0:10000
 # extra data draws, 5 seeds each
 run t10k_draws --seeds $S5 --arms real10k_d1=real:110000:120000 real10k_d2=real:120000:130000 \

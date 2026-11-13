@@ -1,6 +1,6 @@
 """Generate firmware/NN_live_rom.h from the hls4ml weight files.
 
-NN_live accumulates the first layer (1540 -> 4, ternary) one sample at a time,
+NN_live accumulates the first layer (2*N_SAMP -> 4, ternary) one sample at a time,
 so it needs, per sample n, the eight weights that multiply I_n and Q_n for the
 four hidden units. This packs them into one 16-bit ROM word per sample:
 
@@ -12,9 +12,9 @@ compares every shot against hls4ml's own NN()):
   * NN_axi's LOAD_L leaves input index 2n = I_n and 2n+1 = Q_n
     (word bits [15:0] = I, [31:16] = Q).
   * config2 uses the resource strategy at reuse_factor 1, whose
-    dense_resource_rf_leq_nin reads weights[u*1540 + i] (hls4ml transposes
+    dense_resource_rf_leq_nin reads weights[u*2*N_SAMP + i] (hls4ml transposes
     the matrix for this strategy; the header comment still prints the
-    original [1540, 4] shape).
+    original [2*N_SAMP, 4] shape).
 
 It also sizes the accumulator: with |I|, |Q| <= 32768 and ternary weights,
 |sum_u| <= 32768 * sum_i |w[u,i]| + |b2[u]|, so ACC_W bits hold every sum

@@ -1,43 +1,10 @@
 """
-Characterise the noise structure of the real qubit readout data
-(0528_X_train_0_770.npy), to decide how it should actually be modelled.
+Noise structure of the real readout data (0528_X_train_0_770.npy): state-dependent variance, stationarity along
+the trace, sample-to-sample correlation, Gaussianity, I/Q isotropy, and mid-trace state transitions (projection on
+w = mean1 - mean0 versus time).
 
-The synthetic generator's noise model should match the real data: fidelity depends strongly on how hard the
-data is (the on-chip classifier scores 100% on the white-noise x_50k but 72% on x_50k_heldout).
-
-Structure of the real set: 900,000 shots x 770 complex samples, balanced,
-CLASS-BLOCKED in 180 alternating runs of 5000. Sampling is therefore done
-block-wise and spread across the whole file, so slow drift is not aliased
-into the noise estimate.
-
-Questions, each with a concrete modelling consequence:
-
- Q1. Is the noise state-dependent? Additive white Gaussian noise (AWGN) is
-     state-independent by construction. In real dispersive readout the |1>
-     trajectory carries extra variance because the qubit can DECAY during
-     the readout window. If sigma_1 > sigma_0, an AWGN generator is
-     structurally wrong, not merely mistuned.
-
- Q2. Is it stationary along the trace, or does the ring-up transient carry
-     different statistics from the steady state?
-
- Q3. Is it white, or correlated sample-to-sample? The readout chain has
-     finite bandwidth, so correlated ("coloured") noise is expected. This
-     matters because integration gain is sqrt(N/rho*), not sqrt(N).
-
- Q4. Is it Gaussian? T1 decay produces heavy tails and bimodality in the
-     residual, which no Gaussian model reproduces.
-
- Q5. Is it isotropic in I/Q?
-
- Q6. THE DECISIVE ONE -- are there mid-trace state transitions? Project
-     each shot onto the discriminant axis w = mean1 - mean0 and track it
-     versus time. A |1> shot that decays partway through starts at the
-     excited level and ends at the ground level. The fraction of such shots
-     and the distribution of their transition times give T1 directly (the
-     transition times should be exponential). This is the single feature
-     that separates a realistic readout model from AWGN.
-
+The file is class-blocked in alternating runs of 5000 shots, so shots are sampled block-wise across the whole file
+and slow drift is not aliased into the noise estimate.
 """
 import numpy as np
 from scipy import stats

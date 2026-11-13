@@ -1,4 +1,4 @@
-"""Task 4.4: does a DDS phase reset (phrst) make the loopback phase -- and so
+"""Does a DDS phase reset (phrst) make the loopback phase -- and so
 arg(k) -- repeat across bitstream loads?
 
 Per load, a fixed const pulse (gen 0, 50 MHz) is read back on ro 0 and the
@@ -8,14 +8,14 @@ across loads is the arg(k) spread. Modes:
   none  no phrst (as the measurement programs): expected random per load
   gen   phrst on the pulse only
   ro    phrst on the readout config only
-  both  phrst on both, at the same tProc time (the hypothesis)
+  both  phrst on both, at the same tProc time
 Each mode runs as separate one-shot programs (--shots, as every acquisition
 script does) and as one --reps program (rep-to-rep stability within a run).
 
 Between loads the board's nameserver kernel is restarted and its server cell
 re-run, which re-downloads the same bitstream (QickSoc -> PYNQ Overlay). The
 banner is checked after each reload. Stored calibration (k/c) is NOT touched;
-run tools/run_calibration.py afterwards (standing rule after every deploy).
+run tools/run_calibration.py afterwards.
 
 """
 import argparse

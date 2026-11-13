@@ -136,7 +136,7 @@ def report_live(Y, probs, hdr, rec, words=None, dec=None):
     dec_bit = (rec[:, 7] & 1).astype(int)
     fresh = rec[:, 0] == cnt - 1
     steps = np.diff(cnt)
-    print("\nNN_live (live readout stream, task 4.1)")
+    print("\nNN_live (live readout stream)")
     print(f"  magic {'ok' if (hdr[:, 2] == LIVE_MAGIC).all() else 'WRONG'}; newest record read "
           f"{int(fresh.sum())}/{n}; frame errors {int(hdr[0, 1])} -> {int(hdr[-1, 1])} over the run")
     if len(steps):
@@ -216,7 +216,7 @@ def main():
                          "v1.40L1+ bitstream and the patched NNQickSoc)")
     ap.add_argument("--live-n", type=int, default=770,
                     help="samples NN_live frames per window (live_window_gate N): "
-                         "770 through v1.40L2, 576 on v1.40L3 (task 4.1g)")
+                         "770 through v1.40L2, 576 from v1.40L3")
     ap.add_argument("--live-capture", action="store_true",
                     help="with --live: also read the 770 words NN_live captured "
                          "and compare them with acquire_decimated()'s samples "
@@ -235,10 +235,8 @@ def main():
                          f"known: {sorted(DATASETS)}")
     xf, yf = DATASETS[a.dataset]
 
-    # Board-scoped k/c for QICK_NS_HOST. strict=False because this script
-    # never reads the root calibration/k.npy/c.npy that the ACTIVE guard protects, and the
-    # guard otherwise makes concurrent runs on both boards impossible (the
-    # other board's calibration flips ACTIVE mid-campaign).
+    # Board-scoped k/c for QICK_NS_HOST. strict=False: this script never reads the root calibration/k.npy/c.npy
+    # that the ACTIVE guard protects, and the guard would block concurrent runs on both boards.
     k, c = calib.load_kc(strict=False)
     soc.nn_set_onset_threshold(a.onset_threshold)
     print(f"dataset={a.dataset} shots={a.shots} SF={a.scaling_factor} "
@@ -337,8 +335,7 @@ def main():
         print("\nNOTE: --no-extra-dma was passed, so the chip reports the PREVIOUS "
               "shot and the working pairing\n      will be y[i-1]. That is the "
               "known DMA-readback lag, not a classifier fault.\n      Re-run "
-              "without the flag for same-shot numbers "
-              "(CURRENT_BEST_RESULTS.md 2026-09-22).")
+              "without the flag for same-shot numbers.")
     print(f"\nprob range: {probs.min():.6f} -> {probs.max():.6f}")
     print(f"predicted |1>: {int((probs > 0.5).sum())}/{n}")
     if probs.min() == probs.max():

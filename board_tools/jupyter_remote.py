@@ -9,7 +9,7 @@ its REST API and the kernel-channels websocket:
 Deploy sequence (deploy_and_verify.deploy_new_bitstream() runs it):
   1. list_sessions() to find "start nameserver.ipynb"'s kernel id (it changes on every restart).
   2. upload_file() the new .bit and .hwh.
-  3. update_notebook_cell() to point the bitfile-load cell at the new file; put_notebook() to save it.
+  3. get_notebook(), point the bitfile-load cell at the new file, put_notebook() to save it.
   4. restart_kernel().
   5. execute_in_kernel() the server cell without waiting for idle (it runs the server loop and never returns); confirm
      it went "busy" with no immediate error.

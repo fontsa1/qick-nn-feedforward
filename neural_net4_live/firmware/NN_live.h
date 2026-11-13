@@ -41,8 +41,7 @@ typedef hls::stream<in_word_t> live_stream_t;
 
 // First-layer sums: integers bounded by gen_live_rom.py, so ACC_W bits are exact.
 typedef ap_int<ACC_W> acc_t;
-// layer2_t (ap_fixed<48,32>) narrowed to the range the sums can reach; the product with batchnorm1's scale
-// is formed at full precision, so the result is identical.
+// Not used by NN_live.cpp.
 typedef ap_fixed<ACC_W, ACC_W> l2n_t;
 
 void NN_live(live_stream_t &in, ap_uint<64> *res_o, ap_uint<32> out[OUT_WORDS]);

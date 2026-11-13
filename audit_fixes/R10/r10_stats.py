@@ -1,7 +1,5 @@
-"""R10 step 4b: statistics. Balanced fidelity (19,400-row headline = rows 1000:1600 removed; full 20k
-footnote), 95% CIs, exact McNemar and paired bootstrap for the differences.
-
-Default: the R10 set.
+"""Balanced fidelity with 95% CIs, exact McNemar and paired bootstrap for model differences, from r10_score.py's
+outputs: the 19,400-row set (rows 1000:1600 removed) and all 20k rows. With no arguments, the default models below.
 """
 import argparse
 import json

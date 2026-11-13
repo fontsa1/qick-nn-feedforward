@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Second board session on v1.43 (2026-11-06): numbers the campaign did not cover.
+# Second board session on v1.43: measurements outside the main campaign.
 #   bash campaign_v143/run_board2.sh A|B|swap|phrst
 # A, B: calibrate, tProc path (boxcar and FIR), boxcar vs raw buffer with a banner in its log.
 # swap: board A and board B on board A's calibration, and on their own (run after A and B).

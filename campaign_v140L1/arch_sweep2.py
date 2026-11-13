@@ -1,6 +1,5 @@
-"""Unconventional classifier shapes: is there structure the deployed linear-like
-ternary 1540-4-1 misses? Follow-up to arch_sweep.py (same data, same scoring,
-paired against its selected t4 predictions).
+"""Classifier shapes that see the time axis explicitly, to test whether the ternary 1540-4-1 misses structure.
+Same data and scoring as arch_sweep.py, paired against its selected t4 predictions.
 
 The one physical nonlinearity a single projection cannot use is TIME: an
 excited shot that decays (T1) partway through the window traces a trajectory
@@ -25,7 +24,8 @@ Arms:
             Answers whether loopback data has any non-linear structure at all,
             independent of the domain map.
 
-Writes campaign_v140L1/arch_sweep2.json (merged).
+Writes campaign_v140L1/arch_sweep2.json (arch_sweep2_src.json with --src), merged across runs. ARCH_OUT, ARCH_PRED and
+ARCH_EVAL_X override the output file, the predictions folder and the loopback input.
 """
 import argparse
 import json

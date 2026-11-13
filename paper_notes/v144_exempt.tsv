@@ -79,7 +79,7 @@ P79	1,000	ok	sample size, row index or training-set size
 P79	1,599	ok	sample size, row index or training-set size
 P80	576	ok	design constant or clock, not a measurement
 P80	640	ok	window length compared
-P82	23	ok	verify_no_leakage.py re-run 2026-11-06, 23/23: campaign_v144/final/analysis/verify_no_leakage.log
+P82	23	ok	tools/verify_no_leakage.py re-run 2026-11-06, 23/23: campaign_v144/final/analysis/verify_no_leakage.log
 P84	+0.32	ok	offline result on raw traces, no hardware involved
 P84	1.4	ok	offline result on raw traces, no hardware involved
 P84	2.0	ok	offline result on raw traces, no hardware involved
@@ -217,14 +217,14 @@ P155	256	ok	design constant or clock, not a measurement
 P155	245.76	ok	QICK design constant: clk_core in firmware/projects/qick_tprocv2_4x2_standard/bd_2023-1.tcl at commit 779dffa
 P155	204.8	ok	QICK design constant: clk_core in the same file on QICK main since 2026-09-16 (commit a24cc8e, merged in #432)
 P155	552.96	ok	design constant or clock, not a measurement
-P155	0.42	ok	QICK tProc IP alone, out-of-context place and route at c_clk 5.0 ns, 2026-10-10 (CURRENT_BEST_RESULTS.md, C:/qick_projects/top/tproc_ooc/); a property of QICK's IP, not of a build of ours
+P155	0.42	ok	QICK tProc IP alone, out-of-context place and route at c_clk 5.0 ns; a property of QICK's IP, not of a build of ours
 P155	44	ok	design constant or clock, not a measurement: bit index
 P156	95	ok	statistical convention
 P156	50	ok	the 50% point, a definition
 P156	0.26	ok	rounded form of a ledger value: 0.251% and 0.265%
 P162	2.03	ok	design constant or clock, not a measurement: tProc tick
 P162	176	ok	rounded form of a ledger value
-P162	1.4	ok	v1.44 latency study, CURRENT_BEST_RESULTS 2026-11-05
+P162	1.4	ok	v1.44 latency study: campaign_v144/final/latency
 P162	0.6	ok	v1.44 latency study, same entry
 P162	0.2	ok	v1.44 latency study, same entry
 P162	50	ok	the 50% point, a definition
@@ -284,7 +284,7 @@ P191	600	ok	sample size, row index or training-set size
 P191	1,000	ok	sample size, row index or training-set size
 P191	1,599	ok	sample size, row index or training-set size
 P191	11	ok	design constant or clock, not a measurement: boxcar length M
-P191	−0.25	ok	boxcar map delay s (box_domain_map.json)
+P191	−0.25	ok	boxcar map delay s (calibration/box_domain_map.json)
 P191	+0.37	ok	earlier build, offline: domain-map ablation of 2026-10-01 (analysis_scripts/analysis/phase0_calibration_ablation.py, results/phase0_calibration_ablation.json); said so in the text
 P193	9,999	ok	sample size, row index or training-set size
 P193	110,000	ok	sample size, row index or training-set size
@@ -295,7 +295,7 @@ P193	1,000	ok	sample size, row index or training-set size
 P193	1,599	ok	sample size, row index or training-set size
 P193	20	ok	validation split
 P193	12	ok	arithmetic from design constants: sum of the ledger's DAC-clipped shots, 7 + 5
-P194	23	ok	verify_no_leakage.py re-run 2026-11-06, 23/23: campaign_v144/final/analysis/verify_no_leakage.log
+P194	23	ok	tools/verify_no_leakage.py re-run 2026-11-06, 23/23: campaign_v144/final/analysis/verify_no_leakage.log
 P194	1,000	ok	sample size, row index or training-set size
 P194	1,599,	ok	sample size, row index or training-set size
 P194	1,599	ok	sample size, row index or training-set size

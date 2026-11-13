@@ -1,6 +1,6 @@
-# v1.43 stage 1 with retries. Vivado on this machine intermittently fails to read one of its own Tcl files
-# ("couldn't read file ...: No error"); a failed attempt leaves the BD half-updated, so each attempt starts from
-# the pre-edit backups. Stops at the first attempt that prints BDEDIT_COMPLETE_v1.43.
+# Runs bdedit_v1.43.tcl with retries. Vivado 2023.1 intermittently fails to read one of its own Tcl files
+# ("couldn't read file ...: No error") and leaves the BD half-updated, so each attempt starts from the pre-edit
+# backups. Stops at the first attempt that prints BDEDIT_COMPLETE_v1.43.
 $top = 'C:\qick_projects\top'
 Set-Location $top
 $v = 'C:\embedded-software\Vivado\2023.1\bin\vivado.bat'

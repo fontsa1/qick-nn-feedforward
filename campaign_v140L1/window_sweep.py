@@ -1,9 +1,5 @@
-"""Fidelity vs classification window: how much latency can
-a shorter window buy?
-
-NN_live decides 15 cycles after the window's last sample, so the decision time
-after the readout trigger is (window end E) + 27 ns. Shortening the window is the
-only large latency lever left in the classifier. This measures what it costs.
+"""Fidelity vs classification window. NN_live decides a fixed number of cycles after the window's last sample, so a
+shorter window decides earlier; this measures the fidelity cost.
 
 Data, as linear_baselines.py: 200k training shots through the label-free domain
 map (k2/c2) and hw_raw_transform; scored on the 20,000 acquired loopback shots
@@ -12,7 +8,7 @@ LDA (95.61% vs 95.61%), so the sweep uses:
   MF   matched filter (w = mu1 - mu0)
   LDA  Fisher discriminant, pooled covariance + ridge; the ridge and both
        thresholds are chosen on a validation slice of the TRAINING pool
-and then retrains the deployed ternary 1540-4-1 recipe (task33 build_model)
+and then retrains the deployed ternary 1540-4-1 recipe (task33_three_way_comparison.build_model)
 on the chosen windows (--net), to confirm the network tracks LDA.
 
 Window = samples [s, s+L) of the 770-sample window (columns 2s .. 2(s+L)).

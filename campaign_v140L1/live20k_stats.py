@@ -1,8 +1,7 @@
-"""Task 4.1k: the 20k-shot NN_live campaign (boxcar path), on the same footing as
-NN_axi's 20k (campaign_v140/compare_builds.py: Wilson CI, McNemar).
+"""Statistics of the 20k-shot NN_live capture (boxcar path): Wilson CI and McNemar, as for NN_axi's 20k.
 
 Inputs: box_live_capture.py chunks (rows of test20k_real_X) and the emulator file
-check_live_bitexact.py --box --emu-out writes for the merged capture:
+check_live_bitexact.py --box --emu-out writes for the merged capture.
 
 Reports: window == boxcar buffer; bit-exact (sums, sigmoid, rule) counts; chip
 fidelity (balanced, as everywhere in this project) with a Wilson 95% CI on

@@ -1,10 +1,9 @@
 #################################################################
-# v1.43 stage 1 of 2. No synthesis; build_v1.43.tcl builds it.
-# Starting point: the v1.42b BD (bd_backups/OG_build_v1.42b.bd) after two GUI sessions on 2026-11-04 that only
-# ran update_module_reference on live_res_cdc_0/1 and left the BD unvalidated (clock properties cleared).
-#  1. update_module_reference on seg_stamp_0 (dead register wr_shot removed; lint 2026-11-04).
-#  2. validate, which re-propagates the clock properties. check_bd_v1.43.py then requires the saved BD to match
-#     v1.42b in content. No other BD change.
+# v1.43 build, stage 1 of 2 (stage 2, synthesis onward: build_v1.43.tcl). Edits the v1.42b block design
+# (bd_backups/OG_build_v1.42b.bd):
+#  1. update_module_reference on seg_stamp_0.
+#  2. validate_bd_design, which re-propagates the clock properties. check_bd_v1.43.py then requires the saved BD to
+#     match v1.42b in content.
 #################################################################
 set_param general.maxThreads 2
 # Pre-edit backups are made once; run_stage1_v1.43.ps1 restores from them before each attempt.

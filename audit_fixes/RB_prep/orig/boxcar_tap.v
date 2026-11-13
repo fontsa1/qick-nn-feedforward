@@ -4,7 +4,7 @@
 //
 // Function: box8 = sum of the 8 mixed samples per clock; msum = moving sum of the last M box8 values (M = 1..16);
 // out = round(msum / 2^shift), saturated to 16 bits. cfg: [0] NN input select (1 = boxcar), [7:4] shift,
-// [12:8] M - 1.
+// [11:8] M - 1.
 
 `timescale 1ns / 1ps
 

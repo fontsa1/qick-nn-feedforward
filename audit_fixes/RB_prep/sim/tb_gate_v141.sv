@@ -136,7 +136,7 @@ module tb_gate;
             if (f[0] != exp_pass || f[1] != exp_stale || f[3] != exp_en) begin errors = errors + 1; $display("  ERROR flags"); end
             if (mem[7] != GEN_LAT - 2) begin errors = errors + 1; $display("  ERROR marker->pulse %0d (exp %0d)", mem[7], GEN_LAT - 2); end
             if (!exp_stale && ($signed(mem[6]) <= 0)) begin errors = errors + 1; $display("  ERROR margin"); end
-            $display("  L9 stamps: dec-cls %0d  mk-cls %0d  open-cls %0d  open-dec %0d",
+            $display("  stamps: dec-cls %0d  mk-cls %0d  open-cls %0d  open-dec %0d",
                      $signed(mem[15] - mem[18]), mem[16] - mem[18], mem[17] - mem[18], $signed(mem[17] - mem[15]));
             if (!exp_stale && (mem[17] - mem[15] != mem[6])) begin errors = errors + 1; $display("  ERROR open - dec != margin"); end
             if (exp_stale && mem[15] != 32'hFFFFFFFF) begin errors = errors + 1; $display("  ERROR stale decision stamp"); end

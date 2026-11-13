@@ -1,6 +1,7 @@
-"""Classify every failing setup endpoint of the v1.40L10 build (from a read-only Vivado dump).
+"""Classify every failing setup endpoint of a routed build (the v1.40L10 build), from a read-only Vivado dump.
 
-Input : vivado_out/failing_setup_endpoints.csv (one worst path per failing endpoint pin)
+Input : vivado_out/failing_setup_endpoints.csv (one worst path per failing endpoint pin; not in this repository)
+Test ids (T08, T11, T12, T20) are those of analysis_scripts/diagnostics/qick_functional_test.py.
 Output: endpoints_classified.csv (one row per endpoint) and endpoints_summary.csv / .md (grouped).
 
 Classes

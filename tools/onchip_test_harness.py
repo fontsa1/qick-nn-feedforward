@@ -81,12 +81,9 @@ def main():
                     help="basename: x_50k or x_50k_heldout")
     ap.add_argument("--onset-threshold", type=int, default=None,
                     help="if given, calls nn_set_onset_threshold() before firing. "
-                         "2026-09-02: the register reads 0 by default after a fresh "
-                         "reload/reset -- nothing in this harness or its predecessors "
-                         "ever set it -- which means DRAIN_L's onset test (mag > "
-                         "*onset_threshold) fires on essentially the FIRST probed word "
-                         "of real ADC noise, not genuine pulse onset. Leave unset to "
-                         "reproduce that (default/historical) condition.")
+                         "Unset, the register keeps its post-reload value 0, so "
+                         "DRAIN_L's onset test (mag > *onset_threshold) fires on "
+                         "the first probed word.")
     ap.add_argument("--calfile", default=None,
                     help="basename of a DEDICATED scaling_factor calibration set "
                          "(<name>_X.npy/<name>_y.npy), disjoint from the scored set")
@@ -95,27 +92,22 @@ def main():
     ap.add_argument("--tag", default=None,
                     help="output subdir name; defaults to the bitstream name")
     ap.add_argument("--skip-reload", action="store_true",
-                    help="board already reloaded+calibrated in this session; "
+                    help="board already reloaded and calibrated; "
                          "skips set_bitfile/reload but still asserts G2 and "
                          "records the banner")
     ap.add_argument("--force-sf", type=int, default=None,
-                    help="skip the G6 auto-select sweep entirely and fire the "
-                         "scored run at this scaling_factor. 2026-09-04: G6's "
-                         "own selection logic disqualifies any sf with >=1 "
-                         "zero-write out of 200 cal shots even when that sf is "
-                         "the clear best performer, and more fundamentally, "
-                         "'best cal fidelity' can pick an sf that domain-"
-                         "mismatches an SF=1-trained model. Use this to test "
-                         "an SF=1-trained model at its own native sf=1.")
+                    help="skip the G6 auto-select sweep and fire the scored run "
+                         "at this scaling_factor (e.g. 1 for a model trained at "
+                         "SF=1).")
     a = ap.parse_args()
 
     outdir = RUNS / (a.tag or a.bitstream)
     if outdir.exists():
         if not a.force:
             sys.exit(
-                "ABORT (G1): %s already exists. This harness never resumes -- "
-                "a stale-resume is exactly what caused the 2026-09-01 "
-                "misattribution. Pass --force to wipe and rerun." % outdir)
+                "ABORT (G1): %s already exists. This harness never resumes, "
+                "so stale results cannot mix in. Pass --force to wipe and "
+                "rerun." % outdir)
         print("[G1] --force given: wiping %s" % outdir)
         shutil.rmtree(outdir)
     outdir.mkdir(parents=True)

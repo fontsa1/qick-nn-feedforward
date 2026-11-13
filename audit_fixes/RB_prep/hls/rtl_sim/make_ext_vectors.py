@@ -4,7 +4,8 @@ exact integer model in numpy (independent of the C++ and of hls4ml):
   st = sum_u w6_u l5_u + (b6 + b10) 2^16;  L = floor(st / 2^6)  (logit raw, 2^-10)
   sat = clamp(L, -32768, 32767);  wrap = L mod 2^16;  decision = L >= 16
 s4raw / b4raw are the weights quantised to ap_fixed<40,8> (floor at 2^-32), as the firmware loads them.
-Writes ext_windows.hex (576 words per window) and ext_expected.hex (sat16 wrap16 decision, hex).
+Writes ext_windows.hex (576 words per window) and ext_expected.hex (sat16 wrap16 decision, hex). Inputs: the HLS
+project's firmware/weights (FW) and tb_data/live_words.bin, at the paths set below.
 """
 from pathlib import Path
 import numpy as np

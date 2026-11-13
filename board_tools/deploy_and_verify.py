@@ -74,27 +74,22 @@ def verify_deployment(expect_banner_contains=None, onset_threshold=None,
                 "This usually means either (a) the wrong build got "
                 "uploaded, (b) the kernel didn't actually restart onto "
                 "the new bitfile, or (c) PYNQ is serving stale cached "
-                "overlay metadata for a byte-identical .bit -- see "
-                "CLASSIFIER_DEBUGGING_REFERENCE.md #11. A full board "
+                "overlay metadata for a byte-identical .bit. A full board "
                 "reboot (not just a kernel restart) fixes (c)."
             )
             return False
         print(f"Banner check passed: contains {expect_banner_contains!r}")
 
     if onset_threshold is not None:
-        # Raw MMIO is the reliable path for this register: PYNQ's register_map
-        # ctypes getter crashes on some AXI-Lite registers, including this one.
-        # Used when nn_set_onset_threshold()/nn_get_onset_threshold() are not
-        # present on the NNQickSoc class the board's server is running.
+        # PYNQ's register_map getter can crash on this AXI-lite register, so the server's raw-MMIO accessors
+        # (nn_set_onset_threshold / nn_get_onset_threshold) are used.
         try:
             soc.nn_set_onset_threshold(onset_threshold)
             readback = soc.nn_get_onset_threshold()
         except AttributeError:
             print(
-                "*** soc has no nn_set_onset_threshold/nn_get_onset_threshold "
-                "-- check the currently-deployed NNQickSoc class definition "
-                "(start nameserver.ipynb cell 0) for the current method "
-                "names before assuming this API is missing. ***"
+                "*** soc has no nn_set_onset_threshold/nn_get_onset_threshold; "
+                "check the NNQickSoc class in start nameserver.ipynb cell 0. ***"
             )
             return False
         if readback != onset_threshold:
@@ -142,9 +137,7 @@ def deploy_new_bitstream(local_bit_path, local_hwh_path, board_name_stem):
         raise RuntimeError(
             "Could not find the cell containing both 'bitfile' and "
             f"'start_server(' in {NAMESERVER_NB_PATH} -- its structure "
-            "has apparently changed since this was last verified "
-            "(2026-09-01 night). Inspect it manually before proceeding, "
-            "don't guess."
+            "has changed. Inspect it manually before proceeding."
         )
 
     old_src = "".join(cells[bitfile_cell_idx]["source"]) if isinstance(
@@ -213,7 +206,7 @@ def main():
         "--deploy", nargs=3, metavar=("BIT_PATH", "HWH_PATH", "BOARD_NAME_STEM"),
         default=None,
         help="Upload+deploy a new bitstream before verifying, e.g. "
-             "--deploy OG_build_v1.23.bit OG_build.hwh qick34",
+             "--deploy OG_build_v1.44.bit OG_build_v1.44.hwh qick67",
     )
     parser.add_argument(
         "--expect-banner-contains", default=None,

@@ -1,12 +1,8 @@
 """
-Board control helpers for switching bitstreams between on-chip test runs with no state carried across runs:
-
-  1. `reload_board()` always goes through a kernel restart, which reloads the overlay and the bitstream; after it
-     nn_status() reports out_offset=0 and trig_count=0. `nn_reset()` alone does not clear them, so a reload is the
-     way to clear state between runs.
-
-  2. `firmware_banner()` returns the build timestamp the running firmware reports; stamp every on-chip result
-     with it.
+Board control helpers:
+  reload_board()     kernel restart, which reloads the overlay and bitstream and clears NN_axi's counters
+                     (nn_reset() alone does not).
+  firmware_banner()  the build timestamp the running firmware reports.
 """
 import re
 import sys

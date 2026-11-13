@@ -14,8 +14,7 @@ import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
 os.environ["TF_USE_LEGACY_KERAS"] = "1"
 
-SEED = 20260901        # historical default; --seeds overrides, and the
-                       # selected seed is recorded in results/last_export_seed.txt
+SEED = 20260901        # default; --seeds overrides. The selected seed is recorded in results/last_export_seed.txt
 
 import numpy as np
 import tensorflow as tf
@@ -124,23 +123,23 @@ def main():
     ap.add_argument("--seeds", type=int, nargs="+",
                     default=[20260901, 20260902, 20260903, 20260904, 20260905],
                     help="train one model per seed and keep the one with the "
-                         "lowest val_loss. Pass a single seed to reproduce the "
-                         "historical fixed-seed behaviour.")
+                         "lowest val_loss. Pass a single seed for one fixed-seed "
+                         "model.")
     ap.add_argument("--n-train", type=int, default=10000,
-                    help="training rows from the front of the pool (v1.39: "
-                         "10000; task 3.3 measured +0.3 points at 50k)")
+                    help="training rows from the front of the pool (50000 "
+                         "measured +0.3 points over 10000)")
     ap.add_argument("--rows", default=None,
                     help="training row ranges, e.g. '0:10000,110000:300000' "
                          "(overrides --n-train). Use this to skip "
                          "0528_X_train_0_770[10000:110000], the synthetic "
                          "generator's fit pool (tools/verify_no_leakage.py E1/E4).")
     ap.add_argument("--window", type=int, default=770,
-                    help="classify on samples [0, window) only (task 4.1g; "
-                         "window_tradeoff.py chose 576). The model input is "
+                    help="classify on samples [0, window) only "
+                         "(window_tradeoff.py chose 576). The model input is "
                          "2*window; outputs get a _w<window> suffix unless 770.")
     ap.add_argument("--xcal", default="0528_X_train_0_770_loopback_calibrated.npy",
-                    help="domain-mapped training pool (task 4.1h: the boxcar-path "
-                         "map, build_box_training_set.py, rows in --rows order)")
+                    help="domain-mapped training pool (boxcar path: "
+                         "build_box_training_set.py, rows in --rows order)")
     ap.add_argument("--tag", default="",
                     help="extra output suffix (e.g. _box), so a variant never "
                          "overwrites the deployed model's artifacts")
@@ -155,7 +154,7 @@ def main():
     rows = np.concatenate([np.arange(lo, hi) for lo, hi in ranges])
 
     print("=" * 70)
-    print("v1.37 SIGNED-domain training on the loopback-domain-calibrated set")
+    print("SIGNED-domain training on the loopback-domain-calibrated set")
     print(f"training rows {ranges} ({len(rows)} shots)")
     print(f"training pool: {a.xcal}")
     Xcal = np.load(base / a.xcal, mmap_mode="r")

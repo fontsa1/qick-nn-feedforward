@@ -1,15 +1,13 @@
-"""R9: synthetic-vs-real training comparison with per-shot predictions saved.
+"""Synthetic-vs-real training comparison with per-shot predictions saved.
 
-Training/eval recipe copied verbatim from analysis_scripts/analysis/task33_three_way_comparison.py
-(the section 6.3 protocol): ternary 1540->4->1 QKeras net, label-free domain map (k2, c2)
+Training/eval recipe as analysis_scripts/analysis/task33_three_way_comparison.py: ternary 1540->4->1 QKeras net, label-free domain map (k2, c2)
 applied in float32 to the raw training data, signed hw_raw_transform, Adam 1e-3,
 batch 32, <= 50 epochs, early stopping on val_loss (patience 5, restore best) over a
 20% validation split of the arm's OWN training data; permutation and init from the
 seed. Scored on loopback20k_real (20,000 replayed real shots, no map).
 
-Differences from task33: (1) per-shot sigmoid outputs are saved for every run so arms
-can be compared PAIRED on the same test shots; (2) more arms / data draws (below);
-(3) TF/BLAS limited to 4 threads.
+Per-shot sigmoid outputs are saved for every run, so arms are compared paired on the same test shots. R9_EVAL_X
+overrides the evaluation set. TF/BLAS limited to 4 threads.
 
 Arm spec  NAME=SOURCE[+SOURCE...]  where SOURCE is
     real:LO:HI              rows LO:HI of 0528_X_train_0_770.npy
@@ -91,7 +89,7 @@ def load_source(src):
         hi = int(rest[2]) if len(rest) > 2 else len(y)
     else:
         raise SystemExit(f"bad source {src}")
-    # float32 BEFORE the map, exactly as task33 / build_domain_calibrated_training_set
+    # float32 before the map, as in build_domain_calibrated_training_set
     return np.asarray(X[lo:hi]).astype(np.float32), np.asarray(y[lo:hi]).astype(np.float32)
 
 def main():
@@ -104,7 +102,7 @@ def main():
     k2 = complex(np.load(REPO / "calibration/k2_loopback.npy"))
     c2 = complex(np.load(REPO / "calibration/c2_loopback.npy"))
     assert abs(k2 - (0.167813 + 0.006101j)) < 1e-5
-    Xev = hw_raw_transform(np.load(__import__("os").environ.get("R9_EVAL_X", str(REPO / "data/loopback20k_real.npy"))).astype(np.float64))  # v1.43: replay20k_A
+    Xev = hw_raw_transform(np.load(__import__("os").environ.get("R9_EVAL_X", str(REPO / "data/loopback20k_real.npy"))).astype(np.float64))
     yev = np.load(REPO / "data/test20k_real_y.npy").astype(int)
     keep = np.ones(len(yev), bool)
     keep[1000:1600] = False                       # domain-map calibration rows
@@ -139,7 +137,7 @@ def main():
             print(f"{name:22s} {seed:9d} vl {vl:.5f} F20k {100*r['F20k']:.3f} "
                   f"F19400 {100*r['F19400']:.3f} ep {r['epochs']:2d} {r['s']:4.0f}s", flush=True)
             tf.keras.backend.clear_session()
-            # checkpoint after every run (safe to resume / inspect)
+            # checkpoint after every run
             Path(str(out) + ".json").write_text(json.dumps(results, indent=1))
             np.savez_compressed(str(out) + "_probs.npz", **probs)
         del Xtr

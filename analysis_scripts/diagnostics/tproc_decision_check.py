@@ -1,5 +1,5 @@
-"""R18 tProc part: log the decision bit as the tProc receives it (input port 3) and compare it with NN_live's
-record, shot by shot (App. H coverage: "the decision bit at the tProc was never logged in a campaign").
+"""Logs the decision bit as the tProc receives it (input port 3) and compares it with NN_live's record, shot by
+shot.
 
 Uses gate_probe's program unchanged: after the conditional pulse the tProc runs DPORT_RD on port 3 and writes
 the 64-bit result word to dmem 0 (bits [31:0], logit) and dmem 1 (bits [63:32]: [28:0] shot field, [31]

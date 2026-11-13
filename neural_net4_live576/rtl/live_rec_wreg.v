@@ -3,8 +3,6 @@
 // Sits between NN_live's out_r_PORTA and the record BRAM (axi_bram_ctrl_live_bram port B). Addr, EN, WE and Din
 // are registered so the BRAM inputs launch from flops next to the RAM; Clk, Rst and Dout pass through. NN_live
 // never reads out_r, so the one-cycle write delay is invisible to it.
-//
-// Testbench: rtl_sim/unit/tb_u_live_rec_wreg.sv.
 `timescale 1ns / 1ps
 
 module live_rec_wreg (

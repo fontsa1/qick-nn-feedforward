@@ -1,10 +1,10 @@
-"""Fig. 8(b) draft: the slack sweep, v1.44 (provisional), both boards. The tProc schedules the conditional pulse at a slack relative
+"""Fig. 8(b): the slack sweep, v1.44, both boards. The tProc schedules the conditional pulse at a slack relative
 to the decision time; at each slack 40 replayed traces (17 with decision 1) are run with the gate enabled.
 Per slack: decision-1 shots whose pulse came back (of 17), shots the gate blanked as late (of 40), and unsafe pulses
 (a pulse with no fresh decision 1 for its own shot; 0 everywhere). Too early, every decision is late and every pulse
 is blanked; two 2.03 ns steps later (-68 -> -64 ns), all-correct. Boards A (filled) and B (open) differ only at -66 ns, on the edge of the window.
 The sweep points are not evenly spaced in ns, so the x axis is categorical (sweep points, not to scale).
-Data: campaign_v140L1/v144_fig8b/{A,B}_gate_probe_box.npz; the v1.41 version is in v141/. Arial 9 pt; script and outputs live in this folder."""
+Data: {A,B}_gate_probe_box.npz in this folder (gate_probe.py --split)."""
 import json
 from pathlib import Path
 import numpy as np

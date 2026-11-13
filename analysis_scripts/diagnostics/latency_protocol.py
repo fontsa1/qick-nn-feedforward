@@ -35,7 +35,7 @@ PLAT_AVG = 60                                   # samples; the conditional pulse
 
 # closure tolerances, ns
 EXPECT_NS = dict(
-    path_minus_adv=(3.2, 1.0),                  # 115.1 (box_probe) - 111.9; the stale 0.1078 gives 7.3. Centre per build: --expect-path-adv
+    path_minus_adv=(3.2, 1.0),                  # 115.1 (box_probe) - 111.9; an advance of 0.1078 gives 7.3. Centre per build: --expect-path-adv
     lbuf_minus_l50=(3.2, 0.6),                  # must follow the path term measured on this load (centre replaced below)
     l50_minus_counter=(-0.9, 0.6),              # half a sample, from a threshold at 50% on a sampled edge
 )
@@ -132,7 +132,7 @@ def main():
     ap.add_argument("--expect-ticks", type=int, default=55, help="realised advance, tProc ticks; 0 skips the refusal")
     ap.add_argument("--expect-path-adv", type=float, default=EXPECT_NS["path_minus_adv"][0],
                     help="centre of the path_minus_adv check, ns: 3.2 on v1.43 (path 115.1), 1.4 on v1.44 (path 113.3). The boxcar path "
-                         "moves by one sample between place-and-route runs; the check guards against a stale advance (about 7 ns)")
+                         "moves by one sample between place-and-route runs; the check catches a wrong advance setting (about 7 ns)")
     ap.add_argument("--expect-banner", default=None)
     ap.add_argument("--bit", default=None, help="local .bit that was deployed, for the record")
     ap.add_argument("--sensitivity", action="store_true")

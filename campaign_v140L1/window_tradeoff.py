@@ -1,11 +1,10 @@
-"""Where does shortening the window start costing too much fidelity per ns of
-latency saved? Fine-grid follow-up to window_sweep.py (same data, same LDA).
+"""Fidelity lost per ns of latency saved, on a fine window grid (same data and LDA as window_sweep.py).
 
 Window [0, E) for E on a 32-sample grid from 770 down to 384. Per E: LDA
 predictions on the 20k acquired loopback shots (window_sweep.linear's
 recipe: pooled covariance + ridge chosen on the training pool's validation
 slice). Then, on the SAME shots (paired):
-  vs640     fidelity change against E = 640 (the free cut), McNemar p
+  vs640     fidelity change against E = 640, McNemar p
   slope     fidelity lost per 100 ns saved between adjacent grid points, with
             a 95% bootstrap CI (2000 shot resamples, paired)
 Time axes: our loopback (552.96 MS/s, 1.808 ns/sample) and the source qubit's

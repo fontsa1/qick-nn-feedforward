@@ -4,8 +4,8 @@ Per shot (test20k_real_X rows, the run_loopback_box.py recipe and dataset-wide D
 readout 0 (FIR) triggered at adc_trig_offset; readout 1 (avg buffer 1 = the boxcar stream)
 and NN_live's classify trigger (trig_11) together at adc_trig_offset - box_advance. Reads
 NN_live's record (NN_live.h) and its captured window (live BRAM words 16..16+N), and the
-boxcar buffer. Writes an npz in check_live_bitexact.py's format (live_words, live_rec, y)
-plus box/fir and the window == buffer comparison, then:
+boxcar buffer. Writes an npz in campaign_v140L1/check_live_bitexact.py's format (live_words, live_rec, y)
+plus box/fir and the window == buffer comparison.
 
 """
 import argparse

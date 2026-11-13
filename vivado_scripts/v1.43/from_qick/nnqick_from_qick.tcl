@@ -30,8 +30,8 @@ proc nnq_main {here argv} {
     if {[llength $bds] != 1} { puts "FATAL: expected one block design in the QICK project, found: $bds"; exit 1 }
     puts "STEP: saving it as $outdir/nnqick.xpr (the QICK project is left as it was)"
     save_project_as nnqick $outdir
-    # Open the block design now: in our tests, opening it after the IP install and RTL additions below failed inside
-    # Vivado 2023.1's own block-automation scripts ("couldn't read file"), while opening it first works.
+    # Open the block design first: opening it after the IP install and RTL additions below can fail inside Vivado
+    # 2023.1's block-automation scripts ("couldn't read file").
     set bds [lsearch -all -inline -not [get_files -quiet -of_objects [get_filesets sources_1] *.bd] */ip/*]
     open_bd_design [lindex $bds 0]
 
@@ -68,8 +68,8 @@ proc nnq_main {here argv} {
     set_property SCOPED_TO_REF live_res_cdc $xf
     set_property PROCESSING_ORDER LATE $xf
 
-    # In our Vivado 2023.1 tests, file reads sometimes failed for a short time after the RTL was added ("couldn't read
-    # file" for files that exist), inside our script and inside Vivado's own. Wait until a read works again.
+    # Vivado 2023.1 file reads can fail briefly after RTL is added ("couldn't read file" for existing files). Wait
+    # until a read works again.
     for {set i 0} {$i < 60} {incr i} {
         if {![catch {set fh [open $here/nnqick_bd_delta.tcl r]; close $fh} e]} { break }
         puts "WAIT: file read failed ($::errorCode); retrying"

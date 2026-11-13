@@ -1,10 +1,11 @@
 """Test vectors for the NN_live csim.
 
 Writes tb_data/live_words.bin and tb_data/live_meta.bin:
-  * the 20,000 loopback20k_real shots, packed the way the readout emits them (word = Q << 16 | I, both int16), with
-    labels and the bit-accurate emulator's output (fpe_v140_loopback20k.npz, p_fixed) for each;
-  * the 1,000 classifier-input windows captured on chip (campaign_v139/captures, words as NN_axi received them),
-    labels only.
+  * the first 20,000 shots of campaign_v140L1/box_csim_set.npz (boxcar path), packed the way the readout emits them
+    (word = Q << 16 | I, both int16), with labels and the bit-accurate emulator's output
+    (campaign_v140L1/fpe_w576_box_csim_set.npz, p_fixed) for each;
+  * any classifier-input windows captured on chip in campaign_v139/captures/*.npz (words as NN_axi received them),
+    labels only; none when that folder is absent.
 Every window is cut to its first N_SAMP words, the samples live_window_gate (N = 576) passes, and the emulator
 outputs come from the 576-sample model (fixed_point_emulator.py --window 576).
 
@@ -27,9 +28,8 @@ def pack(X):
     q_ = q[:, 1::2].astype(np.uint16).astype(np.uint32)
     return (q_ << 16) | i_
 
-# boxcar path: the 20,000 test20k_real_X shots captured through the boxcar path (run_loopback_box.py, avg buffer 1
-# = NN_live's input with sel = 1) and the boxcar model's bit-accurate emulator outputs on them; or the 5,400-shot
-# subset campaign_v140L1/box_csim_set.npz (first 6,000 shots, calibration rows [1000:1600] excluded).
+# shots captured through the boxcar path (run_loopback_box.py, avg buffer 1 = NN_live's input with sel = 1) and the
+# boxcar model's bit-accurate emulator outputs on them.
 cap = np.load(ROOT / "campaign_v140L1" / "box_csim_set.npz")
 X = cap["box"][:20000].astype(np.float64)
 y = cap["y"][:20000].astype(np.int32)

@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 // ooc_top_t: NU copies of classifier_unit_t for the out-of-context timing study.
 // Clocks enter through BUFGs. Shared input buses are registered once and fanned out to every unit, as the RF
-// data converter's stream fans out to one readout per tone. Units are DONT_TOUCH (run_ooc.tcl) so identical
+// data converter's stream fans out to one readout per tone. Units are DONT_TOUCH (run_ooc_t.tcl) so identical
 // units are not merged. Outputs are XOR-reduced per clock domain so nothing is trimmed. Harness registers are
 // outside u_unit[*], so unit-internal and harness endpoints are reported separately.
 module ooc_top_t #(

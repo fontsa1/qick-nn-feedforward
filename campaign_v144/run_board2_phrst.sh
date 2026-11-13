@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Four fresh v1.43 loads of board A, phrst_probe on each (one load per run; its own reload method needs a server notebook
-# that deploy_and_verify does not use). Each run starts from a fresh load, so the probe's none mode comes first, before any reset.
+# Four fresh v1.44 loads of board A (deploy_and_verify), phrst_probe on each. The probe's none mode runs first on each
+# load, before any phase reset.
 set -u
 cd "$(dirname "$0")/.."
 PY="${PYTHON:-python}"; DG=analysis_scripts/diagnostics; D=campaign_v144/final/board2; TOP=C:/qick_projects/top; V43="Nov  7 19:57:07"   # set PYTHON to your environment's interpreter, e.g. PYTHON=.venv/bin/python

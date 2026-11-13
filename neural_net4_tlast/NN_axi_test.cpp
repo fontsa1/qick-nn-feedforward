@@ -1,5 +1,5 @@
 // csim testbench for NN_axi. Replays recorded windows (tb_data/real_packed_words.bin, 770 packed {Q, I} words per
-// shot, and tb_data/real_labels.bin, written by export_cosim_tb_data.py) as stream transfers with TLAST on each
+// shot, and tb_data/real_labels.bin) as stream transfers with TLAST on each
 // shot's last word, holds the trigger high, and checks one result per window, the trigger and slot counters, and
 // the accuracy against the labels. Without the data files it runs on all-zero windows (control flow only).
 // Environment: NN_TEST_SCALING_FACTOR, NN_TEST_WINDOW_OFFSET (CAPTURE_ARM checks the capture record),

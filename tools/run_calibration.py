@@ -9,7 +9,7 @@ without recalibrating with `board_tools/calib.py activate <host>`.
 
 Pass 1 plays the uncalibrated reference envelope (X_2_padded_11k) and fits (k, c); pass 2 predistorts x_50k with
 them and records the result (acquired_dataset.npy). Uses trigger pin 0 + acquire_decimated() only (plus the NN
-trigger pin, see below).
+trigger pin).
 """
 import gc
 import time
@@ -34,12 +34,7 @@ ns_port = 8888
 proxy_name = "myqick"
 print(f"calibrating against {ns_host} ({calib.KNOWN.get(ns_host, 'unknown board')})")
 
-# Retry the lookup rather than assuming the board is already up. This script
-# is normally run immediately after deploy_and_verify.py restarts the board's
-# Jupyter kernel, and the nameserver subprocess + start_server() take a while
-# to re-register `myqick` -- a bare locateNS/lookup here races that and dies
-# with "Pyro4.errors.NamingError: unknown name: myqick" even though the board
-# is coming up perfectly normally.
+# Retry the lookup: right after a deploy the server may not have registered `myqick` yet (NamingError).
 def _connect(max_attempts=40, retry_delay_s=3.0):
     last = None
     for attempt in range(1, max_attempts + 1):

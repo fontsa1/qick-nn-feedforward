@@ -1,5 +1,5 @@
 // tb_live: live_window_gate + the HLS-generated NN_live (N = 576) on a continuous 552.96 MHz stream with an
-// asynchronous tProc-style trigger. run_tb.sh <HLS project dir> runs it.
+// asynchronous tProc-style trigger. Run with run_tb_rb.sh <syn/verilog dir> <tag>.
 // Test A (alignment): the stream carries its own sample index; every trigger also drives QICK's buffer.sv
 // behind the same 2-flop synchronizer. The words the gate passes must equal the words buffer.sv stores, with
 // TLAST on the last.

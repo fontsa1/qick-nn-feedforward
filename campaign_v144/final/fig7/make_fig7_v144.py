@@ -2,14 +2,12 @@
 (a) Rising edge of a 50 MHz const pulse through both paths on the same shots: mean |z| of 20 shots, each path
     normalised to its plateau. Buffer 1 (boxcar) is triggered through trig_sync, 3 cycles after buffer 0 (FIR), so
     its samples sit at (n + 3)/fs on the shared time axis; t = 0 is the FIR's 50% crossing.
-(b) Magnitude response vs frequency offset from the readout tone (the usual way IEEE papers show a filter's
-    rejection): theory curves for box-8 alone (M = 1), the deployed box-8 + 11-sample sum and QICK's FIR (from its
+(b) Magnitude response vs frequency offset from the readout tone: theory curves for box-8 alone (M = 1), the deployed box-8 + 11-sample sum and QICK's FIR (from its
     120 coefficients, qick_readout_fir.coe). Markers: measured response from the frequency sweep
     (fig7_sweep_{A,B}_v144.npz, box_sweep_fig7.py): readout tone f, image/DC at 2f after each path's filter,
-    board A plotted, board B compared in fig7_values_v144.json; ring = the 100 MHz value of the original capture.
-Supplementary (fig7s_image_vs_M, for an appendix): image level vs M = 1..16, measured vs theory.
-Data: fig7_capture_A_v144.npz (analysis_scripts/diagnostics/box_probe_fig7.py).
-Arial 9 pt; script, data and outputs live in this folder."""
+    board A plotted, board B compared in fig7_values_v144.json; ring = the 100 MHz value in the capture.
+Also writes fig7s_image_vs_M: image level vs M = 1..16, measured vs theory.
+Data: fig7_capture_A_v144.npz (analysis_scripts/diagnostics/box_probe_fig7.py)."""
 import json
 import re
 from pathlib import Path

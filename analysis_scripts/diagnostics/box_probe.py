@@ -9,7 +9,7 @@ shot gives the same ADC samples through both paths. Measures:
      power at -100 MHz relative to the baseband level, ch1 vs ch0;
   C. NN_live sees exactly buffer 1 with sel = 1 (and buffer 0 with sel = 0):
      NN_live's captured window (live BRAM words 16..16+N) vs acquire_decimated()
-     on the same shot, allowing a +/-2-sample offset (the 4.1i trigger skew);
+     on the same shot, allowing a +/-2-sample offset (trigger skew between the two readouts);
   D. seg_stamp edge1 - trig with sel 0 vs 1: the saving at NN_live's input.
 Leaves the cfg as given by --m/--shift with sel = 0 (FIR) at exit.
 

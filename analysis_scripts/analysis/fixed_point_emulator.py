@@ -113,7 +113,7 @@ def main():
                          "export_signed_domain_model.py)")
     ap.add_argument("--eval", default="data/loopback20k_real.npy",
                     help="acquired shots to score: an (N, 1540) .npy (labels in "
-                         "<name>_y.npy), or a run_loopback_box.py .npz (task 4.1h; "
+                         "<name>_y.npy), or a run_loopback_box.py .npz ("
                          "array --eval-key, labels 'y')")
     ap.add_argument("--eval-key", default="box", help="fir or box, for an .npz --eval")
     a = ap.parse_args()

@@ -1,4 +1,4 @@
-"""Content comparison of the v1.43 BD with v1.42b, ignoring ordering. Prints every difference; exit 1 if any
+"""Content comparison of two block designs (the v1.43 BD and the v1.42b BD it was edited from), ignoring ordering. Prints every difference; exit 1 if any
 difference falls outside seg_stamp_0's module-reference bookkeeping."""
 import json
 import sys

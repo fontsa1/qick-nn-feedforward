@@ -87,7 +87,7 @@ module seg_stamp #(
     reg [7:0]  low_cnt;
     reg        post_last;              // the sample in mag came after last (t_mag > last)
 
-    // writer: 8 record words, then the header, then the magic
+    // writer: the 16-word record (10 fields, zero padded), then the record count (word 0), then the magic (word 2)
     reg        wr_busy;
     reg [4:0]  wr_k;
     reg [31:0] wr_shot, wr_rec_base;

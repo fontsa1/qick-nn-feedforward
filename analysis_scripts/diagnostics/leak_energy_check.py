@@ -51,9 +51,8 @@ def main():
     ap.add_argument("--slack", type=float, default=0.0)
     ap.add_argument("--nz-thr", type=int, default=8,
                     help="gate arrival threshold (cfg word [31:16]) used to measure marker -> pulse. 8 finds a "
-                         "Gaussian's first nonzero samples; 2000 (every earlier gate script) finds it ~2 sigma "
-                         "before its peak, ~19 cycles late, and lets the leading edge through (0.28%% at lead 4, "
-                         "v1.41 dry run 2026-11-03)")
+                         "Gaussian's first nonzero samples; 2000 (the other gate scripts) fires ~2 sigma "
+                         "before its peak, ~19 cycles late")
     ap.add_argument("--out", default="campaign_v140L1/A_v142_leak_energy.json")
     a = ap.parse_args()
     print("boxcar path:", soc.box_config(sel=1, shift=7, m=11))

@@ -1,10 +1,6 @@
 """
-Generate a synthetic holdout dataset with the measured noise model (white-noise version: x_50k_heldout.npy).
-See tools/qubit_synth_lib.py's docstring for the characterisation it is based on
-(char_real_readout_noise.py / char_real_readout_t1.py): the real 0528 noise
-is coloured (autocorr +0.32, -0.20 at lags 1,2; sharp Nyquist cutoff) and
-carries a per-shot common-mode offset that does not average down. Both are
-reproduced by shaping the noise with the measured per-class PSD.
+Generate a synthetic holdout dataset (x_50k_heldout_measnoise) with the measured noise model: coloured noise
+shaped by the measured per-class PSD, including the per-shot common-mode offset (see tools/qubit_synth_lib.py).
 
 Fit pool: the last 100,000 shots of each class, disjoint from the first 400,000/class used to train the
 classifier, so the model that defines the test domain shares no rows with the classifier's training data.

@@ -1,4 +1,4 @@
-"""Shared statistics helpers for R3/R2 (balanced fidelity, CIs, exact McNemar)."""
+"""Statistics helpers: balanced fidelity, CIs, exact McNemar."""
 from math import erf, sqrt
 
 import numpy as np

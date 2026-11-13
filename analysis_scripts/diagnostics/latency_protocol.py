@@ -1,4 +1,4 @@
-"""Loop latency measurement for one bitstream load (2026-11-05): settings record, closure checks, per-load result.
+"""Loop latency measurement for one bitstream load: settings record, closure checks, per-load result.
 
 The measurement is lbuf_direct.py's: one long capture on NN_live's own stream (buffer 1, same trigger as NN_live), so
 the window's last sample (index 575, checked on every shot) and the returning conditional pulse are in one record.
@@ -33,7 +33,7 @@ G, C, L, h, S, soc, soccfg = D.G, D.C, D.L, D.h, D.S, D.soc, D.soccfg
 T, N = D.T, D.N
 PLAT_AVG = 60                                   # samples; the conditional pulse is 0.2 us = 110 samples
 
-# closure tolerances, ns. Expected values and observed ranges: CURRENT_BEST_RESULTS.md, 2026-11-05.
+# closure tolerances, ns
 EXPECT_NS = dict(
     path_minus_adv=(3.2, 1.0),                  # 115.1 (box_probe) - 111.9; the stale 0.1078 gives 7.3. Centre per build: --expect-path-adv
     lbuf_minus_l50=(3.2, 0.6),                  # must follow the path term measured on this load (centre replaced below)

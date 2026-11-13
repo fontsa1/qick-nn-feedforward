@@ -1,12 +1,8 @@
-// RTL sim of boxcar_tap (v1.40L7, task 4.1h).
-// Random 8-lane {Q,I} input every cycle; a reference model computes
+// tb_boxcar: boxcar_tap against a reference model on random 8-lane {Q,I} input every cycle:
 //   box8[t] = sum of the 8 lanes, msum[t] = sum_{j<M} box8[t-j],
 //   out[t]  = sat16(floor((msum[t] + 2^(shift-1)) / 2^shift))   (shift 0: msum)
-// and the test checks the DUT output equals ref[t - LAT] for a fixed LAT
-// (found on the first config, then required for all), over several (M, shift)
-// configs including a saturating segment. Also: m_nn follows cfg[0] (FIR vs
-// boxcar) combinationally, and m_mr_axis is s_axis unchanged.
-
+// The output must equal ref[t - LAT] for one fixed LAT over several (M, shift) configurations, including
+// saturating ones. Also checks m_nn follows cfg[0] (FIR vs boxcar) and m_mr_axis equals s_axis.
 `timescale 1ps / 1ps
 
 module tb_boxcar;

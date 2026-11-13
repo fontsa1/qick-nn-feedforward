@@ -1,22 +1,12 @@
 """
-2026-09-01: board control helpers for switching bitstreams cleanly between
-on-chip test runs, with NO state carried across runs.
+Board control helpers for switching bitstreams between on-chip test runs with no state carried across runs:
 
-Written after the 2026-09-01 attribution failure (CLASSIFIER_DEBUGGING_
-REFERENCE.md #17 UPDATE 2), in which a smoketest reported a stale qick33
-result as v1.23's because the notebook silently resumed from leftover
-chunk files. Two rules here exist to make that class of error impossible:
+  1. `reload_board()` always goes through a kernel restart, which reloads the overlay and the bitstream; after it
+     nn_status() reports out_offset=0 and trig_count=0. `nn_reset()` alone does not clear them, so a reload is the
+     way to clear state between runs.
 
-  1. `reload_board()` always goes through a kernel restart, which reloads
-     the overlay and the bitstream. Verified effect: nn_status() returns
-     out_offset=0 and trig_count=0, i.e. the NN output BRAM pointer is
-     genuinely reset. `nn_reset()` alone does NOT do this (measured: 499
-     before and after) -- see bug #3. A bitstream reload is therefore the
-     ONLY trustworthy way to clear state between runs.
-
-  2. `firmware_banner()` returns the build timestamp the running firmware
-     reports. Every on-chip result must be stamped with this so a number
-     can never again be attributed to the wrong bitstream.
+  2. `firmware_banner()` returns the build timestamp the running firmware reports; stamp every on-chip result
+     with it.
 """
 import re
 import sys

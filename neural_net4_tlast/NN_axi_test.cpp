@@ -1,3 +1,10 @@
+// csim testbench for NN_axi. Replays recorded windows (tb_data/real_packed_words.bin, 770 packed {Q, I} words per
+// shot, and tb_data/real_labels.bin, written by export_cosim_tb_data.py) as stream transfers with TLAST on each
+// shot's last word, holds the trigger high, and checks one result per window, the trigger and slot counters, and
+// the accuracy against the labels. Without the data files it runs on all-zero windows (control flow only).
+// Environment: NN_TEST_SCALING_FACTOR, NN_TEST_WINDOW_OFFSET (CAPTURE_ARM checks the capture record),
+// NN_TEST_ODD_AT / NN_TEST_ODD_LEN (insert one stray transfer before that shot; LOAD_L must restart on its TLAST).
+// NN_TEST_ONSET_THRESHOLD and NN_TEST_PADDING_WORDS are read but unused.
 #include "firmware/NN_axi.h"
 
 #include <cmath>
@@ -8,54 +15,16 @@
 #include <map>
 #include <string>
 
-// NN.cpp's save_layer_output() calls (compiled in during csim, guarded by
-// #ifndef __SYNTHESIS__) reference these as extern. NN_bridge.cpp normally
-// defines them for the Python ctypes build, but build_prj.tcl doesn't
-// compile that file -- only NN.cpp/NN_axi.cpp/this testbench. Without this,
-// csim fails to link with "undefined reference to nnet::trace_enabled" etc.
-// (Same pattern hls4ml's own generated NN_test.cpp uses.)
+// trace symbols NN.cpp references in csim (normally defined in NN_bridge.cpp, which this build does not compile)
 namespace nnet {
 bool trace_enabled = false;
 std::map<std::string, void *> *trace_outputs = NULL;
 size_t trace_type_size = sizeof(double);
 } // namespace nnet
 
-// Testbench for the NN_axi free-running wrapper -- replays the REAL
-// acquired smoketest data (not placeholder zeros) so csim exercises
-// classification correctness, not just control-flow indexing.
-//
-// NN_axi.cpp is back to the plain level-sensitive `if (trigger)` check (see
-// that file for why -- two in-HLS edge-detection attempts both broke worse,
-// confirmed via direct RTL inspection; the exactly-once-per-pulse guarantee
-// now lives in real RTL upstream of this IP, not in HLS-generated C++).
-// `trigger` is now a `volatile bool *` pointer (v1.9.2 -- see NN_axi.cpp),
-// pointed at a local held constant true for this whole call, so with a
-// level check every bounded FOREVER_L iteration fires -- exactly the
-// original (pre-edge-detection) testbench behavior: out_offset should
-// reach n_shots, one classification per buffered window, letting this
-// exercise real fidelity across the whole loaded dataset, not just shot 0.
-//
-// Input data: run export_cosim_tb_data.py (in the same scratch location
-// this test came from) to generate tb_data/real_packed_words.bin (500
-// shots x 770 uint32 words, packed the same way the real AXI stream would
-// carry them) and tb_data/real_labels.bin (500 int32 ground-truth labels)
-// from the actual loopback_nn_acquired_500.npy / y_50k.npy. Falls back to
-// the old all-zero placeholder behavior if those files aren't found, so
-// this still runs (as a control-flow-only check) before that data exists.
-// v1.11 onset-detection test support (2026-08-15): the real acquired data
-// (real_packed_words.bin) has NO backlog prefix -- each shot's 770 words
-// are already the correctly-aligned real signal, since that's what the
-// STANDARD acquire_decimated() capture path produces. To actually exercise
-// DRAIN_L's onset-detection logic (not just confirm it's a no-op when
-// there's nothing to drain), inject NN_TEST_PADDING_WORDS synthetic
-// noise-floor words (magnitude well under a typical onset_threshold)
-// ahead of each real shot's data, simulating the FIFO backlog found via
-// live capture. Set via environment variable so the same testbench binary
-// can be rerun at different padding depths without rebuilding.
+// small LCG noise words (|I|, |Q| <= 6) for the stray transfer
 static uint32_t noise_lcg_state = 0x12345678u;
 static ap_uint<32> synthetic_noise_word() {
-    // Simple LCG, magnitude-bounded to roughly [-6,6] on each of I/Q --
-    // comfortably under any onset_threshold in the 20-100 range.
     noise_lcg_state = noise_lcg_state * 1103515245u + 12345u;
     int16_t i_noise = (int16_t)((noise_lcg_state >> 16) % 13) - 6;
     noise_lcg_state = noise_lcg_state * 1103515245u + 12345u;
@@ -64,8 +33,7 @@ static ap_uint<32> synthetic_noise_word() {
     return ap_uint<32>(word);
 }
 
-// v1.41: one AXI4-Stream beat with TLAST (TKEEP/TSTRB all ones, as the
-// hardware ties them off).
+// one stream beat; TKEEP/TSTRB all ones as on hardware
 static in_word_t mkword(ap_uint<32> data, bool last) {
     in_word_t w;
     w.data = data;
@@ -80,9 +48,6 @@ int main() {
 
     unsigned window_size = N_IQ_WINDOW_IN;
     unsigned window_offset = 0;
-    // v1.26: setting this to CAPTURE_ARM (0xC0DE = 49374) puts the core in
-    // diagnostic input-capture mode, so csim can PROVE the capture path
-    // works before spending ~3h on a bitstream build for it.
     if (const char *env_wo = std::getenv("NN_TEST_WINDOW_OFFSET"))
         window_offset = (unsigned)std::atoi(env_wo);
     unsigned scaling_factor = 1;
@@ -103,7 +68,7 @@ int main() {
     if (const char *env_pad = std::getenv("NN_TEST_PADDING_WORDS"))
         padding_words = (unsigned)std::atoi(env_pad);
 
-    int odd_at = -1;                    // v1.41 fault injection, see below
+    int odd_at = -1;                    // shot before which a stray transfer is inserted
     if (const char *env_oa = std::getenv("NN_TEST_ODD_AT"))
         odd_at = std::atoi(env_oa);
     unsigned odd_len = 385;
@@ -133,15 +98,6 @@ int main() {
             uint32_t words[N_IQ_WINDOW_IN];
             fwords.read(reinterpret_cast<char *>(words), sizeof(words));
             if (!fwords) break;
-            // v1.41 (task 3.4): model the hardware stream exactly. The
-            // avg_buffer readback delivers DMA TRANSFERS: one shot = 770 words
-            // with TLAST on the last, and nothing in between (the old noise
-            // padding modelled a backlog that the readback stream never has).
-            // Fault injection: NN_TEST_ODD_AT=<shot> inserts one stray
-            // transfer of NN_TEST_ODD_LEN words (default 385, TLAST on its
-            // last word) before that shot -- what an odd-length get_decimated()
-            // or an idle-flushed fragment looks like. LOAD_L must restart on
-            // its TLAST and still deliver that shot's window intact.
             if ((int)n_shots == odd_at)
                 for (unsigned p = 0; p < odd_len; p++)
                     in_stream.write(mkword(synthetic_noise_word(), p == odd_len - 1));
@@ -160,13 +116,11 @@ int main() {
         for (unsigned iter = 0; iter < n_shots; iter++) {
             for (unsigned i = 0; i < N_IQ_WINDOW_IN; i++)
                 in_stream.write(mkword(ap_uint<32>(0), i == N_IQ_WINDOW_IN - 1));
-            labels[iter] = -1; // unknown -- not a real label
+            labels[iter] = -1; // no label
         }
     }
 
-    // v1.9.2: `trigger` is now a `volatile bool *` pointer parameter (see
-    // NN_axi.cpp for why) -- pass the address of a local held constant
-    // true for this whole call, same behavior as the old by-value true.
+    // trigger held high: every FOREVER_L iteration processes one window
     bool trigger_const = true;
     NN_axi(in_stream, out_buf, &trigger_const, &window_size, &window_offset,
            &scaling_factor, &out_reset, &out_offset, &trig_count, &onset_threshold,
@@ -176,9 +130,6 @@ int main() {
     printf("v1.41 TLAST restarts (cumulative) = %u, onset misses = %u\n",
            onset_miss_count >> 16, onset_miss_count & 0xFFFFu);
 
-    // Level-sensitive design + trigger held constant true for this whole
-    // call => fires on every bounded FOREVER_L iteration => one shot
-    // processed per buffered window, same as the original testbench.
     unsigned expected_offset = n_shots;
     printf("out_offset after run: %u (expected %u)\n", out_offset, expected_offset);
     printf("trig_count after run: %u (expected %u -- should equal out_offset here since\n"
@@ -213,19 +164,7 @@ int main() {
     }
     fout.close();
 
-    // ---- v1.27 diagnostic-capture verification -------------------------
-    // v1.27 layout (one write per LOAD_L iteration -- see capture_word_t in
-    // NN_axi.h for why v1.26's two-write version silently lost half its
-    // samples on real hardware):
-    //   out_buf[0 .. N_IQ_WINDOW_IN-1] = raw packed 32-bit stream words,
-    //                                    transported through the float BRAM
-    //                                    word as BITS, not as a number
-    //   out_buf[N_IQ_WINDOW_IN]        = the sigmoid produced from them
-    // So the check is on the UNPACKED halves, not on the float value: each
-    // half must be a uint16, and the reconstructed in_local value is
-    // (half * scaling_factor). NOTE this cannot catch a dual-port interface
-    // mismatch -- csim does not model BRAM ports at all -- so the real
-    // gate for that is the csynth port list (no out_r_*_B signals).
+    // capture mode: each captured word unpacks to two 16-bit halves; the sigmoid slot holds a probability
     if (window_offset == CAPTURE_ARM) {
         const unsigned NCAP = N_IQ_WINDOW_IN;
         double maxval = (double)65535u * (double)scaling_factor;
@@ -266,13 +205,6 @@ int main() {
                        "STORE_L's capture branch is wrong.\n");
             return 1;
         }
-        // ---- v1.39: tap verification REMOVED -------------------------
-        // The v1.28 layer taps, the v1.29/v1.30/v1.35 in_local readbacks and
-        // the v1.31 dense-input tap are gone from the firmware (task 2.1), so
-        // the checks that decoded their slots are gone from here. The capture
-        // checks above are the ones that matter for this build: if LOAD_L's
-        // reconstructed shift register smeared the input, the non-zero capture
-        // check and the fidelity number below are what would show it.
         printf("CAPTURE VERIFICATION PASSED\n");
     }
 

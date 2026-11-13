@@ -8,7 +8,7 @@ the ridge selection):
       train rows [0:N) of 0528_X_train_0_770 through (k2, c2), N = 10k/50k/200k;
       MF w = mu1 - mu0; LDA pooled covariance + ridge lam*tr(S)/d*I, lam in
       {1e-3, 1e-2, 1e-1}; threshold chosen on the training scores. The quoted LDA
-      number is the best ridge ON THE TEST SET (audit A10/B1) -- reported per ridge here.
+      number is the best ridge on the test set -- reported per ridge here.
   (b) campaign_v140L1/window_tradeoff.py LDA arm (PAPER §8.4, §7.4 "95.55% replayed"):
       train rows [0:180k), ridge in {1e-4..1e-1} chosen on validation rows [180k:200k),
       window [0, E) for E on the 32-sample grid; paired against E = 640.

@@ -1,18 +1,11 @@
 """Bit-accurate fixed-point emulation of the deployed classifier, at scale.
 
-WHY. The 20k on-chip campaign (task 3.2) scored 0.44 points below the float
-Keras emulator on the same shots (McNemar p = 1e-6). Two candidate causes:
-  (a) fixed-point quantization inside NN() -- csim showed -0.42 points against
-      Keras on 500 acquired shots, the same size;
-  (b) acquisition differences -- the chip scores FRESH loopbacks under a new
-      calibration, the emulator scores the 2026-09-02 loopback20k_real capture.
-This script runs the hls4ml C++ model (hls_model.compile(), which compiles the
-same NN.cpp / nnet_utils / ap_fixed types that synthesis uses) over all 20,000
-shots of loopback20k_real, so (a) can be measured with 40x csim's power.
+Runs the hls4ml C++ model (hls_model.compile(), which compiles the same NN.cpp / nnet_utils / ap_fixed types
+that synthesis uses) over all 20,000 shots of loopback20k_real, to measure the fixed-point cost against the float
+Keras model on the same shots.
 
-The model is rebuilt from the deployed recipe (task 3.3 showed the float32
-path reproduces seed 20260902 = 95.34% bit-for-bit) and converted with the SAME
-make_hls_config() the export uses. `--check-firmware` asserts the emulator's
+The model is rebuilt from the deployed recipe (the float32 path reproduces seed 20260902 = 95.34% bit for bit) and
+converted with the same make_hls_config() the export uses. `--check-firmware` asserts the emulator's
 weights are byte-identical to neural_net4/firmware/weights, i.e. that this is
 the model the bitstream carries.
 

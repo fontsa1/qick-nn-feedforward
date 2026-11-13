@@ -1,6 +1,6 @@
-"""Domain map + training set for the boxcar readout path (task 4.1h, v1.40L7 -> L8).
+"""Domain map + training set for the boxcar readout path.
 
-The deployed model (v1.40L3, 576 samples) trains on `k2 * z + c2`: the reference
+The FIR-path model (576 samples) trains on `k2 * z + c2`: the reference
 rows mapped by a label-free affine fit to what readout 0's FIR stream delivers in
 loopback (build_domain_calibrated_training_set.py). The boxcar path (boxcar_tap.v)
 replaces the FIR with box8 (an average over one decimated sample) and a moving sum
@@ -17,8 +17,8 @@ offset), so the filter is primed with c.
 
 The fit is LABEL-FREE (mean trajectory over all calibration shots, lstsq for kb,
 cb; grid search for s), on the same rows as the deployed map: test20k_real_X
-[1000:1600]. It writes the mapped training rows (default the v1.40L3 recipe's
-0:10000,110000:300000 of 0528_X_train_0_770) to --out, in row order, so train
+[1000:1600]. It writes the mapped training rows (default rows
+0:10000,110000:300000 of 0528_X_train_0_770, as the deployed recipe) to --out, in row order, so train
 with --rows 0:<n>.
 
 """

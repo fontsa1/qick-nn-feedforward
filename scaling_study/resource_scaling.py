@@ -1,15 +1,13 @@
-"""4.5a -- resource scaling of the classifier unit (FINAL_TASKS 4.5a).
+"""Resource scaling of the classifier unit.
 
-Per-unit cost from the routed v1.41 hierarchical utilization (paper_tables/table3/data, build of 2026-10-21,
-xczu48dr-ffvg1517-2-e), and the largest number of units that fits in the resources v1.41 leaves free, for three
-per-tone front ends:
+Per-unit cost from a routed hierarchical utilization report (paper_tables/table3/data, xczu48dr-ffvg1517-2-e), and
+the largest number of units that fits in the resources the build leaves free, for three per-tone front ends:
   none      -- the unit only (all units share an existing readout stream; the lower bound)
-  fir_free  -- + a DDS/mixer front end: axis_dyn_readout_v1_1 as routed (its FIR output m1 is unconnected, so
-               the FIR is trimmed): what the boxcar path needs per tone
+  fir_free  -- + a DDS/mixer front end: axis_dyn_readout_v1_1 as routed (its FIR output m1 is unconnected, so the
+               FIR is trimmed): what the boxcar path needs per tone
   stock     -- + a full stock readout (axis_dyn_readout_v1_0, FIR included), if every tone keeps QICK's FIR path
-and two baselines: v1.41 as built, and v1.41 without NN_axi and the time tagger (a scaling build would drop them).
-Writes resource_scaling.json (or $SCALING_OUT) and prints a table. Uses whichever build v141_reports reads (v1.43 since
-2026-11-06): SCALING_OUT=resource_scaling_v143.json for that run; the v1.41 output is kept as resource_scaling.json.
+and two baselines: the design as built, and without NN_axi and the time tagger (a scaling build would drop them).
+Writes resource_scaling.json (or $SCALING_OUT) and prints a table. The report set is the one v141_reports reads.
 """
 import json
 import sys

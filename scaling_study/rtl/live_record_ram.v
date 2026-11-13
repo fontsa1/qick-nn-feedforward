@@ -1,10 +1,7 @@
 `timescale 1ns / 1ps
-// live_record_ram -- NN_live's host-readable record memory (8 x RAMB36, 8192 x 32 bit), as in the BD
-// (axi_bram_ctrl_live_bram), with the write-port register stage planned for 4.1m: NN_live's out_r
-// Addr/EN/WEN/Din go through one register before the RAM, which removes the FSM -> 3 LUT -> 8 RAMB36
-// path that fails in v1.41 (42 endpoints). Safe because NN_live never reads out_r (out_r_Dout_A is
-// tied 0 in NN_live.v): delaying its writes by one cycle changes nothing it can observe.
-// Port B = the host read side (AXI BRAM controller clock in the real design).
+// live_record_ram: NN_live's host-readable record memory (8 x RAMB36, 8192 x 32 bit) with one register stage
+// on the write port (Addr/EN/WE/Din), as live_rec_wreg in the deployed design. Port A: NN_live's out_r
+// (write only; NN_live never reads it). Port B: the host read side.
 module live_record_ram (
     input  wire        clka,
     input  wire [31:0] addra,      // byte address (AXI BRAM convention)

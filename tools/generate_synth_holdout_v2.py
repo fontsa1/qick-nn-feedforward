@@ -1,16 +1,9 @@
 """
-2026-09-02: regenerate the synthetic holdout with (a) the FIXED generator
-(additive noise, consistent Phi) and (b) a fit pool that is disjoint from the
-REAL test set as well as from the classifier's training data.
+Generate the synthetic holdout (x/y/Phi_synth_v2.npy) from a generator fit pool disjoint from the real test set
+and from the classifier's training data (the pool 0528_X_all_{0,1}[400000:] contains the real test shots, so it is
+not used).
 
-Why the fit pool moved. The previous pool was 0528_X_all_{0,1}[400000:]. A hash
-check shows that pool CONTAINS all 20,000 shots of the real loopback test
-subset -- so the synthetic set was a resynthesis of the exact shots we compare
-it against, and "synthetic ceiling vs real ceiling" would not have been an
-independent comparison. It was clean w.r.t. the classifier (0 overlaps), which
-is why it went unnoticed.
-
-New three-way split of the 1,000,000 real shots:
+Three-way split of the 1,000,000 real shots:
     classifier training : 0528_X_train_0_770.npy[:10000]
     generator fit pool  : 0528_X_train_0_770.npy[10000:110000]   <-- here
     real test set       : 0528_X_test_0_770.npy                  (disjoint file)
@@ -61,7 +54,7 @@ def main():
     print("saved x/y/Phi_synth_v2.npy", Xg.shape)
     print("balance:", dict(zip(*np.unique(yg, return_counts=True))))
 
-    # Phi consistency (the 2026-09-01 fix)
+    # Phi consistency: the recorded phase must match the traces' rotation
     z = Xg[:, 0::2] + 1j * Xg[:, 1::2]
     a = np.zeros(len(z))
     for s in (0, 1):

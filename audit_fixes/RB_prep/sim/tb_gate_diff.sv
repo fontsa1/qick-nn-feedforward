@@ -1,20 +1,16 @@
-// R.15 regression: built dac_gate (v1.40L10, renamed dac_gate_ref) vs the v1.41 dac_gate,
-// fed the same stimulus on every cycle.
-//   LEG = dac_gate #(EARLY_BLANK 0, SHOT_BIND 0, FAIL_SAFE 0, CFG_SAFE 0): must equal REF in
-//         every phase (stream on every cycle; record words 1-9, 10[3:0], 12-18).
-//   NEW = dac_gate with its defaults (EARLY_BLANK 1, SHOT_BIND 1, FAIL_SAFE 0, CFG_SAFE 0).
-// Decisions come from NN-like result strobes on the readout clock (552.96 MHz) through the
-// real live_res_cdc into clk_dac2 (491.52 MHz); the shot field counts results like NN_live.
-// Phases:
-//   1 normal operation, as the measured programs: one classify trigger per shot, one result per
-//     shot with the next shot field, DELAY = word7 - DELAY_LEAD with DELAY_LEAD 4..12, the pulse
-//     inside the window, zero samples outside pulses, slack -40..+200 cycles (late decisions
-//     included, as in the gate_probe slack sweep), random policy / ENABLE between shots.
-//     NEW must equal REF exactly (stream every cycle; record words as above), word 19 = 0.
-//   2 as 1 but small noise outside pulses: NEW may differ from REF only by zeroing the words of
-//     a window's first two cycles (the early blank), nowhere else.
-//   3 abnormal (LEG vs REF only): lost results, classify triggers closer than the NN latency,
-//     DELAY_LEAD 0..3, ENABLE / policy changes inside windows, second markers, noise.
+// tb_gate_diff: rtl/dac_gate.v against the earlier version (ref/dac_gate_ref.v, GAT3), same stimulus on
+// every cycle:
+//   LEG = dac_gate #(EARLY_BLANK 0, SHOT_BIND 0, FAIL_SAFE 0, CFG_SAFE 0): must equal REF in every phase (stream
+//         on every cycle; record words 1-9, 10[3:0], 12-18).
+//   NEW = dac_gate #(EARLY_BLANK 1, SHOT_BIND 1, FAIL_SAFE 0, CFG_SAFE 0).
+// Decisions come from NN-like result strobes on the readout clock through live_res_cdc into clk_dac2; the shot
+// field counts results as NN_live does. Phases:
+//   1 normal operation: one cls_trig and one result per shot, DELAY = word 7 - DELAY_LEAD (4..12), the pulse
+//     inside the window, zero samples outside pulses, slack -40..+200 cycles (late decisions included),
+//     random policy and ENABLE between shots. NEW must equal REF exactly; word 19 = 0.
+//   2 as 1 with small noise outside pulses: NEW may differ from REF only by zeroing the window's first two words.
+//   3 abnormal (LEG vs REF only): lost results, cls_trig closer than the NN latency, DELAY_LEAD 0..3, ENABLE or
+//     policy changes inside windows, second markers, noise.
 `timescale 1ps / 1ps
 module tb_gate_diff;
     localparam integer NS = 16, D_PS = 2034, S_PS = 1808;

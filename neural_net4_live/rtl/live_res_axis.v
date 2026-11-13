@@ -1,17 +1,12 @@
-// live_res_axis: NN_live's per-shot result (res_o, ap_vld) as a 64-bit AXIS beat
-// for a tProc_v2 input port (task 4.1 milestone 2, v1.40L2).
+// live_res_axis: NN_live's per-shot result (res_o, ap_vld) as a 64-bit AXIS beat for a tProc_v2 input port,
+// on the readout clock. Same word as live_res_cdc without the clock crossing; not used in the v1.44 design.
 //
-// res_o (NN_live.h): [15:0] logit, ap_fixed<16,6> raw (Q.10), [44:16] shot,
-// [63] decision. The tProc's DPORT_RD loads tdata[31:0] into s_port_l and
-// tdata[63:32] into s_port_h, so:
-//   tdata[31:0]  = logit sign-extended to 32 bits: a program branches with
-//                  TEST s_port_l - #thr ; JUMP NS  (logit >= thr/1024),
-//                  i.e. QICK's read_and_jump(component='I'), any threshold
-//   tdata[60:32] = shot count (29 bits), to detect a stale read
-//   tdata[63]    = decision bit (logit >= 1/64)
-// One registered stage on the readout clock. tvalid pulses once per shot; the
-// downstream axis_clock_converter is never full at that rate, so tready is
-// ignored (the tProc's own inputs tie tready high).
+// res_o (NN_live.h): [15:0] logit, ap_fixed<16,6> (Q.10), [44:16] shot, [63] decision. Output word, which
+// DPORT_RD loads as s_port_l = [31:0], s_port_h = [63:32]:
+//   [31:0]  logit, sign-extended (TEST s_port_l - #thr; JUMP NS branches on logit >= thr/1024)
+//   [60:32] shot count (29 bits)
+//   [63]    decision bit (logit >= 1/64)
+// One register stage. tvalid pulses once per shot; tready is ignored.
 `timescale 1ns / 1ps
 
 module live_res_axis (

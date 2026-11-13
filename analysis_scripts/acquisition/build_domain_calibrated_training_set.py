@@ -1,41 +1,19 @@
 """Fit the affine domain map (k2, c2) and apply it to the training set.
 
-2026-09-04 (original): fit the PER-CLASS affine map from the disjoint
-domain-calibration slice (`data/domain_calib_raw_X.npy` / `data/domain_calib_acquired.npy`,
-rows [1000:1600] of `test20k_real_X` -- NOT the scored [0:500] range), then
-apply it to the actual training set (`0528_X_train_0_770.npy`) so the classifier
-trains on data in the same domain the real loopback chain delivers.
+The map is fit on the domain-calibration slice (`data/domain_calib_raw_X.npy` / `data/domain_calib_acquired.npy`,
+rows [1000:1600] of `test20k_real_X`, excluded from every scored set) and applied to `0528_X_train_0_770.npy`, so the
+classifier trains on data in the domain the loopback chain delivers.
 
-2026-10-05 (task 1.1): **the default fit is now LABEL-FREE.**
-
-WHY. The per-class fit consumes `data/domain_calib_y.npy` -- labels belonging to the
-test file. No scored shot leaks (audit check C2: the [1000:1600] slice is
-disjoint from the scored [0:500] range), but these are still test-file labels
-fitting a preprocessing transform applied to 100% of the training data. That is
-leakage item F1, and a reviewer can name it.
-
-The 2026-10-01 ablation (`phase0_calibration_ablation.py`, 3 arms x 2 windows x
-3 seeds, evaluated on 20,000 REAL shots played through the DAC and back through
-the ADC) measured what the labels actually buy:
+--fit global (default) is label-free: one complex affine fit to the mean trajectory over all shots. --fit perclass
+stacks the two class-mean trajectories and uses `data/domain_calib_y.npy` (test-file labels); it is kept only to
+reproduce earlier artifacts. Measured with phase0_calibration_ablation.py (3 arms x 2 windows x 3 seeds, on 20,000
+real shots played through the DAC and back through the ADC):
 
     raw, no map at all                    94.76 +/- 0.15
     per-class map (uses test labels)      95.12 +/- 0.18
     global map (label-free)               95.13 +/- 0.11
 
-The labels are worth **+0.01 points**, so F1 can be deleted outright rather
-than re-acquired. This holds even though the two gains differ by 16%
-(|kg| = 0.168 vs |k2| = 0.200) -- the exact transform barely matters, which is
-itself evidence that the map is doing something coarse.
-
-The map as a whole is worth +0.37 +/- 0.19 points, so it is NOT deleted. See
-the note in FINAL_TASKS 1.2 on why that question was settled offline: an
-on-chip A/B would need ~50,000 shots per arm AND two bitstream builds (the
-ternary weights are baked into the fabric) to resolve 0.37 points, against
-1.9 sigma already in hand from 20,000 acquired shots.
-
-The per-class path is kept behind `--fit perclass` so the historical artifacts
-stay reproducible, but it should not be used for anything reported.
-
+So the labels add nothing (+0.01 points), and the map as a whole adds +0.37 +/- 0.19 points.
 """
 import argparse
 import numpy as np
@@ -56,11 +34,9 @@ def fit_global(z_raw, z_acquired):
     return complex(sol[0]), complex(sol[1])
 
 def fit_perclass(z_raw, z_acquired, y):
-    """The deployed-until-2026-10-05 fit. CONSUMES TEST-FILE LABELS (F1).
+    """Per-class fit: uses test-file labels (`y`).
 
-    Stacks the two class-mean trajectories so the joint regression preserves
-    the state-dependent signal instead of averaging it away. The intent was
-    sound; the cost is that `y` comes from the test file.
+    Stacks the two class-mean trajectories so the joint regression keeps the state-dependent signal.
     """
     z_raw_0 = np.mean(z_raw[y == 0], axis=0)
     z_raw_1 = np.mean(z_raw[y == 1], axis=0)

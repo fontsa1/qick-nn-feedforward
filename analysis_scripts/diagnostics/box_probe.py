@@ -1,4 +1,4 @@
-"""v1.40L7 low-latency readout path (boxcar_tap_0, task 4.1h build 1): hardware probe.
+"""Low-latency readout path (boxcar_tap_0): hardware probe.
 
 Readout 0's FIR stream lands in avg buffer 0 (readout channel 0), boxcar_tap_0's
 stream in avg buffer 1 (readout channel 1); both are triggered together, so one
@@ -75,7 +75,7 @@ def main():
     res = dict(fs_MHz=fs)
 
     # ---- A. amplitude at shift 10 (the 23-bit moving sum saturates a 16-bit output at
-    # low shifts: measuring at shift 0 clipped the plateau, 2026-10-13), then the shift
+    # low shifts: shift 0 clips the plateau), then the shift
     # that matches the FIR, then the edges at that shift (unclipped, matched levels)
     soc.box_config(sel=0, shift=10, m=a.m)
     g = []

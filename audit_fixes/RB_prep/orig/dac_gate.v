@@ -1,69 +1,11 @@
-// dac_gate: NN_live-conditioned gate on generator 0's DAC stream (v1.40L6b;
-// v1.40L9 adds the per-shot timestamps of words 15-18).
-//
-// Sits between axis_register_slice_0 (gen 0's output pipeline) and the RFdc's
-// s00_axis, on clk_dac2 (491.52 MHz; 16 x 16-bit samples per cycle). The tProc
-// schedules the conditional pulse unconditionally and fires a window marker
-// (a tProc trigger output, also on clk_dac2) at the same time. Inside the
-// window, delayed by DELAY cycles to line up with the generator's pipeline,
-// the gate passes or blanks the stream according to NN_live's decision for
-// the shot, so the decision acts on the DAC without the tProc's
-// wait / read / branch / dispatch path.
-//
-//   * Outside a window, and whenever the gate is disabled, the stream passes
-//     unchanged (one register stage: fixed 1-cycle delay on everything gen 0
-//     plays).
-//   * At the window's first cycle the decision is latched and held for the
-//     whole window, so a pulse is never cut partway through:
-//       fresh decision, bit = 1 -> pass if PASS1;  bit = 0 -> pass if PASS0
-//       no fresh decision      -> pass if PASS_STALE (default: blank), counted
-//     The blanking itself takes effect one cycle after the window opens
-//     (registered, replicated enable; v1.40L6b).
-//   * Shots (v1.40L6b): the classify trigger (cls_trig, tProc trig_11, the same
-//     trigger that starts NN_live's window) starts a shot. A decision is fresh if
-//     it arrived after this shot's classify trigger and before this shot's window
-//     opened. A decision that arrives after the window opened is LATE: it is
-//     counted and discarded, never carried to the next shot (v1.40L6 kept it as
-//     fresh and the next shot's window used it).
-//   * Statistics are kept while disabled too, so the timing can be measured
-//     without touching the output.
-//
-// Decision input: dec_axis, NN_live's 64-bit result word (live_res_cdc layout:
-// [31:0] logit Q.10 sign-extended, [60:32] shot, [63] decision bit), one beat per
-// classified window, already in clk_dac2 (a second live_res_cdc instance).
-//
-// BRAM (byte addresses, 32-bit words; PS side via axi_bram_ctrl_gate):
-//   word 0  config, written by the host, read here continuously:
-//           [0] ENABLE  [1] PASS1  [2] PASS0  [3] PASS_STALE
-//           [15:8] DELAY (marker -> window, cycles)  [31:16] NZ_THR (|sample| >)
-//   written at each window's end:
-//   word 1  windows        word 2  passed         word 3  blanked
-//   word 4  stale          word 5  decisions received
-//   word 6  margin: window start - decision arrival, cycles (signed; 0x7FFFFFFF if stale)
-//   word 7  marker rise -> first stream sample with |x| > NZ_THR at the gate input,
-//           cycles (0xFFFFFFFF if none in the window); the nz detector's 3 cycles
-//           are subtracted, the marker synchronizer's 2 cycles are not (so this is
-//           the generator latency minus 2, and DELAY = word 7 - a few cycles opens
-//           the window just before the pulse)
-//   word 8  decision word [31:0] (logit)   word 9  decision word [63:32] (shot, bit)
-//   word 10 flags: [0] passed [1] stale [2] decision bit [3] enabled
-//   word 11 magic 0x47415433 ("GAT3", v1.40L9; v1.40L6b: "GAT2", v1.40L6: "GAT1")
-//   word 12 late decisions (arrived after their shot's window opened), total
-//   word 13 the most recent late decision: arrival - window start, cycles
-//   word 14 classify triggers seen
-//   v1.40L9, absolute cycle-counter values (the host subtracts, mod 2^32; no
-//   new subtractors on clk_dac2), for the task 4.1h segment split against
-//   seg_stamp_0's clk_adc0_x2 timestamps:
-//   word 15 the window's fresh decision arrived (0xFFFFFFFF if stale)
-//   word 16 marker rise (mk_rise)
-//   word 17 window open (win_open); the gated stream reaches the RFdc one
-//           cycle after the window's first cycle (the output register)
-//   word 18 this shot's classify-trigger rise (cl_rise)
-//
-// Timing (v1.40L6b, after L6 missed by up to 0.12 ns on clk_dac2): the delay-line
-// tap is a two-stage 256:1 mux with the same overall latency, the |x| detector is
-// three stages, the BRAM port has an extra register on each side, and the blank
-// enable is a registered signal with a fanout limit.
+// dac_gate: earlier dac_gate (magic 0x47415433 "GAT3", BRAM words 1-18). Reference model for tb_gate_fix and
+// tb_gate_diff. Differences from neural_net4_live576/rtl/dac_gate.v:
+//   * the policy takes effect from the window's third cycle (no early blank);
+//   * no shot binding: any decision arriving between cls_trig and the window is used;
+//   * windows pass while ENABLE = 0 (no FAIL_SAFE); word 0 is taken on every read (no CFG_SAFE);
+//   * words 19-20 and flag bits [4], [11:8] are absent.
+// BRAM words 0-18 have the same meaning as in rtl/dac_gate.v.
+
 `timescale 1ns / 1ps
 
 module dac_gate #(
@@ -137,9 +79,8 @@ module dac_gate #(
 
     reg [31:0] t;                              // free-running cycle counter
 
-    // ---- window marker and classify trigger: 2-flop synchronizers (timing.xdc
-    // false-paths the tProc's trig_*_o, so their routes are untimed although they
-    // are on this clock); marker delay line, tapped through a two-stage mux
+    // ---- marker and cls_trig: 2-flop synchronizers (QICK's timing.xdc false-paths the tProc trigger outputs);
+    // marker delay line, tapped through a two-stage mux
     (* ASYNC_REG = "TRUE" *) reg [1:0] mk_sync;
     (* ASYNC_REG = "TRUE" *) reg [1:0] cl_sync;
     reg         mk_r, mk_r1, cl_r1;
@@ -150,9 +91,7 @@ module dac_gate #(
     wire        cl_rise   = cl_sync[1] & ~cl_r1;
     wire        win_open  = mk_d & ~mk_d1;
     wire        win_close = ~mk_d & mk_d1;
-    // mk_v is mk_sr's next value, so stage 1 picking from it and stage 2
-    // registering the pick gives mk_d(n) = mk_sr(n-1)[delay], as v1.40L6's
-    // single-stage mk_d <= mk_sr[delay]
+    // mk_v is mk_sr's next value, so the two-stage tap gives mk_d(n) = mk_sr(n-1)[delay]
     wire [255:0] mk_v     = {mk_sr[254:0], mk_r};
 
     // ---- decision state
@@ -160,7 +99,7 @@ module dac_gate #(
     reg        dec_fresh;
     reg        opened;                         // this shot's window has opened
     reg [31:0] t_dec, n_dec, n_late, late_by, n_cls, t_open;
-    reg [31:0] t_cls, w_tdec, w_tmk, w_topen;  // v1.40L9 timestamps (absolute)
+    reg [31:0] t_cls, w_tdec, w_tmk, w_topen;  // absolute timestamps (words 15-18)
 
     // ---- window state
     reg        in_win, pass;
@@ -233,8 +172,7 @@ module dac_gate #(
 
             blank <= en && in_win && !pass;
 
-            // ---- decisions. Priority: a new shot (classify trigger) clears
-            // everything older; a decision after this shot's window opened is late.
+            // ---- decisions. A new shot clears everything older; a decision after the window opened is late.
             if (dec_axis_tvalid) n_dec <= n_dec + 32'd1;
             if (cl_rise) begin
                 n_cls     <= n_cls + 32'd1;
@@ -269,8 +207,7 @@ module dac_gate #(
                 n_win  <= n_win + 32'd1;
                 t_open <= t;
                 w_topen <= t;
-                // a decision arriving in this very cycle is late (counted here,
-                // since the decision branch above skips it on win_open)
+                // a decision arriving in this cycle is late (the branch above skips it on win_open)
                 if (!cl_rise) opened <= 1'b1;
                 if (dec_axis_tvalid && !cl_rise) begin
                     n_late  <= n_late + 32'd1;
@@ -324,9 +261,8 @@ module dac_gate #(
             end
 
             // ---- BRAM port: write words 1..N_REC after a window; otherwise read word 0.
-            // b_* -> bram_* -> BRAM (READ_LATENCY 1) -> cfg_raw -> cfg: a read issued
-            // on b_addr reaches cfg_raw four cycles later, so word 0 is valid from the
-            // fifth consecutive read cycle on (rd_cnt == 5).
+            // b_* -> bram_* -> BRAM (READ_LATENCY 1) -> cfg_raw: a read reaches cfg_raw four cycles after it
+            // is issued, so word 0 is valid from the fifth consecutive read cycle.
             b_en <= 1'b1;
             if (wr_busy) begin
                 b_we   <= 4'hF;

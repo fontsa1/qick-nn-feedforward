@@ -1,24 +1,12 @@
-"""Decode NN_axi's onset diagnostics, across the v1.38 format change.
+"""Decode NN_axi's onset diagnostics register.
 
-v1.38 (2026-09-21) packs TWO fields into the single `drain_count_last`
-AXI-lite register rather than adding a new port (a new port means a BD and
-wrapper change plus a full re-integration, for a diagnostic):
+`drain_count_last` packs two fields:
 
-    idle_flush = drain_count_last >> 16     words IDLE_FLUSH_L discarded
-                                            since the previous shot
-    drain      = drain_count_last & 0xFFFF  unchanged meaning
+    idle_flush = drain_count_last >> 16     words IDLE_FLUSH_L discarded since the previous shot
+    drain      = drain_count_last & 0xFFFF  words read before the window
 
-Pre-v1.38 bitstreams leave the upper half at 0, so this decoder is correct for
-both and callers do not need to know which build is loaded. Both fields are
-bounded well under 16 bits by construction (drain <= MAX_DRAIN_WORDS = 1152;
-the idle flush count is saturated at 0xFFFF in firmware).
-
-Why it matters: `drain` pinned at 1 on every shot was the signature of the
-one-shot lag -- the input queue held a full stale shot and DRAIN_L, being
-level-triggered, latched its first sample every time. After v1.38's
-IDLE_FLUSH_L holds the queue empty between shots, `drain` should STOP being
-pinned at 1 and `idle_flush` should settle near 0 in steady state. Reading the
-raw register without masking would show ~5e7 and look like a fault.
+Builds without the idle flush leave the upper half at 0, so the decoder works for both. Both fields stay well under
+16 bits (the idle flush count saturates at 0xFFFF in firmware). The raw register value (~5e7) is not a fault.
 """
 
 

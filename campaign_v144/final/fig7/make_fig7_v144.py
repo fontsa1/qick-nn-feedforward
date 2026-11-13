@@ -8,7 +8,7 @@
     (fig7_sweep_{A,B}_v144.npz, box_sweep_fig7.py): readout tone f, image/DC at 2f after each path's filter,
     board A plotted, board B compared in fig7_values_v144.json; ring = the 100 MHz value of the original capture.
 Supplementary (fig7s_image_vs_M, for an appendix): image level vs M = 1..16, measured vs theory.
-Data: fig7_capture_A_v144.npz (analysis_scripts/diagnostics/box_probe_fig7.py, 2026-11-06).
+Data: fig7_capture_A_v144.npz (analysis_scripts/diagnostics/box_probe_fig7.py).
 Arial 9 pt; script, data and outputs live in this folder."""
 import json
 import re
@@ -45,7 +45,7 @@ def edge(z):
 
 def image_dbc(z):
     """Image level re. baseband: least-squares fit of DC + exp(j 2 pi f t), f scanned near -100 MHz.
-    No window, so no scalloping bias (the old Hann-peak estimate read ~0.6 dB low; audit D12)."""
+    No window, so no scalloping bias (a Hann-peak estimate reads ~0.6 dB low)."""
     z = z[200:-300]
     t = np.arange(len(z)) / FS
     best = None

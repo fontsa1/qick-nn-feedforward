@@ -1,45 +1,36 @@
-"""End-to-end verification that no test information reaches the trained model.
+"""End-to-end check that no test information reaches the trained model.
 
-This is the audit a reviewer will attempt. It re-derives every link in the
-chain from the raw files and asserts disjointness, rather than trusting the
-scripts' own comments.
-
-The chain under test (current, v1.37/v1.38 pipeline):
+Re-derives every link in the data chain from the raw files and asserts disjointness:
 
     0528_X_all_{0,1}.npy          real shots, 500k/class
-        |                         (generator fits its cavity+noise model on
-        |                          the last 100k per class)
+        |                         (the synthetic generator fits its cavity+noise model on train rows 10000:110000)
         +-> 0528_X_train_0_770    900k real   -- classifier TRAIN pool
         +-> 0528_X_test_0_770     100k real   -- held-out TEST pool
                 |
                 +-> test20k_real_X  20k, indices in data/test20k_real_manifest.json
                         |
-                        +-> [0:20000]    SCORED (NN_axi v1.40, NN_live L10, emulators)
+                        +-> [0:20000]    scored (NN_axi, NN_live, emulators)
                         |                 headline set = [0:20000] minus [1000:1600] (19,400)
-                        +-> [1000:1600]  domain_calib_* -- fits (k2, c2); also the
-                                          boxcar-path map (kb, s, cb), calibration/box_domain_map.json
-                        (until 2026-10-20 this read [0:400]; --legacy-check-c)
+                        +-> [1000:1600]  domain_calib_* -- fits (k2, c2) and the boxcar-path map (kb, s, cb),
+                                          calibration/box_domain_map.json
 
-    (k2, c2) applied to ALL of 0528_X_train_0_770
+    (k2, c2) applied to all of 0528_X_train_0_770
         -> 0528_X_train_0_770_loopback_calibrated  -- what the model trains on
 
-Checks, each independently fatal if it fails:
+Checks, each fatal if it fails:
 
   A  train pool and test pool share no shot (raw row bytes)
-  B  test20k_real_X is exactly 0528_X_test[source_indices], labels included,
-     and the manifest's own index checksum still matches
-  C  the scored rows as stored per shot (test20k 0..19,999), and the 19,400-row
-     headline set disjoint from the rows used to fit (k2, c2) and (kb, s, cb)
-  D  the calibrated training file is the train pool under the recorded (k2,c2)
-     and contains no test shot
+  B  test20k_real_X is exactly 0528_X_test[source_indices], labels included, and the manifest's index checksum matches
+  C  the scored rows as stored per shot (test20k 0..19,999), and the 19,400-row headline set disjoint from the rows
+     used to fit (k2, c2) and (kb, s, cb)
+  D  the calibrated training file is the train pool under the recorded (k2, c2) and contains no test shot
   E  the generator's fit pool is disjoint from both training and scored data
-  F  reports every place a TEST-SET LABEL is consumed by a fitting step
-  G  test100k_real (the whole test split as replayed for NN_live v1.41) is exactly
-     0528_X_test[source_indices] with its manifest hashes, starts with test20k_real,
-     shares no shot with the train pool, and its 99,400-row headline set (rows
-     1000:1600 removed) shares no shot with the domain-map fit slices (added
-     2026-10-28, audit R.24)
+  F  reports every place a test-set label is consumed by a fitting step
+  G  test100k_real (the whole test split as replayed for NN_live) is exactly 0528_X_test[source_indices] with its
+     manifest hashes, starts with test20k_real, shares no shot with the train pool, and its 99,400-row headline set
+     (rows 1000:1600 removed) shares no shot with the domain-map fit slices
 
+--legacy-check-c runs check C on the first SCORED_N rows only.
 """
 import hashlib
 import json
@@ -51,21 +42,14 @@ import numpy as np
 RAW_DIR = Path(__import__("os").environ.get("RAW_DATA_DIR", "."))   # 0528_X_all_{0,1}.npy
 CHUNK = 20000
 
-# The number of rows the classifier actually trains on. Unanimous across all
-# 15 training/eval call sites (export_signed_domain_model.py:85,
-# export_loopback_calibrated_model.py:70, phase0_calibration_ablation.py:121,
-# and the eval_* family). Hardcoding 20000 here previously made E1 report a
-# 10,000-row overlap with the v2 generator's fit pool that does not exist in
-# the pipeline -- the fit pool starts at exactly TRAIN_N.
+# The number of rows the classifier trains on (export_signed_domain_model.py and phase0_calibration_ablation.py);
+# the generator's fit pool starts at exactly TRAIN_N.
 TRAIN_N = 10000
 GEN_FIT_LO, GEN_FIT_HI = 10000, 110000   # tools/generate_synth_holdout_v2.py:33
 SCORED_N = 400          # LEGACY (--legacy-check-c): the old 400-shot headline, rows 0:400
 CALIB_SLICE = (1000, 1600)
-# Check C (updated 2026-10-20, audit R3 / B4): the headlines now score test20k rows
-# 0..19,999 (NN_axi v1.40 campaign, NN_live L10 campaign, boxcar/FIR emulator). The
-# full 20k contains the 600 domain-map calibration rows, so it is a FOOTNOTE set; the
-# headline set is the 19,400 rows outside CALIB_SLICE. `--legacy-check-c` restores
-# the old check (first SCORED_N rows only).
+# Check C: the headlines score test20k rows 0..19,999. The full 20k contains the 600 domain-map calibration rows,
+# so the headline set is the 19,400 rows outside CALIB_SLICE.
 LEGACY_C = "--legacy-check-c" in sys.argv
 SCORED_FILES = {   # per-shot files whose row indices define the scored set
     "NN_axi v1.40 (campaign_v140/aligned)": ("campaign_v140/aligned", "idx"),
@@ -151,8 +135,8 @@ def check_c_scored(X20, y20, h_calib, lo, hi):
            pass_detail=f"0 shared rows by content (blake2b); the boxcar/FIR emulator file scores "
                        f"exactly these {len(head)} rows")
 
-T100 = "data/test100k_real"                  # the full test split as replayed for NN_live v1.41 (R.24)
-SCORED_100K = {   # per-shot files of the v1.41 100k campaign (run 1 and the board-swapped run 2)
+T100 = "data/test100k_real"                  # the full test split as replayed for NN_live
+SCORED_100K = {   # per-shot files of the 100k campaign (run 1 and the board-swapped run 2)
     "run 1, board A": "campaign_v140L1/A_v141_100k_merged_0_50000.npz",
     "run 1, board B": "campaign_v140L1/B_v141_100k_merged_50000_100000.npz",
     "run 2, board A": "campaign_v140L1/A_v141_100k_swap_merged_50000_100000.npz",
@@ -160,7 +144,7 @@ SCORED_100K = {   # per-shot files of the v1.41 100k campaign (run 1 and the boa
 }
 
 def check_g_test100k(h_train, h_calib, X20, lo, hi):
-    """G1-G5 (added 2026-10-28, audit R.24): the 100k replay set that carries the NN_live headline."""
+    """G1-G5: the 100k replay set that carries the NN_live headline."""
     man = json.load(open(f"{T100}_manifest.json"))
     idx = np.asarray(man["source_indices"], dtype=np.int64)
     X = np.load(f"{T100}_X.npy", mmap_mode="r")
@@ -276,14 +260,14 @@ def main():
 
     h_calib = set(row_hashes(np.asarray(dc_raw)))
     if LEGACY_C:
-        # pre-2026-10-20 behaviour: the old 400-shot headline (rows 0:400)
+        # --legacy-check-c: rows 0:SCORED_N only
         h_scored = set(row_hashes(np.asarray(X20[:SCORED_N])))
         record(f"C2 the {SCORED_N} scored shots are disjoint from the calibration slice",
                len(h_scored & h_calib) == 0, f"{len(h_scored & h_calib)} shared")
     else:
         check_c_scored(X20, y20, h_calib, lo, hi)
 
-    # ---------- G: the 100k replay set (NN_live v1.41 headline) -------------
+    # ---------- G: the 100k replay set (NN_live headline) -------------
     print(f"\nG. {T100} (the full test split as replayed; NN_live headline n = 99,400)")
     check_g_test100k(h_train, h_calib, X20, lo, hi)
 
@@ -318,16 +302,8 @@ def main():
            len(h_cal_head & h_test) == 0,
            detail="a hit here means the transform was identity AND the pools overlapped")
 
-    # ---------- E: the synthetic generator's fit pool ------------------------
-    # RE-POINTED 2026-10-05 (task 0.4). This section used to hardcode
-    # `0528_X_all_{0,1}[400000:]`, the fit pool of the pre-2026-09-02
-    # generator, and reported FAIL E2 because that pool contains all 20,000
-    # real test shots. `tools/generate_synth_holdout_v2.py` moved the pool to
-    # `0528_X_train_0_770.npy[10000:110000]` for precisely that reason and
-    # produced `x_synth_v2.npy`; the audit was never updated, so it kept
-    # failing against an artifact no longer in use. It now checks the pool the
-    # live generator reads. The obsolete pool is still probed below, reported
-    # as information rather than as a check, so the history stays visible.
+    # The pool tools/generate_synth_holdout_v2.py fits on (0528_X_train_0_770.npy[10000:110000]). An older pool,
+    # 0528_X_all_{0,1}[400000:], which contains the real test shots, is also probed and reported for information.
     print("\nE. synthetic generator fit pool "
           "(0528_X_train_0_770.npy[10000:110000], tools/generate_synth_holdout_v2.py)")
     FIT_LO, FIT_HI = GEN_FIT_LO, GEN_FIT_HI
@@ -374,13 +350,8 @@ def main():
               f"synthetic fidelity.")
 
     # ---------- F: where test-set LABELS are consumed ------------------------
-    # REWRITTEN 2026-10-05 (task 1.1). The old check tested whether
-    # `data/domain_calib_y.npy` EXISTED, not whether the recorded (k2, c2) were
-    # fitted with it. Those are different questions, and since the default fit
-    # became the label-free global one the labels sit on disk unused -- a
-    # file-existence test cannot tell that apart from the leaking case. This
-    # recomputes both candidate fits and identifies which one the deployed
-    # coefficients actually are.
+    # Recomputes both candidate (k2, c2) fits, label-free and label-using, and identifies which one the deployed
+    # coefficients are; a file-existence test could not tell them apart.
     print("\nF. audit: does any fitting step consume a TEST-SET label?")
     dc_acq = np.load("data/domain_calib_acquired.npy")
     z_acq = dc_acq[:, 0::2] + 1j * dc_acq[:, 1::2]

@@ -1,4 +1,4 @@
-"""R.19 leaked energy over blanked shots with a shaped (Gaussian) conditional pulse (BUILD_PLAN item 8).
+"""Leaked energy over blanked shots with a shaped (Gaussian) conditional pulse.
 
 "0 unsafe" is judged at the 50% plateau, so it cannot see a low-amplitude edge of a pulse that the gate
 blanks a few cycles late. This measures the energy that comes back when the gate blanks every window, as a

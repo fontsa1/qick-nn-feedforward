@@ -1,25 +1,10 @@
 """
-Deploy a new bitstream to the board and verify it's actually live.
+Deploy a new bitstream to the board and verify it is live.
 
-STATUS (2026-09-01 night): the upload/restart automation this docstring
-used to call an "unconfirmed gap" is now REAL and TESTED --
-`board_tools/jupyter_remote.py` implements it against the board's classic
-Jupyter Notebook server (Tornado, cookie+XSRF auth, password "xilinx")
-via its REST contents/kernels API plus the kernel-channels websocket for
-code execution. Validated tonight end-to-end (login, file upload, kernel
-restart actually clearing state, code execution with error capture) using
-a disposable scratch kernel -- NOT yet exercised against the real
-`start nameserver.ipynb` kernel, since that requires an actual new
-bitstream to be worth the disruption. See jupyter_remote.py's own
-docstring for the "first real use" checklist before pointing this at the
-live server for the first time.
-
-`deploy_new_bitstream()` below wires it all together: upload .bit/.hwh,
-patch the notebook's bitfile-load cell, restart the kernel, re-run every
-code cell in order (Restart & Run All semantics), leaving the final
-`daemon.requestLoop()` cell running (fire-and-don't-wait, since it never
-returns by design). Then call `verify_deployment(...)` as before.
-
+`deploy_new_bitstream()` uses board_tools/jupyter_remote.py (the board's Jupyter server: REST contents/kernels API
+plus the kernel-channels websocket) to upload .bit/.hwh, patch the server notebook's bitfile-load cell, restart the
+kernel and re-run the notebook's server cell, leaving the blocking `start_server` running. `verify_deployment()`
+then connects and checks the firmware banner.
 """
 import argparse
 import re
@@ -48,13 +33,8 @@ NS_PORT = 8888
 PROXY_NAME = "myqick"
 
 def connect(max_attempts=30, retry_delay_s=2.0):
-    """Connect to the board's QICK Pyro4 server, retrying the WHOLE
-    lookup (including locateNS) on every attempt -- not just the
-    Proxy() call. A prior version of this pattern called locateNS()
-    once, outside the retry loop, and hit a real race: right after a
-    bitfile swap + kernel restart, the nameserver lookup can fail with
-    ConnectionRefusedError if the board hasn't finished booting yet. See
-    CLASSIFIER_DEBUGGING_REFERENCE.md #15 for the history of this bug.
+    """Connect to the board's QICK Pyro4 server, retrying the whole lookup (including locateNS) on every attempt:
+    right after a bitfile swap and kernel restart the nameserver can refuse connections until the board is up.
     """
     last_err = None
     for attempt in range(1, max_attempts + 1):
@@ -73,15 +53,10 @@ def connect(max_attempts=30, retry_delay_s=2.0):
 
 def verify_deployment(expect_banner_contains=None, onset_threshold=None,
                        max_connect_attempts=30):
-    """Connect, print the firmware banner, and optionally verify it
-    against an expected substring (e.g. the build timestamp you know you
-    just deployed -- cross-check this against the .hwh file's own mtime
-    on the build machine before trusting it, per the workflow doc).
+    """Connect, print the firmware banner, and optionally verify it against an expected substring (e.g. the build
+    timestamp just deployed).
 
-    If onset_threshold is given, sets it via nn_configure-adjacent API
-    and reads it back to confirm -- this resets to 0 on every fresh
-    deploy and is NOT preserved (see CLASSIFIER_DEBUGGING_REFERENCE.md #7
-    for the cost of forgetting this).
+    If onset_threshold is given, sets it and reads it back; it resets to 0 on every deploy.
     """
     print(f"Connecting to {PROXY_NAME} at {NS_HOST}:{NS_PORT} ...")
     soc, soccfg = connect(max_attempts=max_connect_attempts)
@@ -136,11 +111,9 @@ def verify_deployment(expect_banner_contains=None, onset_threshold=None,
 NAMESERVER_NB_PATH = "start nameserver.ipynb"
 
 def deploy_new_bitstream(local_bit_path, local_hwh_path, board_name_stem):
-    """Real, tested (as of tonight) implementation of the manual deploy
-    procedure from qick-board-workflow-pipeline memory, steps 1-4:
-    upload .bit/.hwh, patch the notebook, restart, re-run all cells.
+    """Upload .bit/.hwh, patch the notebook, restart the kernel, re-run the server cell.
 
-    board_name_stem: e.g. "qick34" -- files go up as qick34.bit/qick34.hwh.
+    board_name_stem: e.g. "qick68" -- files go up as qick68.bit/qick68.hwh.
     """
     session, xsrf = login()
     print("Logged in to board Jupyter server.")
@@ -154,16 +127,9 @@ def deploy_new_bitstream(local_bit_path, local_hwh_path, board_name_stem):
     content = nb["content"]
     cells = content["cells"]
 
-    # Confirmed by direct inspection (2026-09-01 night): the REAL notebook
-    # is only 3 cells -- cell 0 alone does everything (BD 2.0 compat patch,
-    # NNQickSoc class def, starts its own `pyro4-ns` nameserver subprocess,
-    # then calls the blocking start_server(bitfile=..., ...)). Cell 1 is
-    # inactive leftover code (an alternate `start_nameserver()` call that
-    # would conflict -- port already in use -- if run after cell 0 already
-    # started its own nameserver subprocess). Cell 2 is empty. So: patch
-    # and re-run ONLY cell 0, never cell 1. Do NOT assume this generalizes
-    # to "every code cell in order" without re-checking if this notebook's
-    # structure ever changes.
+    # The server notebook's cell 0 does everything (QICK metadata patches, NNQickSoc, its own pyro4-ns subprocess,
+    # then the blocking start_server). Cell 1 is an alternate start_nameserver() call that would conflict with
+    # cell 0's nameserver; cell 2 is empty. So only cell 0 is patched and re-run.
     bitfile_cell_idx = None
     for i, cell in enumerate(cells):
         if cell.get("cell_type") != "code":

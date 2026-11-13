@@ -5,7 +5,7 @@ Per load, a fixed const pulse (gen 0, 50 MHz) is read back on ro 0 and the
 plateau's mean IQ phase is taken per shot. That phase is arg(k) up to a
 constant (k is the complex gain of the same gen -> ro loop), so its spread
 across loads is the arg(k) spread. Modes:
-  none  no phrst (today's programs): expected random per load
+  none  no phrst (as the measurement programs): expected random per load
   gen   phrst on the pulse only
   ro    phrst on the readout config only
   both  phrst on both, at the same tProc time (the hypothesis)

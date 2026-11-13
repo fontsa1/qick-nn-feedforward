@@ -14,11 +14,8 @@
 typedef hls::axis<ap_uint<32>, 0, 0, 0> in_word_t;
 typedef hls::stream<in_word_t> live_stream_t;
 
-// Per-shot result for the tProc path (task 4.1 milestone 2), driven with a
-// one-cycle ap_vld strobe as soon as the network's output exists, so it can
-// never stall the kernel and does not wait for the sigmoid:
-//   [15:0]  logit: the sigmoid's input, q_output_alpha_result_t raw bits
-//           (ap_fixed<16,6>), the output the reference design's latency counts
+// Per-shot result, a one-cycle ap_vld strobe as soon as the logit exists (it does not wait for the sigmoid):
+//   [15:0]  logit: the sigmoid's input, q_output_alpha_result_t raw bits (ap_fixed<16,6>)
 //   [44:16] shot index, low 29 bits
 //   [63]    decision: logit >= DECISION_LOGIT_MIN
 // The probability (sigmoid output) goes to the BRAM record a few cycles later.
@@ -44,10 +41,8 @@ typedef hls::stream<in_word_t> live_stream_t;
 
 // First-layer sums: integers bounded by gen_live_rom.py, so ACC_W bits are exact.
 typedef ap_int<ACC_W> acc_t;
-// The same values as layer2_t (ap_fixed<48,32>), narrowed to what they can
-// reach, so batchnorm1's multiplier is 27 x 40 instead of 48 x 40. normalize()
-// forms the full-precision product before rounding into layer4_t, so the
-// result is identical.
+// layer2_t (ap_fixed<48,32>) narrowed to the range the sums can reach; the product with batchnorm1's scale
+// is formed at full precision, so the result is identical.
 typedef ap_fixed<ACC_W, ACC_W> l2n_t;
 
 void NN_live(live_stream_t &in, ap_uint<64> *res_o, ap_uint<32> out[OUT_WORDS]);

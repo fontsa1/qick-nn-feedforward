@@ -1,10 +1,10 @@
-"""Paired loopback acquisition through the readout FIR and the boxcar path (v1.40L7+).
+"""Paired loopback acquisition through the readout FIR and the boxcar path.
 
 Same shot recipe as tools/run_loopback.py (dataset row -> (z - c)/k predistortion ->
 11000-sample DAC envelope at 50 MHz, readout 1.393 us = 770 samples), but every
 shot is captured twice from the same ADC samples:
-  ch0  avg buffer 0  readout 0's FIR stream (what NN_axi / NN_live used through v1.40L6b)
-  ch1  avg buffer 1  boxcar_tap_0's stream (boxcar-8 + moving sum, task 4.1h)
+  ch0  avg buffer 0  readout 0's FIR stream
+  ch1  avg buffer 1  boxcar_tap_0's stream (boxcar-8 + moving sum)
 The boxcar path is faster, so its trigger is ADVANCED by --box-advance-us (the
 latency difference measured by box_probe.py) to frame the same signal in its
 window as ch0's. The DAC-fill scale is computed over the WHOLE dataset (as

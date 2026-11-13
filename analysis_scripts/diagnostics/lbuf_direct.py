@@ -1,4 +1,4 @@
-"""L_buf vs segment sum (2026-11-05): the whole loop in ONE capture on NN_live's own stream.
+"""L_buf vs segment sum: the whole loop in one capture on NN_live's own stream.
 
 Readout 1 (buffer 1 = the boxcar stream) shares NN_live's classify trigger (tProc trig_11), and NN_live's window is
 buffer 1's first 576 samples, sample for sample (checked here on every shot). So one long capture holds both the

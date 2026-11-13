@@ -1,55 +1,21 @@
 """
-2026-09-01 (night, overnight mandate): fills in the long-standing gap this
-project's deploy procedure has had -- "no dedicated 'upload files to the
-board' tool is confirmed available" (qick-board-workflow-pipeline memory).
-
-Confirmed working tonight against the live board (read-only checks: login,
-GET /api/contents, GET /api/sessions) -- this is the classic Jupyter
-Notebook server (Tornado, cookie+XSRF auth, password "xilinx"), not
-JupyterLab, so the plain REST + kernel-channels-websocket API applies.
-
-Implements the three pieces `deploy_and_verify.py`'s stubs were waiting on:
+Remote control of the board's classic Jupyter Notebook server (Tornado, cookie+XSRF auth, password "xilinx") through
+its REST API and the kernel-channels websocket:
   - login()               -- authenticate, return (session, xsrf_token)
   - upload_file()          -- PUT raw bytes to /api/contents/<path>
   - restart_kernel()       -- POST /api/kernels/<id>/restart
-  - execute_in_kernel()    -- run code in a kernel via the channels
-                              websocket, Jupyter messaging protocol v5.3
+  - execute_in_kernel()    -- run code in a kernel via the channels websocket, Jupyter messaging protocol v5.3
 
-IMPORTANT -- validated tonight ONLY against a disposable scratch kernel,
-deliberately NOT against the live "start nameserver.ipynb" kernel (that
-kernel runs the actual Pyro4 QICK server other work depends on -- no
-reason to disrupt it before there's an actual new bitstream to deploy).
-Before trusting this against the real notebook, re-read this docstring's
-"first real use" checklist below.
-
-First real use checklist (do this when an actual bitstream is ready):
-  1. list_sessions() to (re)confirm "start nameserver.ipynb"'s current
-     kernel id (it changes every restart).
-  2. get_notebook(nb_path) and inspect the cells -- find the bitfile-load
-     cell (references Overlay(...)/the qickNN.bit filename) and note
-     EVERY code cell's source in order (Restart & Run All semantics: you
-     must re-run every code cell top to bottom in the fresh kernel, not
-     just the class-def and bitfile-load cells -- there may be setup
-     cells in between).
-  3. upload_file() the new .bit and .hwh under the next sequential
-     qickNN name.
-  4. update_notebook_cell() to point the bitfile-load cell at the new
-     filename; put_notebook() to save it.
-  5. restart_kernel().
-  6. execute_in_kernel() each code cell in order EXCEPT the final
-     daemon.requestLoop() cell, waiting for "idle" and checking for
-     error content each time.
-  7. execute_in_kernel() the final cell WITHOUT waiting for idle (it
-     never returns -- that's correct, it's the server loop) -- just
-     confirm it went "busy" and produced no immediate error, then stop
-     watching.
-  8. Verify via board_tools/deploy_and_verify.py's verify_deployment()
-     (fresh Pyro4 connection, banner check) -- give it real retries, a
-     server that just restarted needs a few seconds.
-  9. If the kernel doesn't come back cleanly within a few minutes, per
-     this project's own documented gotcha, don't keep retrying kernel-
-     level fixes -- a full board reboot may be needed (PYNQ can serve
-     stale cached overlay metadata even after a clean-looking restart).
+Deploy sequence (deploy_and_verify.deploy_new_bitstream() runs it):
+  1. list_sessions() to find "start nameserver.ipynb"'s kernel id (it changes on every restart).
+  2. upload_file() the new .bit and .hwh.
+  3. update_notebook_cell() to point the bitfile-load cell at the new file; put_notebook() to save it.
+  4. restart_kernel().
+  5. execute_in_kernel() the server cell without waiting for idle (it runs the server loop and never returns); confirm
+     it went "busy" with no immediate error.
+  6. verify with deploy_and_verify.verify_deployment() (fresh Pyro4 connection, banner check), with retries.
+If the kernel does not come back cleanly within a few minutes, a full board reboot may be needed (PYNQ can serve
+stale cached overlay metadata after a clean-looking restart).
 """
 import base64
 import json

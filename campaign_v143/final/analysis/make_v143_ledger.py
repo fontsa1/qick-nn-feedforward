@@ -182,7 +182,7 @@ for h, b in (("10.1.9.26", "A"), ("10.1.4.105", "B")):
     q = paired(c, a, y)
     row("Drift, 3 h", f"Board {b}, end minus start, 6,000 paired shots", f"{q['dF']:+.2f} points, {q['B_only']} vs {q['A_only']}, p = {pv(q['p_exact'])}", [f"{q['dF']:+.2f}"[1:], "6,000"], p)
 
-# ----------------------------------------------------------------------- second board session and rescoring (2026-11-06)
+# ----------------------------------------------------------------------- second board session and rescoring
 B2 = D + "board2/"
 for b in "AB":
     q = src(f"{B2}{b}_tproc_box_v143.json", "banner"); J = json.load(open(q))
@@ -194,7 +194,7 @@ for b in "AB":
     row("tProc path", f"Board {b}, FIR path, same margin as the old L5 value", f"{g_['L_median']:.1f} ns", [f"{g_['L_median']:.1f}"], q)
     q = src(f"{B2}{b}_boxcar_mr_v143.json", "banner", f"{B2}{b}_boxcar_mr_v143.log"); J = json.load(open(q))
     row("Safety and tests", f"Boxcar vs raw buffer, board {b}, with banner", f"{J['shots_exact']}/{J['shots']} shots exact, {J['verdict']}", [], q)
-# R.19 leaked energy over blanked shots, Gaussian conditional pulse (analysis_scripts/diagnostics/leak_energy_check.py)
+# leaked energy over blanked shots, Gaussian conditional pulse (analysis_scripts/diagnostics/leak_energy_check.py)
 LK = "campaign_v143/final/leak_energy/"
 lk = {}
 for b in "AB":
@@ -259,7 +259,7 @@ row("Readout path", "Image rejection at M = 11, board A", f"{im[11]:.1f} dB", [f
 
 # ----------------------------------------------------------------------- Table III
 sys.path.insert(0, "paper_tables/table3"); import v141_reports as R3  # noqa: E402
-R3.HIER, R3.FLAT, R3.TIMING = (Path("paper_tables/table3/data") / f"v1.43_{r}.rpt" for r in ("routed_util_hier", "routed_utilization", "routed_timing"))  # pinned: the readers default to v1.44 since 2026-11-09
+R3.HIER, R3.FLAT, R3.TIMING = (Path("paper_tables/table3/data") / f"v1.43_{r}.rpt" for r in ("routed_util_hier", "routed_utilization", "routed_timing"))  # pinned: the readers default to v1.44
 TR = "paper_tables/table3/data/"
 for r in ("routed_timing", "routed_util_hier", "routed_utilization"):
     src(f"{TR}v1.43_{r}.rpt", "build-file")

@@ -1,47 +1,34 @@
-"""Feed-forward through the DAC-stream gate (v1.40L6/L6b, task 4.1h tier 2).
+"""Feed-forward through the DAC-stream gate (dac_gate).
 
-The conditional pulse (c1, gain cp_gain1) is scheduled UNCONDITIONALLY at
-t_cp = t_dec + cp_slack on gen 0, together with the gate's window marker
-(tProc trig_10, output pin GATE_PIN) at the same time. dac_gate_0 passes it if
-NN_live decided 1 for the shot and blanks it otherwise (PASS1 = 1, PASS0 = 0,
-stale -> blank), so the decision acts on the DAC without the tProc's
-wait / read / branch / dispatch. The tProc still reads input 3 afterwards, for
-the freshness bookkeeping only. The second capture (queued before anything
-else, as in latency_loop) records the pulse coming back.
+The conditional pulse (c1, gain cp_gain1) is scheduled unconditionally at t_cp = t_dec + cp_slack on gen 0, with the
+gate's window marker (tProc trig_10, output pin GATE_PIN) at the same time. dac_gate_0 passes it if NN_live decided 1
+for the shot and blanks it otherwise (PASS1 = 1, PASS0 = 0, stale -> blank), so the decision acts on the DAC without a
+tProc read and branch. The tProc still reads input 3 afterwards, for freshness bookkeeping only. A second capture
+(queued first, as in latency_loop) records the pulse coming back.
 
 Steps:
-  1. gate disabled (statistics only): marker -> pulse at the gate input, in
-     clk_dac2 cycles (gate word 7); DELAY = that minus DELAY_LEAD, so the
-     window opens just before the pulse.
-  2. sweep cp_slack: per point, natural shots with the gate enabled; per shot the
-     gate's record (stale, decision bit, passed, margin = window start - decision
-     arrival) and whether a pulse came back (capture plateau > half the
-     always-pass plateau). Correct = (pulse came back) == (gate passed) ==
-     (NN_live decision) on fresh shots.
-  3. at each point, L_buf (latency_loop's capture-onset loop measure: window's
-     last sample -> pulse 50% at the buffer) over the passed shots. Reference: the
-     last sample INSTANT t1 + (N-1)/fs (default since 2026-10-20, audit R2); runs
-     before that date used the window end t1 + N/fs (1.808 ns smaller), still
-     available with --lbuf-ref window_end. Saved in the npz as lbuf_ref.
+  1. gate passing everything (statistics only): marker -> pulse at the gate input, in clk_dac2 cycles (gate word 7);
+     DELAY = that minus DELAY_LEAD, so the window opens just before the pulse.
+  2. sweep cp_slack: per point, shots with the gate enabled; per shot the gate's record (stale, decision bit, passed,
+     margin = window start - decision arrival) and whether a pulse came back (capture plateau > half the always-pass
+     plateau). Correct = (pulse came back) == (gate passed) == (NN_live decision) on fresh shots. Also per point:
+     late = decisions that arrived after their window opened, and unsafe = shots where the pulse came back although
+     the shot's own fresh decision was not 1 (must be 0).
+  3. at each point, L_buf (latency_loop's loop measure: window's last sample -> pulse 50% at the buffer) over the
+     passed shots. Reference: the last sample instant t1 + (N-1)/fs (default), or the window end t1 + N/fs with
+     --lbuf-ref window_end (L_buf 1.808 ns smaller). Saved in the npz as lbuf_ref.
 The earliest slack with no stale shot gives the gate's loop latency.
-v1.40L6b (gate magic GAT2) adds, per slack point: late = decisions that arrived
-after their shot's window opened (discarded by the gate; v1.40L6 carried them to
-the next shot), and unsafe = shots where the pulse came back although the shot's
-own fresh decision was not 1 (must be 0 at every slack).
 
-v1.40L9 (--split; gate magic GAT3, seg_stamp SEG2, rf_tap_0): per shot, also the
-segment timestamps, and per slack point the split of the loop (passed shots):
+--split: per shot also the segment timestamps (seg_stamp, rf_tap_0), and per slack point the split of the loop
+(passed shots):
   S_nn    last sample at the readout output -> NN_live result (clk_adc0_x2)
   S_cdc   result -> decision at dac_gate (crosses into clk_dac2)
   S_gate  decision -> conditional pulse leaves the gate (window wait + 1 register)
-  S_conv  pulse leaves the gate -> back at the ADC tile output (rf_tap_0):
-          DAC tile + cable + ADC tile
+  S_conv  pulse leaves the gate -> back at the ADC tile output (rf_tap_0): DAC tile + cable + ADC tile
   S_fe    ADC tile output -> readout output (QICK's DDC + boxcar path, fabric)
-S_nn + S_cdc + S_gate + S_conv + S_fe = L_buf (= L + cable). The two clock domains
-are tied together through the classify trigger, which both see through
-synchronizers; S_cdc and S_conv each carry about +-1 ns from that, opposite in
-sign, so their sum (and the closure) does not.
-
+S_nn + S_cdc + S_gate + S_conv + S_fe = L_buf. The two clock domains are tied together through the classify trigger,
+which both see through synchronizers; S_cdc and S_conv each carry about +-1 ns from that, opposite in sign, so their
+sum does not.
 """
 import argparse
 import sys
@@ -58,7 +45,7 @@ DELAY_LEAD = 4                                  # window opens this many cycles 
 T_A = 1e3 / FS_RO                               # clk_adc0_x2 period, ns (readout sample)
 T_D = 1e3 / F_DAC                               # clk_dac2 period, ns
 GAT2, GAT3, SEG2, SEG3 = 0x47415432, 0x47415433, 0x53454732, 0x53454733
-GAT4 = 0x47415434                               # v1.41: GAT3 layout + word 19 binding rejects, word 20 expected shot field
+GAT4 = 0x47415434                               # GAT3 layout + word 19 binding rejects, word 20 expected shot field
 RF_STAGES = {SEG2: 3, SEG3: 4}                  # rf_tap_0 hit, cycles behind the tile output
 
 PINS = soccfg["tprocs"][0]["output_pins"]
@@ -76,8 +63,8 @@ class GateProg(L.LatProg):
         s.pulse(ch=cf["gen_ch"], name="p")
         s.send_readoutconfig(ch=cf["ro_ch"], name="r", t=0)
         s.trigger(ros=[cf["ro_ch"]], t=cf["adc_trig_offset"], width=cf["trig_width"])
-        # NN_live's window: on the boxcar path (v1.40L8, --nn-advance) the same ADC
-        # samples reach NN_live nn_adv earlier, so its trigger and t_dec move earlier
+        # NN_live's window: on the boxcar path (--nn-advance) the same ADC samples reach NN_live nn_adv earlier, so
+        # its trigger and t_dec move earlier
         s.trigger(pins=[0, A.NN_TRIGGER_PIN], t=cf["adc_trig_offset"] - cf["nn_adv"], width=10)
         t_dec = cf["adc_trig_offset"] - cf["nn_adv"] + C.live_len(cf) + cf["fb_margin"]
         t_cp = t_dec + cf["cp_slack"]
@@ -114,10 +101,10 @@ class StreamProg(GateProg):
 
 def seg_threshold(waveforms, cf):
     """seg_stamp edge2 threshold: half the conditional pulse's |I|+|Q| plateau on NN_live's own input stream.
-    edge2 tests |I|+|Q|, so a threshold from the |IQ| plateau fires 34-46% of the way up the edge depending on the
-    carrier phase, which moved the counter by up to 3.5 ns (2026-11-05, lbuf_direct.py). Half the |I|+|Q| plateau
-    fires at 50% at any phase. Boxcar path (nn_adv != 0): measured on readout 1. FIR path: on readout 0's second
-    capture. The gate must be passing the pulse. waveforms: prepared waveforms, one calibration shot each."""
+    edge2 tests |I|+|Q|, so a threshold from the |IQ| plateau would fire 34-46% of the way up the edge depending on
+    the carrier phase; half the |I|+|Q| plateau fires at 50% at any phase. Boxcar path (nn_adv != 0): measured on
+    readout 1. FIR path: on readout 0's second capture. The gate must be passing the pulse. waveforms: prepared
+    waveforms, one calibration shot each."""
     n_avg = max(4, int(0.5 * cf["cp_len"] * FS_RO))
     plats = []
     for w in waveforms:
@@ -159,21 +146,15 @@ def s32(v):
     return (int(v) + 2**31) % 2**32 - 2**31
 
 def split_segments(g, sg, delta=None, delay=None):
-    """Segment times (ns) for one shot from its gate record g (GAT3, words 0..18)
-    and seg_stamp record sg (SEG2/SEG3: [records, thr, magic] + 16 words). SEG3
-    (v1.40L10) registers seg_stamp's inputs, which moves events and the trigger
-    stamp alike (offsets unchanged), and rf_tap_0 has 4 stages (3 on SEG2). Stamps:
-    seg fields are cycles after seg's trigger stamp (clk_adc0_x2: classify trigger
-    -> trig_sync (2 sync + 1 reg) -> live_gate (2 sync) -> stamp, so the trigger
-    is at -(4 + U(0, 1)) cycles, mean -4.5); gate words 15-18 are absolute
-    clk_dac2 counts, the classify trigger at -2 cycles from word 18 (it is on the
-    tProc's own clock: 2 sync flops, fixed). Times below are ns after the trigger.
-    GAT2 fallback (v1.40L9 as built: dac_gate's module reference was not refreshed,
-    so words 15-18 are absent): the marker and the classify trigger are both tProc
-    trigger outputs at programmed times on clk_dac2's own clock, delta cycles apart;
-    marker rise = cls stamp + delta + 1 (one more register on the marker path),
-    window open = marker rise + DELAY + 2 (tb_gate.sv), decision = open - margin
-    (word 6), pulse at the gate input = marker rise + word 7."""
+    """Segment times (ns) for one shot from its gate record g (GAT3/GAT4, words 0..18) and seg_stamp record sg
+    ([records, thr, magic] + 16 words).
+    seg fields are cycles after seg's trigger stamp (clk_adc0_x2: classify trigger -> trig_sync (2 sync + 1 reg) ->
+    live_gate (2 sync) -> stamp, so the trigger is at -(4 + U(0, 1)) cycles, mean -4.5); gate words 15-18 are
+    absolute clk_dac2 counts, the classify trigger at -2 cycles from word 18 (2 sync flops on the tProc's clock).
+    Times below are ns after the trigger.
+    GAT2 records (no words 15-18): the marker and the classify trigger are tProc outputs at programmed times on
+    clk_dac2, delta cycles apart; marker rise = cls stamp + delta + 1, window open = marker rise + DELAY + 2,
+    decision = open - margin (word 6), pulse at the gate input = marker rise + word 7."""
     r = sg[3:]
     last, res, e2, e3 = r[3], r[4], r[6], r[9]
     if r[7] & 0x56 != 0x56:                            # last, res, edge2, edge3 seen
@@ -236,8 +217,8 @@ def main():
                 fb_margin=a.margin, fb_thr=16, win_extra=0.05, nn_adv=a.nn_advance, split=a.split)
     slacks = [float(x) for x in a.slacks.split(",")]
 
-    # 1. marker -> pulse at the gate input, gate passing everything. Enabled with every pass bit set rather
-    # than disabled: v1.41 is built with FAIL_SAFE=1 (windows blank while ENABLE = 0); on v1.40 both pass.
+    # 1. marker -> pulse at the gate input, gate passing everything: enabled with every pass bit set rather than
+    # disabled, because with FAIL_SAFE=1 windows blank while ENABLE = 0
     soc.gate_write(0, cfg_word(en=1, pass1=1, pass0=1, pass_stale=1))
     mp, plats = [], []
     for i in range(a.n_cal):

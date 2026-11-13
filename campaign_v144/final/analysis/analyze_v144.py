@@ -1,4 +1,4 @@
-"""FINAL_TASKS 6.3: statistics of the v1.44 campaign, same methods as the v1.41 analyses it replaces
+"""Statistics of the v1.44 campaign, with the methods of
 (campaign_v140L1/check_live_bitexact.py, live20k_stats.py, audit_fixes/R18_full/analyze_full.py, r3_stats).
 
 Reads only campaign_v144/final/{live,axi,inloop}. Run 1 = each board's own half (A rows 0-49,999, B rows 50,000-99,999),

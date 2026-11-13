@@ -1,43 +1,22 @@
-// NN_live: the v1.40 classifier, fed from the live readout stream (task 4.1).
+// NN_live: streaming version of the deployed classifier, fed directly from the readout stream.
 //
-// NN_live 1.5 (v1.41, audit R.17 / C1): the logit (q_output_alpha_result_t) saturates instead
-// of wrapping: ap_fixed<16,6,AP_TRN,AP_SAT> in defines.h (was ap_fixed<16,6>, wrap, so a true
-// logit at or beyond +-32 came out modulo 64 with a random sign, ~4x the deployed amplitude).
-// Same 16-bit res_o / record layout; identical logits for every input whose logit is in range.
-// The tail of the fast path uses exact narrow types (bounds checked in csim, below) so that the
-// saturation costs no extra pipeline stage: batchnorm1 in ap_fixed<28,12>, the pre-cast logit in
-// ap_fixed<30,14>, and the decision taken from the pre-cast sum (st >= 1/64 is the same test as
-// sat(floor(st)) >= 1/64, since 1/64 lies on the logit's 2^-10 grid).
+// The first layer (2*N_SAMP -> 4, ternary weights) is linear, so it is accumulated as samples arrive: per sample
+// and hidden unit, I and Q are added, subtracted or skipped. When the last sample arrives the four sums are
+// final and only the 4-unit tail (batchnorm1, relu1, q_output, q_output_alpha) remains, evaluated in the same
+// iteration. The sums are exact integers, so the logit is bit-identical to the hls4ml model NN() on the same
+// window (checked in NN_live_test.cpp).
+//   * batchnorm1's scale is applied per sample: each contribution d is multiplied by K = s4 (raw, units of
+//     2^-32) into a scaled sum that starts at K*b2 + b4, so the final value equals s4*acc + b4 exactly.
+//   * The logit (q_output_alpha_result_t, ap_fixed<16,6>) saturates (AP_SAT in defines.h).
+//   * The decision is logit >= 1/64 (where hls4ml's sigmoid first exceeds 0.5), taken from the pre-cast sum.
+//     The sigmoid is computed afterwards, for the record only.
 //
-// NN_live 1.3 (v1.40L9, task 4.1h): the tail is retimed. batchnorm1's scale is
-// applied per sample instead of once at the end: each sample's ternary
-// contribution d is multiplied by K = s4 (raw, units of 2^-32) and added to a
-// scaled accumulator that starts at K*b2 + b4 (raw). All of it is integer
-// arithmetic, so the final scaled sum equals s4*acc + b4 exactly, and
-// batchnorm1's output is its bits [47:16] (layer4_t: 16 fraction bits, floor,
-// wrap), as before. The last sample then reaches relu1 through one
-// multiply-accumulate instead of add, add, multiply, add. The weight ROM has a
-// 1-cycle read. The unscaled sums are still kept for the record.
-//
-// NN_axi buffers all 770 samples and then evaluates the network, so its
-// latency starts when the window ends. Here the first layer (1540 -> 4,
-// ternary) is accumulated as the samples arrive instead. It is linear, so
-// each sample's contribution can be added the moment it exists: per sample
-// and per hidden unit, add, subtract or skip I and Q. When the last sample
-// arrives the four sums are already final, and only the 4-unit tail
-// (batchnorm1, relu1, q_output, q_output_alpha, sigmoid) is left. The tail
-// runs hls4ml's own layer functions with the deployed weights, and the sums
-// are exact integers, so the output is bit-identical to NN() on the same
-// window (checked shot by shot in NN_live_test.cpp).
-//
-// Clocking: runs on the readout clock (clk_adc0_x2, 552.96 MHz) beside
-// axis_dyn_readout_v1_0, so no clock crossing is needed on the input.
-//
-// Framing: live_window_gate (rtl/) cuts exactly N_SAMP samples per tProc
-// trigger (trig_0_o, the same trigger and the same capture rules as
-// axis_avg_buffer_0's decimated buffer) and sets TLAST on the last. The
-// readout has no backpressure, so ACC_L must take a word every cycle (II=1);
-// between windows the gate holds TVALID low and this kernel waits.
+// Interfaces:
+//   in     AXI stream, one {Q, I} word per readout clock (clk_adc0_x2, 552.96 MHz), framed by live_window_gate
+//          (N_SAMP words per trigger, TLAST on the last). The readout cannot stall, so ACC_L has II = 1.
+//   res_o  per-shot result: [15:0] logit (Q.10), [44:16] shot count, [63] decision. Not written on a framing
+//          error (short window or a pass that started mid-window); those are counted instead.
+//   out    record memory (NN_live.h): header words, the window's raw words at CAP_BASE, per-shot records.
 
 #include "NN_live.h"
 #include "parameters.h"
@@ -72,14 +51,13 @@ static inline accs_t bias_raw(batchnorm1_bias_t b) {
 
 void NN_live(live_stream_t &in, ap_uint<64> *res_o, ap_uint<32> out[OUT_WORDS]) {
     #pragma HLS INTERFACE ap_ctrl_none port=return
-    // No input register slice: live_window_gate's outputs are already registered.
+    // no input register slice: live_window_gate's outputs are registered
     #pragma HLS INTERFACE axis port=in register_mode=off
     #pragma HLS INTERFACE ap_vld port=res_o
     #pragma HLS INTERFACE bram port=out storage_type=ram_1p
 
 #ifndef __SYNTHESIS__
-    // csim only: the weight headers are uninitialized outside synthesis
-    // (same mechanism as NN.cpp).
+    // csim only: load the weights from text (as NN.cpp does)
     static bool loaded_weights = false;
     if (!loaded_weights) {
         nnet::load_weights_from_txt<bias2_t, 4>(b2, "b2.txt");
@@ -90,9 +68,8 @@ void NN_live(live_stream_t &in, ap_uint<64> *res_o, ap_uint<32> out[OUT_WORDS]) 
         nnet::load_exponent_weights_from_txt<exponent_scale10_t, 1>(s10, "s10.txt");
         nnet::load_weights_from_txt<bias10_t, 1>(b10, "b10.txt");
         loaded_weights = true;
-        // 1.5: the narrow tail below is exact only if, for every int16 window,
-        // |batchnorm1| < 2^11 and the pre-cast logit lies within +-2^13. Check the
-        // worst case from the weights: |acc_u| <= nnz_u * 32768 + |b2_u|.
+        // The narrow tail below is exact only if, for every int16 window, |batchnorm1| < 2^11 and the
+        // pre-cast logit is within +-2^13. Check the worst case: |acc_u| <= nnz_u * 32768 + |b2_u|.
         double lt_hi = (double)b6[0].to_int() + b10[0].to_int(), lt_lo = lt_hi;
         for (int u = 0; u < 4; u++) {
             long nnz = 0;
@@ -115,8 +92,7 @@ void NN_live(live_stream_t &in, ap_uint<64> *res_o, ap_uint<32> out[OUT_WORDS]) 
     static ap_uint<32> frame_err = 0;
 
     acc_t acc0 = b2[0], acc1 = b2[1], acc2 = b2[2], acc3 = b2[3];
-    // scaled sums (units of 2^-32): K*acc + b4, K = s4 raw. |acc| < 2^25 and
-    // K < 2^20, b4 < 2^40 (raw), so 48 bits hold them exactly.
+    // scaled sums (units of 2^-32): K*acc + b4. |acc| < 2^25, K < 2^20, b4 < 2^40, so 48 bits are exact.
     accs_t k0 = scale_raw(s4[0]), k1 = scale_raw(s4[1]), k2 = scale_raw(s4[2]), k3 = scale_raw(s4[3]);
     accs_t as0 = k0 * b2[0] + bias_raw(b4[0]);
     accs_t as1 = k1 * b2[1] + bias_raw(b4[1]);
@@ -145,32 +121,17 @@ ACC_L:
         if (!final_word && w.last) early_last = true;
         if (final_word) {
             last_ok = w.last;
-            // The tail runs inside the last iteration, so it starts in the
-            // cycle the final sums exist, with no call handshakes between layers.
+            // the tail runs inside the last iteration, as soon as the final sums exist
             q_output_alpha_result_t l10[1];
             bool dec_v;
-            // The two normalize layers are written as nnet::normalize's own
-            // statement (n_filt == -1), calling the same product classes,
-            // rather than through normalize itself: its
-            // "ALLOCATION instances=mul limit=multiplier_limit" pragma, once
-            // inlined into this loop, applies to the whole loop, and config10's
-            // limit of 1 made batchnorm1's four multipliers share one (II = 4).
-            // batchnorm1 = (s4*acc + b4) cast to layer4_t (floor, wrap) = bits [47:16]
-            // of the scaled sum (1.2 formed the product here, after the last add).
+            // The normalize layers are written out (nnet::normalize's statement with the same product classes)
+            // rather than called, because normalize's ALLOCATION pragma would apply to the whole loop.
+            // batchnorm1 = (s4*acc + b4) cast to layer4_t (floor, wrap) = bits [47:16] of the scaled sum.
             if (s10[0].sign == 1 && s10[0].weight == 0) {
-                // q_output_alpha is then x * 2^0 + b10, so b10 joins q_output's
-                // bias and the four ternary terms are summed as a tree, in
-                // config6::accum_t (ap_fixed<32,16>). 1.5: the final cast saturates,
-                // so the sum must be exact, not just exact modulo 64: over every int16
-                // window it lies within about +-3,500 (relu outputs <= ~1,900 each,
-                // sat_check.cpp prints the bound), far inside +-32768, so it never wraps
-                // and the saturating cast sees the true value.
-                // Ternary weights: the +1 terms are added and the -1 terms
-                // subtracted (no negation stage).
-                // 1.5: exact narrow types (bounds checked in csim at load time):
-                // batchnorm1 = bits [43:16] of the scaled sum (|value| < 2^11, so bits
-                // [47:44] are sign copies and layer4_t's value is unchanged), relu on
-                // its sign bit, and the sum in ap_fixed<30,14> (|value| < 2^13).
+                // q_output_alpha is x * 2^0 + b10, so b10 joins q_output's bias. The +1 terms are added and the
+                // -1 terms subtracted. Exact narrow types (bounds checked in csim at load time): batchnorm1 =
+                // bits [43:16] of the scaled sum (|value| < 2^11), relu on its sign bit, the sum in
+                // ap_fixed<30,14> (|value| < 2^13), so the saturating cast sees the true value.
                 typedef ap_fixed<28, 12> l4n_t;
                 typedef ap_fixed<30, 14> stn_t;
                 l4n_t n4[4];
@@ -185,9 +146,8 @@ ACC_L:
                     pos[u] = (w6[u] == 1) ? r : stn_t(0);
                     neg[u] = (w6[u] == -1) ? r : stn_t(0);
                 }
-                // The saturating cast and the decision as sign bits of four parallel
-                // sums, st - c for c in {0, 1/64, 32, -32}, with c folded into the second
-                // operand (same depth as st itself), so only a select follows the last add:
+                // The saturating cast and the decision are sign bits of four parallel sums st - c,
+                // c in {0, 1/64, 32, -32}, with c folded into the second operand:
                 //   decision  = st >= 1/64           (1/64 is on the logit's 2^-10 grid)
                 //   saturate+ = st >= 32  (floor(st * 2^10) > 32767)
                 //   saturate- = st < -32  (floor(st * 2^10) < -32768)
@@ -237,9 +197,8 @@ ACC_L:
     }
 
     if (early_last || !last_ok) {
-        // A word was lost (a short window) or this pass started mid-window.
-        // Count it, drop the result, and if the window's TLAST is still
-        // ahead, consume up to it so the next pass starts on a window.
+        // short window or a pass that started mid-window: count it, drop the result, and consume up to
+        // TLAST so the next pass starts on a window
         frame_err++;
         out[HDR_FRAME_ERR] = frame_err;
         if (!last_ok) {
@@ -251,8 +210,7 @@ ACC_L:
         return;
     }
 
-    // The probability, for the host's record only; the decision above does
-    // not wait for it.
+    // probability, for the record only; the decision does not wait for it
     q_output_alpha_result_t l10[1];
     result_t l8[1];
     l10[0] = logit;

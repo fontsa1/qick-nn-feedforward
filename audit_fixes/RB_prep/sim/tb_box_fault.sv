@@ -1,8 +1,7 @@
-// R.16 fix test: one corrupted capture (bit 12 flipped for one cycle) in a moving-sum
-// register. Old (recursive, boxcar_tap_ref) vs new (non-recursive, boxcar_tap), each
-// compared with a fault-free twin of itself. Reports, per injection, how many outputs
-// differ and the last differing output (cycles after the injection), and whether the
-// output is still wrong 2,000 cycles later.
+// tb_box_fault: one corrupted register bit (bit 12, one cycle) in the moving sum. The recursive
+// (boxcar_tap_ref) and non-recursive (boxcar_tap) designs are each compared with a fault-free twin. Reports per
+// injection the number of wrong outputs, the last wrong output (cycles after injection), and whether the output
+// is still wrong 2,000 cycles later.
 `timescale 1ps / 1ps
 module tb_box_fault;
     localparam integer CLK_PS = 1808;
@@ -30,7 +29,6 @@ module tb_box_fault;
         if (nc !== nf) begin nd_n = nd_n + 1; last_n = cyc - t0; if (cyc - t0 > 2000) tail_n = tail_n + 1; end
     end
     task start; begin
-        // re-align both faulted twins with their clean twins: a cfg change clears the sums
         // a cfg change clears all four moving sums in the same cycle, re-aligning the twins
         cfg = 32'h0000_0001; repeat (6) @(negedge aclk); cfg = cfg_sel; repeat (100) @(negedge aclk);
         t0 = cyc; nd_o = 0; nd_n = 0; last_o = -1; last_n = -1; tail_o = 0; tail_n = 0;

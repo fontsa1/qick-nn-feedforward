@@ -1,4 +1,4 @@
-"""R13: classify every failing setup endpoint of v1.40L10 (from the read-only Vivado dump).
+"""Classify every failing setup endpoint of the v1.40L10 build (from a read-only Vivado dump).
 
 Input : vivado_out/failing_setup_endpoints.csv (one worst path per failing endpoint pin)
 Output: endpoints_classified.csv (one row per endpoint) and endpoints_summary.csv / .md (grouped).

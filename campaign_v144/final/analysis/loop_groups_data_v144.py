@@ -1,5 +1,5 @@
-"""Loop latency by load group, from latency_protocol.py runs (v1.44, 2026-11-09): 10 reloads + 4 cold starts, both boards.
-L_50 falls in two groups set at bitstream load. Provisional: section 6.3 reacquires on the final SoC.
+"""Loop latency by load group, from latency_protocol.py runs (v1.44): 10 reloads + 4 cold starts, both boards.
+L_50 falls in two groups set at bitstream load.
 Values per group: mean over loads of each load's mean. Run alone to write loop_groups_values_v144.json."""
 import glob
 import json
@@ -19,7 +19,7 @@ def closure(p, r):
     """latency_protocol.py's path_minus_adv centre (3.2 ns) is v1.43's box_probe path (115.1 ns) minus the advance (111.9 ns).
     The boxcar path moves by one sample between place-and-route runs (v1.42 113.24, v1.43 115.1, v1.44 113.3 ns), so on v1.44 the
     centre is 113.3 - 111.9 = 1.4 ns, same +/- 1.0 ns. That check guards against a stale advance (0.1078 us gives about 7 ns).
-    Every other closure check must pass as written. Accepted by the authors 2026-11-10; see campaign_v144/final/latency/README.md."""
+    Every other closure check must pass as written; see campaign_v144/final/latency/README.md."""
     bad = [c for c in r["checks"] if not c["ok"]]
     if [c["name"] for c in bad] not in ([], ["path_minus_adv"]):
         raise SystemExit(f"{p} failed closure checks: {[c['name'] for c in bad]}")

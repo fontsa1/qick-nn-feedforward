@@ -2,8 +2,8 @@
 (a) fidelity of a FIXED linear discriminator vs a rotation of the replayed traces (2-fold on the 19,400 headline
     rows of loopback20k_real: fit on one half, score the other half rotated by theta, then swap), plus a gain sweep;
 (b) per-shot probe phase (= arg k) on 4 bitstream loads, no phrst vs phrst on generator and readout
-    (campaign_v140L1/A_L2_phrst_probe.json, task 4.4);
-(c) arg k over 3 h on both boards, relative to the first sample (campaign_v140L1/drift_<host>.json, task 4.3);
+    (campaign_v140L1/A_L2_phrst_probe.json);
+(c) arg k over 3 h on both boards, relative to the first sample (campaign_v140L1/drift_<host>.json);
 (d) replay channel |H(f)|: per-FFT-bin LTI fit of the replayed traces against their lag-aligned, domain-mapped
     sources (the fit in campaign_v140L1/arch_aug.py, same 4,000 shots);
 (e) raw vs replayed fidelity per model, same 20k shots (campaign_v140L1/arch_sweep2_src.json)."""

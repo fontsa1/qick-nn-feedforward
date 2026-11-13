@@ -20,8 +20,8 @@ Arms:
 
 INDEPENDENCE. x_synth_v2 comes from the v2 generator fitted on
 0528_X_train_0_770[10000:110000] -- disjoint from the real training rows [:10000]
-and from every test file (FINAL_TASKS 0.4, tools/verify_no_leakage.py 16/16). The
-x_50k* files are fitted on the contaminated pool and are NOT used here.
+and from every test file (tools/verify_no_leakage.py). The x_50k* files are
+fitted on a pool that contains test shots and are not used here.
 
 CHECK: real_10k seed 20260902 must reproduce the deployed model's 95.34%.
 
@@ -49,7 +49,7 @@ BASE = Path(".")
 SCALING_FACTOR = 1
 
 def hw_raw_transform(X):
-    """Mirror of v1.37 LOAD_L: signed int16 sample * scaling_factor."""
+    """Signed int16 sample * scaling_factor, as NN_axi's LOAD_L."""
     return (np.clip(np.round(X), -32768, 32767).astype(np.int16)
             .astype(np.float32) * SCALING_FACTOR)
 
@@ -112,9 +112,8 @@ def main():
     # float32 BEFORE the map, exactly as build_domain_calibrated_training_set.py
     # does. A float64 map flips 96 of 15.4M int16 samples across a rounding
     # boundary, and that alone moves seed 20260902 from 95.34% to 94.97%:
-    # training is deterministic but chaotic in its input (see
-    # CURRENT_BEST_RESULTS 2026-10-05 night). float32 reproduces the deployed
-    # model bit-for-bit.
+    # training is deterministic but sensitive to its input. float32 reproduces
+    # the deployed model bit for bit.
     def take(X, y, n):
         return np.asarray(X[:n]).astype(np.float32), np.asarray(y[:n]).astype(np.float32)
 

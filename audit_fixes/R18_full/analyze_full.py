@@ -1,5 +1,5 @@
 """In-loop fidelity on the full test split, both boards: R18's 19,400 rows (rows 0-19,999 minus the domain-map
-rows, 2026-10-25) plus the 80,000 fresh rows run tonight (rows 20,000-99,999, both passes, 2026-10-26).
+rows) plus the 80,000 further rows (rows 20,000-99,999, both passes).
 
 Per board: in-loop F on the 99,400 and on the fresh 80k; loop failures (stale, late, unsafe, pulse != decision,
 binding rejects); late-rate 95% upper bound; paired against the same board's gate-idle NN_live on identical

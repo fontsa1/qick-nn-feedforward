@@ -1,47 +1,23 @@
 """
-2026-09-01: on-chip test harness with contamination guards.
+On-chip test harness for NN_axi's rolling output, with guards against stale or misattributed results:
 
-Written in response to CLASSIFIER_DEBUGGING_REFERENCE.md #17 UPDATE 2, in
-which `loopback_nn_fidelity_500_smoketest.ipynb` silently resumed from
-leftover chunk files, fired ZERO shots, and reported a stale qick33 result
-as v1.23's on-chip fidelity. Every guard below exists to make a specific
-observed failure impossible.
+ G1. No resume. If the output directory exists the run aborts unless --force, which wipes it first.
 
-PROCESS FIXES IMPLEMENTED (each maps to a real failure):
+ G2. Firmware banner on every result. The manifest records the build timestamp the running firmware reports and
+     the bitfile the server loaded.
 
- G1. NO RESUME, EVER. There is no "skip if file exists" path. If the output
-     directory already exists the run ABORTS unless --force is passed, and
-     --force wipes it first. The old notebook's resume guard is the direct
-     cause of the misattribution.
+ G3. Fresh core. After the bitstream reload, nn_status() must report out_offset 0 and trig_count 0 (nn_reset()
+     does not clear them, so a reload is required). Anything else aborts.
 
- G2. FIRMWARE BANNER STAMPED ON EVERY RESULT. The manifest records the
-     build timestamp the running firmware reports plus the bitfile path the
-     server actually loaded. A number can no longer be attributed to the
-     wrong bitstream, because the bitstream identity travels with it.
+ G4. Write count. out_offset must advance by exactly the number of shots fired, or the run is flagged (dropped or
+     duplicated writes would break the read-to-shot pairing).
 
- G3. FRESH-CORE ASSERTION. After the bitstream reload the harness requires
-     nn_status() == out_offset 0, trig_count 0. `nn_reset()` does NOT
-     achieve this (measured: 499 before and after -- bug #3), so a reload
-     is the only trustworthy clear. Anything else aborts the run.
+ G5. Underflow. Counts BRAM words written as exactly 0.0 (an underflowing scaling_factor writes 0.0 on many
+     shots). The raw slot at out_offset-1 is read without skipping zeros; runs with zero-writes are flagged.
 
- G4. WRITE-COUNT INTEGRITY CHECK. out_offset is recorded before and after
-     firing. It MUST advance by exactly the number of shots fired. A
-     mismatch means the NN dropped or duplicated writes, which would
-     silently corrupt the read-to-shot pairing -- the run is flagged.
+ G6. scaling_factor calibrated per bitstream on held-out shots [CAL_LO:CAL_HI], disjoint from the scored [0:N].
 
- G5. UNDERFLOW DETECTION. Counts BRAM words written as exactly 0.0. At an
-     underflowed scaling_factor ~40% of shots write 0.0, and the old
-     classify_state() skipped zeros and returned an OLDER shot's value,
-     making the read lag variable. This harness reads the raw slot at
-     out_offset-1 and never skips, so the mapping stays unambiguous; any
-     run with zero-writes is still flagged as unreliable.
-
- G6. SCALING_FACTOR CALIBRATED PER BITSTREAM, ON DISJOINT SHOTS. The
-     correct scaling_factor differs between builds (qick33-era data was
-     properly scaled at 1; v1.23 underflows at 1 and needs ~8). Calibration
-     uses heldout shots [CAL_LO:CAL_HI], the scored test uses [0:N] -- no
-     overlap, so the operating point is not tuned on the reported data.
-
+ G7. Dataset and calibration (k, c) are explicit arguments and recorded.
 """
 import argparse
 import gc
@@ -99,10 +75,8 @@ def main():
     ap.add_argument("--bitstream", required=True)
     ap.add_argument("--shots", type=int, default=500)
     ap.add_argument("--force", action="store_true")
-    # G7: dataset and calibration are EXPLICIT and recorded. Using qick34's
-    # k/c with the qick33 bitstream (which differ by ~193 deg in arg(k) --
-    # essentially a sign flip) silently invalidates the predistortion, and
-    # that is exactly what the first qick33 comparison run did.
+    # G7: dataset and calibration are explicit and recorded; a k/c from another board or build invalidates the
+    # predistortion.
     ap.add_argument("--dataset", default="x_50k_heldout",
                     help="basename: x_50k or x_50k_heldout")
     ap.add_argument("--onset-threshold", type=int, default=None,
@@ -191,7 +165,7 @@ def main():
         print("[G3] fresh core confirmed: %s" % st0)
 
     soccfg = QickConfig(soc.get_cfg())
-    soccfg["tprocs"][0]["output_pins"].append(("trig", 11, 0, "NN classify trigger (trig_11_o)"))  # v1.40L5: NN_live gate on trig_11
+    soccfg["tprocs"][0]["output_pins"].append(("trig", 11, 0, "NN classify trigger (trig_11_o)"))  # NN_live window trigger
     PIN = len(soccfg["tprocs"][0]["output_pins"]) - 1
     BW = soc.nn_bram_word_count()
     print("[setup] NN_TRIGGER_PIN=%d  BRAM_WORDS=%d" % (PIN, BW))

@@ -1,8 +1,6 @@
-// live_window_gate_zl: 4.5b timing experiment only (not deployed). live_window_gate with the output
-// register removed: m_axis_* are combinational from take / done / s_axis_tdata, so NN_live sees each
-// word one cycle earlier. Paired with a register on NN_live's res_o in classifier_unit_zl, the total
-// readout-output -> registered-decision latency is unchanged (gate reg moved to the result side).
-// Framing rules identical to live_window_gate (buffer.sv semantics).
+// live_window_gate_zl: live_window_gate without its output register (not deployed): m_axis_* are combinational
+// from take / done / s_axis_tdata, so NN_live sees each word one cycle earlier. Framing rules identical to
+// live_window_gate (buffer.sv semantics). Used by classifier_unit_t and classifier_unit_zl.
 
 `timescale 1ns / 1ps
 

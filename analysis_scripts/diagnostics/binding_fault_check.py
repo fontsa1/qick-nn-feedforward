@@ -1,4 +1,4 @@
-"""R.15 forced shot-binding fault (BUILD_PLAN section 7, item 10), v1.41+ gate (GAT4, SHOT_BIND = 1).
+"""Forced shot-binding fault on the dac_gate with SHOT_BIND = 1 (GAT4).
 
 The fault: a second, narrow classify trigger (tProc trig_11) 0.4 us into NN_live's window. live_window_gate
 ignores a trigger while it is filling a window (MEMW), so NN_live still produces ONE result, numbered for the

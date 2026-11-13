@@ -1,16 +1,11 @@
 """Board-scoped storage for the loopback predistortion coefficients (k, c).
 
-WHY THIS EXISTS (task 0.6, 2026-10-05). `tools/run_calibration.py` historically wrote
-bare `calibration/k.npy` / `calibration/c.npy` in the repo root with no record of which board they were
-fitted against. The two-board test on 2026-10-04 showed what that costs: the two
-RFSoCs differ by **119 degrees** in the phase of `k`, and running board A with
-board B's coefficients scores **31%** instead of 94% -- below chance, silently,
-with no error message anywhere. A rotated decision boundary does not look like a
-configuration mistake, it looks like a broken classifier.
+The two RFSoCs differ by about 119 degrees in the phase of `k`, and running one board with the other's
+coefficients scores ~31% instead of ~94%, with no error anywhere. So the coefficients are stored per board.
 
 DESIGN. The coefficients live in `calib/k_<host>.npy` / `calib/c_<host>.npy`,
-one pair per board. `calibration/k.npy` / `calibration/c.npy` in the root remain as the *active* pair so
-that the ~25 existing scripts which load them by name keep working unchanged;
+one pair per board. `calibration/k.npy` / `calibration/c.npy` hold the *active* pair, for the scripts that load
+them by name;
 `calib/ACTIVE` records which host those two files currently hold. Any script
 that goes through `load_kc()` is checked against that record and will refuse to
 run on the wrong board rather than return a number that scores 31%.

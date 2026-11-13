@@ -1,26 +1,17 @@
-// live_res_cdc: NN_live's per-shot result (res_o, ap_vld) as one 64-bit AXIS
-// beat for a tProc_v2 input port, crossing from the readout clock into the
-// tProc core clock (v1.40L5). Replaces live_res_axis + axis_cc_live (an async
-// FIFO, ~6 core cycles) with a hold-and-toggle handshake (~3 core cycles).
+// live_res_cdc: NN_live's per-shot result as one 64-bit AXIS beat, moved from the readout clock (s_aclk,
+// clk_adc0_x2) into another clock domain (m_aclk) by a hold-and-toggle handshake (~3 destination cycles).
+// Two instances: to the tProc core clock (tProc input port) and to clk_dac2 (dac_gate).
 //
-// Word layout as live_res_axis.v (NN_live.h):
-//   tdata[31:0]  = logit sign-extended to 32 bits (ap_fixed<16,6> raw, Q.10)
-//   tdata[60:32] = shot count (29 bits), to detect a stale read
-//   tdata[63]    = decision bit (logit >= 1/64)
+// Word (from res_o, NN_live.h):
+//   [31:0]  logit, sign-extended (ap_fixed<16,6>, Q.10)
+//   [60:32] shot count (29 bits)
+//   [63]    decision bit (logit >= 1/64)
 //
-// Source (s_aclk, clk_adc0_x2): on res_o_ap_vld the formatted word is written
-// to `hold` and `tog` flips, in the same cycle.
-// Destination (m_aclk, the tProc core clock): `tog` passes a two-flop ASYNC_REG
-// synchronizer; a change at its output registers `hold` into m_axis_tdata and
-// pulses m_axis_tvalid for one cycle.
-// Why sampling `hold` is safe: it was written in the same source cycle as the
-// toggle, and is sampled only after the toggle has passed two destination flops,
-// i.e. at least one full destination cycle later. It does not change again until
-// the next result, and results arrive at most once per shot (>= ~1 us apart, vs
-// 3 core cycles of latency).
-// The two clocks are asynchronous clock groups in timing.xdc (clk_core vs
-// clk_adc0_x2), so these paths are not timed; the argument above is the guarantee.
-// m_axis_tready is ignored: the tProc's input ports latch on tvalid.
+// Source: on res_o_ap_vld the word is written to `hold` and `tog` flips in the same cycle.
+// Destination: `tog` passes a 2-flop synchronizer; a change registers `hold` into m_axis_tdata and pulses
+// m_axis_tvalid for one cycle. `hold` is stable for at least one destination cycle before it is sampled, and
+// results are >= ~1 us apart. The two clocks are asynchronous groups in QICK's timing.xdc; the data-vs-toggle
+// skew is bounded by constraints/live_res_cdc.xdc. m_axis_tready is ignored.
 `timescale 1ns / 1ps
 
 module live_res_cdc (

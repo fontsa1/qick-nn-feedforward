@@ -1,3 +1,5 @@
+// tb_box_dump: writes boxcar_tap's output for 24 segments of (M, shift, input mode) to box_dump.txt, for the
+// independent check in box_check.py.
 `timescale 1ps / 1ps
 module tb_box_dump;
     localparam integer CLK_PS = 1808, SEGLEN = 1500, NSEG = 24;

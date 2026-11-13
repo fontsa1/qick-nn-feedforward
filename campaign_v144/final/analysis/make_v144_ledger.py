@@ -254,7 +254,7 @@ def boxcar_mr(b):
     row("Safety and tests", f"Boxcar vs raw buffer, board {b}, with banner", f"{J['shots_exact']}/{J['shots']} shots exact, {J['verdict']}", [], q)
 
 def leak():
-    """R.19 leaked energy over blanked shots, Gaussian conditional pulse (analysis_scripts/diagnostics/leak_energy_check.py)."""
+    """Leaked energy over blanked shots, Gaussian conditional pulse (analysis_scripts/diagnostics/leak_energy_check.py)."""
     lk = {}
     for b in "AB":
         for thr in (8, 2000):

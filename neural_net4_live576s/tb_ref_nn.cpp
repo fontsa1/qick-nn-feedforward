@@ -1,4 +1,4 @@
-// Reference model for NN_live_test.cpp: the deployed hls4ml NN() (v1.40),
+// Reference model for NN_live_test.cpp: the hls4ml NN() of the deployed model,
 // compiled under renamed symbols so it links next to NN_live's own copies of
 // the weight arrays. It loads its weights from the same weights/*.txt files.
 #define NN ref_NN

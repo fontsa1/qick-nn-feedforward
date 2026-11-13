@@ -1,4 +1,4 @@
-"""Repeatability of the k/c calibration on one bitstream load (added 2026-11-06).
+"""Repeatability of the k/c calibration on one bitstream load.
 
 Fires tools/run_calibration.py's pass 1 (same rows, same program) --repeats times, with the fixed-pulse phase probe of
 drift_probe.py before each repeat, and fits (k, c) for each. Answers: is the scatter of stored arg(k) between

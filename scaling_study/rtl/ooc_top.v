@@ -1,11 +1,9 @@
 `timescale 1ns / 1ps
-// ooc_top -- NU classifier units for the 4.5b out-of-context timing sweep.
-// Clocks enter through BUFGs (global clocking, as from the BD's MMCM outputs). Shared input buses are
-// registered once and fanned out to every unit, as the RF data converter's stream fans out to one
-// readout per tone. Each unit is DONT_TOUCH (see run_ooc.tcl) so identical units are not merged.
-// Outputs are XOR-reduced across units in their own clock domain so nothing is trimmed.
-// Harness logic (fan-out and reduce registers) is outside u_unit[*]; the sweep reports unit-internal
-// and harness endpoints separately.
+// ooc_top: NU copies of classifier_unit for the out-of-context timing study.
+// Clocks enter through BUFGs. Shared input buses are registered once and fanned out to every unit, as the RF
+// data converter's stream fans out to one readout per tone. Units are DONT_TOUCH (run_ooc.tcl) so identical
+// units are not merged. Outputs are XOR-reduced per clock domain so nothing is trimmed. Harness registers are
+// outside u_unit[*], so unit-internal and harness endpoints are reported separately.
 module ooc_top #(
     parameter integer NU = 1
 ) (

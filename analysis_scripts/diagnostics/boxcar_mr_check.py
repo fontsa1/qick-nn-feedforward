@@ -1,4 +1,4 @@
-"""R.16 / BUILD_PLAN section 7 item 5: boxcar_tap's output, bit for bit, against its own input.
+"""boxcar_tap's output, bit for bit, against its own input.
 
 boxcar_tap_0 passes its input (readout 0's full-rate m0 stream, 8 complex samples per clk_adc0_x2 cycle) to
 axis_switch_mr S00 unchanged, so the MR buffer (NM 8, 32-bit samples, 1024 cycles) records exactly what the
@@ -9,7 +9,7 @@ The numpy model of boxcar_tap (audit_fixes/RB_prep/sim/box_check.py): per cycle,
 Q = sum of the 8 Q lanes; moving sum over M cycles; round-half-up shift; saturate to int16. The model
 applied to the MR samples must equal the buffer on every overlapping sample, at one fixed offset found on
 the first shot and held for all (the two captures are triggered together, so the offset is a constant
-pipeline delay). Not the kb * MA11 + cb fit used for the domain map (audit D5): this is exact or it fails.
+pipeline delay). Not the kb * MA11 + cb fit used for the domain map: this is exact or it fails.
 """
 import argparse
 import json

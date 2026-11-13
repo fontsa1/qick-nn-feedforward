@@ -1,4 +1,4 @@
-"""v1.41 FAIL_SAFE check (BUILD_PLAN section 7, item 11): with ENABLE = 0 a conditional pulse must not play.
+"""FAIL_SAFE check: with the gate's ENABLE = 0 a conditional pulse must not play.
 
 Uses gate_probe.py's program (conditional pulse + gate window marker, scheduled unconditionally) and
 counts, per case, the shots whose pulse came back (capture plateau > half the always-pass plateau) and

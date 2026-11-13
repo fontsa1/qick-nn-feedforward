@@ -1,13 +1,9 @@
 """
-2026-09-01: characterise the noise structure of the REAL qubit readout data
+Characterise the noise structure of the real qubit readout data
 (0528_X_train_0_770.npy), to decide how it should actually be modelled.
 
-Motivation: the on-chip/offline gap turned out to be a decision-margin
-effect, and margin is set by how hard the data is. Our synthetic generator
-(generate_data_4.ipynb) produces x_50k / x_50k_heldout, and the on-chip
-classifier scores 100% on x_50k but 72% on heldout -- i.e. dataset realism
-is the dominant lever on every number this project reports. Before any more
-fidelity work, the generator's noise model should match the real data.
+The synthetic generator's noise model should match the real data: fidelity depends strongly on how hard the
+data is (the on-chip classifier scores 100% on the white-noise x_50k but 72% on x_50k_heldout).
 
 Structure of the real set: 900,000 shots x 770 complex samples, balanced,
 CLASS-BLOCKED in 180 alternating runs of 5000. Sampling is therefore done

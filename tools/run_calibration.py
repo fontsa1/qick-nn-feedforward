@@ -1,30 +1,15 @@
 """
-CANONICAL two-pass k/c calibration. Run this after loading ANY bitstream,
-before any loopback acquisition -- it writes calibration/k.npy and calibration/c.npy, which every
-acquisition script predistorts with.
+Two-pass k/c calibration of the replay channel. Run after loading any bitstream, before any loopback acquisition:
+it writes calibration/k.npy and calibration/c.npy, which every acquisition script predistorts with.
 
-BOARD SCOPING (2026-10-05, task 0.6). The fitted pair is stored as
-`calib/k_<host>.npy` / `calib/c_<host>.npy` and then copied to the root
-`calibration/k.npy` / `calibration/c.npy` with `calib/ACTIVE` recording the owner. Set `QICK_NS_HOST`
-to pick the board. The two RFSoCs differ by 119 degrees in arg(k), so reusing
-one board's coefficients on the other scores 31% rather than 94% -- silently.
-Switch boards without recalibrating via
-`board_tools/calib.py activate <host>`. Promoted to the project root on
-2026-09-01 (was run_calibration_qick33.py); the logic is bitstream-agnostic,
-the old name only recorded which build it was first run against.
+The pair is stored per board as calib/k_<host>.npy / calib/c_<host>.npy and copied to calibration/k.npy /
+calibration/c.npy, with calib/ACTIVE recording the owner. QICK_NS_HOST picks the board. The two boards differ by
+about 119 degrees in arg(k), so one board's coefficients on the other score ~31% instead of ~94%; switch boards
+without recalibrating with `board_tools/calib.py activate <host>`.
 
-Standalone reproduction of load_waveform.ipynb's two-pass calibration
-procedure, for qick33 (diag2 diagnostic-ILA build, 2026-08-31). Copied
-from run_calibration_qick32.py verbatim aside from comments -- calibration
-logic is bitstream-name-agnostic (talks to whatever's registered as
-"myqick" via Pyro4), and the BD 2.0 NN-trigger-pin fix below still
-applies since qick33 is also BD 2.0 architecture. Faithfully reproduces
-the notebook cell-by-cell (cells 0,1,4,6,7,8,12,13), including its quirks
-(X_2_padded_11k as the
-uncalibrated reference envelope, x_50k as what actually gets predistorted
-and fired in pass 2). Does NOT touch NN_axi/onset_threshold -- calibration
-only uses standard trigger pin 0 + acquire_decimated(), same as the
-notebook.
+Pass 1 plays the uncalibrated reference envelope (X_2_padded_11k) and fits (k, c); pass 2 predistorts x_50k with
+them and records the result (acquired_dataset.npy). Uses trigger pin 0 + acquire_decimated() only (plus the NN
+trigger pin, see below).
 """
 import gc
 import time
@@ -77,17 +62,9 @@ def _connect(max_attempts=40, retry_delay_s=3.0):
 ns, soc, soccfg = _connect()
 print(soccfg)
 
-# --- BD 2.0 / qick33 compatibility (2026-08-28) ---
-# NN_axi only drains its AXI stream input when its OWN separate trigger
-# pin fires (see NN_axi.cpp's TRIGGER_C gating) -- calibration never
-# asserted this pin historically (it only cares about acquire_decimated(),
-# not NN classification), so under the qick33 BD (axis_broadcaster_clean
-# HAS_TREADY=1) its FIFO never drains and the whole broadcast -- DMA
-# branch included -- eventually stalls forever once enough undrained
-# backlog accumulates. Fix: always include the NN trigger pin here too,
-# matching the pattern already validated in fire_one_shot_nocal.py. This
-# has no effect on the acquire_decimated()/DMA data path itself -- it's an
-# independent, parallel digital pin pulse alongside the normal trigger.
+# NN_axi drains its stream input only when its own trigger fires; if it never drains, its FIFO backs up and stalls
+# the shared broadcast, DMA branch included. So the NN trigger pin is pulsed with every readout here too. It does
+# not affect the acquire_decimated() data path.
 soccfg['tprocs'][0]['output_pins'].append(('trig', 4, 0, 'NN_trigger (trig_4_o)'))
 NN_TRIGGER_PIN = len(soccfg['tprocs'][0]['output_pins']) - 1
 print("NN_TRIGGER_PIN index:", NN_TRIGGER_PIN)
@@ -97,10 +74,7 @@ ro_ch = 0
 
 base = Path(".")
 
-# --- safety step from the documented procedure: clear stale k/c first ---
-# Scoped by board (task 0.6): this clears only THIS board's coefficients. The
-# unscoped version deleted whichever pair happened to be in the root, so
-# calibrating board B destroyed board A's values and board A then scored 31%.
+# --- clear this board's stale k/c first (only this board's files) ---
 _kp, _cp = calib.paths(ns_host)
 for _p in (_kp, _cp, base / "calibration/k.npy", base / "calibration/c.npy"):
     if _p.exists():

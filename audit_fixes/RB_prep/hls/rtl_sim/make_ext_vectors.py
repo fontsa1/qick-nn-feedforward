@@ -1,4 +1,4 @@
-"""Extreme-input vectors for tb_live_ext.sv (R.17 / audit C5): windows and the expected res_o of NN_live from an
+"""Extreme-input vectors for tb_live_ext.sv: windows and the expected res_o of NN_live from an
 exact integer model in numpy (independent of the C++ and of hls4ml):
   sums = w2 . x + b2;  as = s4raw*sums + b4raw (2^-32);  l4 = floor(as / 2^16);  l5 = relu(l4);
   st = sum_u w6_u l5_u + (b6 + b10) 2^16;  L = floor(st / 2^6)  (logit raw, 2^-10)

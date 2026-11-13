@@ -1,15 +1,13 @@
-"""Bit-exactness of NN_live on hardware (task 4.1), from a --live-capture run.
+"""Bit-exactness of NN_live on hardware, from a --live-capture run.
 
-For each shot, score_armed_fidelity.py --live --live-capture saved the window
-NN_live itself captured (live_words, 770 raw readout words) and its record
-(live_rec: shot, acc0..acc3, sigmoid input, sigmoid output, decision; layout in
-neural_net4_live/firmware/NN_live.h). This checks, on the chip's own input:
-  1. acc0..acc3 == w2 . x (+ b2), exactly (integer arithmetic, 27-bit regs);
-  2. sigmoid output == the hls4ml fixed-point emulator of the v1.40 model
-     (same NN.cpp / ap_fixed types as synthesis) on the same window;
+For each shot, score_armed_fidelity.py --live --live-capture saved the window NN_live itself captured (live_words, raw
+readout words) and its record (live_rec: shot, acc0..acc3, sigmoid input, sigmoid output, decision; layout in
+NN_live.h). This checks, on the chip's own input:
+  1. acc0..acc3 == w2 . x (+ b2), exactly (integer arithmetic);
+  2. sigmoid output == the hls4ml fixed-point emulator of the model (same NN.cpp / ap_fixed types as synthesis) on
+     the same window;
   3. decision bit == (logit >= 1/64), the rule the kernel implements.
 A routed timing failure inside NN_live would show up as mismatches here.
-
 """
 import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
@@ -26,10 +24,10 @@ sys.path.insert(0, str(ROOT / "analysis_scripts" / "analysis"))
 sys.path.insert(0, str(ROOT / "analysis_scripts" / "acquisition"))
 W = ROOT / "neural_net4_live" / "firmware" / "weights"
 MODEL = "models/model_v140_200k_seed20260904.h5"
-# v1.40L3 (576-sample window, task 4.1g): pass --l3, or --weights/--model.
+# 576-sample window: pass --l3, or --weights/--model.
 L3_W = ROOT / "neural_net4_live576" / "firmware" / "weights"
 L3_MODEL = "models/model_v140L3_w576_seed20260904.h5"
-# v1.40L8 (boxcar readout path, task 4.1h): pass --box.
+# boxcar readout path: pass --box.
 BOX_W = ROOT / "neural_net4_live576box" / "firmware" / "weights"
 BOX_MODEL = "models/model_signed_domain_seed20260901_w576_box.h5"
 
@@ -96,7 +94,7 @@ EMU_OUT = None
 if __name__ == "__main__":
     args = sys.argv[1:]
     if "--emu-out" in args:
-        # per-shot emulator and chip outputs, for live20k_stats.py (task 4.1k)
+        # per-shot emulator and chip outputs, for live20k_stats.py
         i = args.index("--emu-out")
         EMU_OUT = args[i + 1]
         del args[i:i + 2]

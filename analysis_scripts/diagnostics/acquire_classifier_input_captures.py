@@ -1,34 +1,21 @@
 """
-2026-09-07: acquire, for real, the EXACT input the on-chip classifier sees.
+Acquire the exact input window NN_axi classifies, with its on-chip sigmoid, using NN_axi's capture mode.
 
-Requires the v1.27 diagnostic-capture bitstream. Arming is via the
-window_offset AXI-lite register (CAPTURE_ARM = 0xC0DE), which the datapath
-never otherwise reads, so this needs no driver changes:
+Arming is via the window_offset AXI-lite register (CAPTURE_ARM = 0xC0DE), which the datapath otherwise ignores:
 
     soc.nn_configure(window_size, CAPTURE_ARM, scaling_factor)   # arm
     <fire one shot>
     soc.nn_read_bram(i*4) for i in 0..770                         # read back
 
-BRAM layout of one armed shot (v1.27 NN_axi.cpp):
-    words [0 .. 769] = the RAW packed 32-bit stream word, carried through the
-                       float BRAM word as BITS. Unpack, do not float-decode:
+BRAM layout of one armed shot (NN_axi.cpp):
+    words [0 .. 769] = the raw packed 32-bit stream words, carried through the float BRAM word as bits.
+                       Unpack, do not float-decode:
                          in_local[2i]   = (w & 0xFFFF) * scaling_factor
                          in_local[2i+1] = (w >> 16)    * scaling_factor
-    word  [770]      = the sigmoid NN() produced from exactly those values
-                       (a genuine float -- decode as one)
+    word  [770]      = the sigmoid NN() produced from those values (a float)
 
-v1.26 instead wrote 1540 float slots, two per LOAD_L iteration. That made HLS
-infer a dual-port out[] interface whose port B the BD never wires, so on real
-hardware every EVEN slot came back as the constant 0x3B800000 and half the
-samples were lost. csim could not catch it (it does not model BRAM ports);
-the gate for that class of bug is the csynth port list.
-
-For each dataset we save the captured inputs, the chip's own sigmoid, the
-label, and the host-side waveform that was fired -- everything needed to
-(a) compare what the chip received against what we believe we sent, and
-(b) recompute the network offline from the captured input and check it
-against the chip's own answer, which localises any fault to either the
-input path or the NN arithmetic.
+For each dataset it saves the captured inputs, the chip's sigmoid, the label and the waveform that was played,
+so the received input can be compared with the one sent and the network recomputed offline from the capture.
 """
 import os, sys, gc, struct, argparse
 sys.path.insert(0, ".")
@@ -36,7 +23,7 @@ sys.path.insert(0, "tools")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 import Pyro4
-import decode_taps as DT      # v1.28 tap slot map + bit decode
+import decode_taps as DT      # tap slot map + bit decode
 
 Pyro4.config.SERIALIZER = "pickle"
 Pyro4.config.PICKLE_PROTOCOL_VERSION = 4
@@ -46,34 +33,17 @@ from qick.asm_v2 import AveragerProgramV2
 
 CAPTURE_ARM = 0xC0DE          # must match NN_axi.h
 
-# TAPS REMOVED IN v1.39 (2026-10-05, task 2.1). NN()'s six debug ports and the
-# PRELOAD_L / RAW_L / PRE_TAIL_L / PRE_HEAD_L / DENSE_IN_L / DBG_L drains are
-# gone -- DENSE_IN_TAP alone cost 96 of NN()'s 107 cycles. On a v1.39+
-# bitstream, slots 771 and above hold whatever was last in the BRAM, so the
-# `taps=True` readback below would return noise dressed as measurements. It
-# raises instead.
-#
-# Everything score_armed_fidelity.py needs is unaffected: the shot capture
-# (slots 0..769) and the sigmoid (slot 770 = SIG_SLOT) are still written by
-# LOAD_L and STORE_L respectively.
-#
-# Set QICK_TAPS_PRESENT=1 to re-enable, which is correct only against a
-# bitstream built from firmware/v1.38_backup_before_v1.39_latency.
+# Layer taps (slots 771..788) exist only in firmware built with NN()'s debug ports; the deployed NN_axi has none,
+# so `taps=True` raises unless QICK_TAPS_PRESENT=1. Slots 0..769 (capture) and 770 (sigmoid) are always written.
 TAPS_PRESENT = os.environ.get("QICK_TAPS_PRESENT", "0") == "1"
 N_WORDS = 770                 # N_IQ_WINDOW_IN packed 32-bit stream words
 N_CAP = 2 * N_WORDS           # 1540 unpacked I/Q values
-SIG_SLOT = N_WORDS            # sigmoid lands here in capture mode (v1.27)
+SIG_SLOT = N_WORDS            # sigmoid slot in capture mode
 BRAM_WORDS = 2048
 
-# v1.27 BRAM layout, per NN_axi.cpp:
-#   slots [0 .. 769] : the RAW packed 32-bit stream word, transported through
-#                      the float BRAM word as BITS (union capture_word_t), so
-#                      these must be read as integers and NOT float-decoded.
-#                      in_local[2i]   = (word & 0xFFFF) * scaling_factor
-#                      in_local[2i+1] = (word >> 16)    * scaling_factor
-#   slot  [770]      : the sigmoid, a genuine float -- decode as float.
-# v1.26 wrote 1540 float slots instead and silently lost every even one to a
-# dual-port BRAM inference the BD does not wire; see NN_axi.h capture_word_t.
+# BRAM layout (NN_axi.cpp): slots [0 .. 769] raw packed stream words carried as bits (read as integers,
+# in_local[2i] = (word & 0xFFFF) * scaling_factor, in_local[2i+1] = (word >> 16) * scaling_factor);
+# slot [770] the sigmoid (a float).
 
 NS_HOST, NS_PORT, PROXY_NAME = os.environ.get("QICK_NS_HOST", "10.1.9.26"), 8888, "myqick"
 ns = Pyro4.locateNS(host=NS_HOST, port=NS_PORT)
@@ -83,18 +53,14 @@ for line in str(soccfg).splitlines():
     if "built" in line:
         print("BANNER:", line.strip())
 
-# NN_TRIGGER_PIN is fired with the readout to be classified (pins=[0, NN_TRIGGER_PIN]).
-# Through v1.40L4 it pointed at trig_4 (NN_axi's old trigger, tied off since) and
-# NN_live framed every readout trigger; from v1.40L5 NN_live's gate runs on the
-# dedicated classify trigger trig_11 (PMOD0_7), so this must be trig_11. On earlier
-# bitstreams trig_11 only toggles PMOD0_7.
+# NN_TRIGGER_PIN is fired with the readout to be classified (pins=[0, NN_TRIGGER_PIN]): trig_11 (PMOD0_7), the
+# classify trigger that starts NN_live's window.
 soccfg['tprocs'][0]['output_pins'].append(('trig', 11, 0, 'NN classify trigger (trig_11_o)'))
 NN_TRIGGER_PIN = len(soccfg['tprocs'][0]['output_pins']) - 1
 
 import onchip_test_harness as h
 
-# v1.38: drain_count_last packs idle_flush in bits 31:16 -- decode, never
-# read it raw (a raw read shows ~5e7 and looks like a fault).
+# drain_count_last packs the idle-flush count in bits 31:16; decode it, do not read it raw.
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 import onset_diag as OD
@@ -142,17 +108,12 @@ def word_to_float(raw):
 def read_capture(stride=1, scaling_factor=1, taps=False):
     """Read back one armed shot: unpacked I/Q values + the sigmoid.
 
-    Returns (values, prob) where `values` are the in_local entries the core
-    actually loaded, i.e. (uint16 half * scaling_factor), interleaved I,Q,I,Q.
-    With taps=True returns (values, prob, tapwords): v1.28's 18 raw tap words
+    Returns (values, prob) where `values` are the in_local entries the core loaded, i.e. (uint16 half *
+    scaling_factor), interleaved I,Q,I,Q. With taps=True returns (values, prob, tapwords): the 18 raw tap words
     from slots 771..788, undecoded (decode_taps.decode does that).
 
-    Each BRAM word is a separate Pyro round-trip, so a full record costs 771,
-    or 789 with taps.
-    `stride` subsamples the packed words for callers that only need a summary
-    statistic (the lag probe wants a mean, not the waveform). Note stride now
-    skips whole I/Q PAIRS, so it can no longer accidentally sample only one
-    channel -- which is exactly how v1.26's probe reported a bogus 0.00 mean.
+    Each BRAM word is a separate Pyro round-trip, so a full record costs 771 reads, or 789 with taps.
+    `stride` subsamples whole I/Q pairs for callers that only need a summary statistic.
     """
     idx = np.arange(0, N_WORDS, stride)
     vals = np.empty(2 * len(idx), dtype=np.float64)
@@ -172,17 +133,8 @@ def read_capture(stride=1, scaling_factor=1, taps=False):
             "you need a pre-v1.39 bitstream plus QICK_TAPS_PRESENT=1.")
     tw = np.array([soc.nn_read_bram((DT.DBG_BASE + i) * 4) & 0xFFFFFFFF
                    for i in range(DT.N_DBG_TOTAL)], dtype=np.uint32)
-    # v1.29: in_local[] read back at 128 constant-index I/Q pairs. This is the
-    # only view of what NN() was ACTUALLY fed, as distinct from what LOAD_L
-    # mirrored into out[] from the same stream word.
-    # v1.30: the SAME 128 pairs sampled on both sides of the NN() call.
-    # PRE  = what LOAD_L actually left in in_local[]
-    # POST = what is there after NN()'s DATAFLOW channel consumed it
-    # v1.34: PRE is CONTIGUOUS now -- word k is in_local[k], k = 0..1001, so
-    # 65% of the window is read word-for-word instead of 17% sampled. POST is
-    # gone (it agreed with PRE 256/256 on every build since v1.30). RAW is the
-    # lag probe: LOAD_L's own read-back of a pair written RAW_LAG iterations
-    # earlier -- see CLASSIFIER_DEBUGGING_REFERENCE #25.
+    # in_local readbacks (firmware with debug ports only): PRE = in_local[0..1001] after LOAD_L, read word for
+    # word; RAW = LOAD_L's own read-back of a pair written RAW_LAG iterations earlier.
     itail = np.array([soc.nn_read_bram((DT.PRE_TAIL_BASE + i) * 4) & 0xFFFFFFFF
                       for i in range(DT.N_PRE_TAIL_WORDS)], dtype=np.uint32)
     ihead = np.array([soc.nn_read_bram((DT.PRE_HEAD_BASE + i) * 4) & 0xFFFFFFFF
@@ -316,11 +268,9 @@ def main():
         caps = np.zeros((len(D), N_CAP), dtype=np.float64)
         probs = np.zeros(len(D), dtype=np.float64)
         drains = np.zeros(len(D), dtype=np.int64)
-        # v1.28: the 18 raw tap words per shot, stored UNDECODED so the npz
-        # keeps exactly what the BRAM held and every decode stays reproducible
-        # from it. decode_taps.decode() turns them into layer values.
+        # the 18 raw tap words per shot, stored undecoded; decode_taps.decode() turns them into layer values
         tapw = np.zeros((len(D), DT.N_DBG_TOTAL), dtype=np.uint32)
-        # v1.29 in_local readback, also stored UNDECODED
+        # in_local readback, stored undecoded
         tail = np.zeros((len(D), DT.N_PRE_TAIL_WORDS), dtype=np.uint32)
         head = np.zeros((len(D), DT.N_PRE_HEAD_WORDS), dtype=np.uint32)
         dense_in = np.zeros((len(D), DT.N_DENSE_IN), dtype=np.uint32)
@@ -336,12 +286,8 @@ def main():
             cfg = dict(CFG0, waveform_I=wf[0::2], waveform_Q=wf[1::2])
             prog = Prog(soccfg, cfg)
             iq = prog.acquire_decimated(soc)
-            # Keep the sibling-tap readout instead of discarding it. NN_axi
-            # taps axis_avg_buffer_0/m1_axis via broadcaster+FIFO; this DMA
-            # path reads the same source. That identity has been asserted at
-            # wiring level since 2026-09-01 but never checked against what
-            # NN_axi ACTUALLY loaded -- capturing both for the same shot
-            # tests it directly, for free.
+            # Keep the sibling readout: NN_axi reads axis_avg_buffer_0/m1_axis through a broadcaster and FIFO,
+            # and this DMA path reads the same source, so both can be compared for the same shot.
             rec = (np.concatenate([np.asarray(x).reshape(-1) for x in iq])
                    if isinstance(iq, list) else np.asarray(iq).reshape(-1))
             if sibling is None:
@@ -359,11 +305,8 @@ def main():
                   f"drain={drains[i]} mean|in|={np.abs(caps[i]).mean():.1f} "
                   f"l2={np.round(t['l2'], 1).tolist()} "
                   f"l6={t['l6'][0]:.4f} l10={t['l10'][0]:.4f}")
-            # Fail on the FIRST shot if the taps are not real, rather than
-            # after a full multi-dataset acquisition. layer10 and the sigmoid
-            # slot are written in the same pass by DBG_L/STORE_L, so they must
-            # agree; on a pre-v1.28 bitstream slots 771..788 hold whatever the
-            # rolling output stream left there and this will not hold.
+            # Fail on the first shot if the taps are not present: layer10 and the sigmoid slot are written in the
+            # same pass, so they must agree.
             if i == 0 and name == DATASETS[0][0]:
                 want = 1.0 / (1.0 + np.exp(-t["l10"][0]))
                 if abs(want - probs[i]) > 0.05:
@@ -391,12 +334,9 @@ def main():
         store[f"{name}__raw_X"] = X
         # the waveform actually fired, needed to test caps against our intent
         store[f"{name}__fired"] = D.astype(np.float32)
-        # v1.28 note on the OTHER lag: DBG_L writes the taps immediately after
-        # STORE_L writes the sigmoid, in the SAME pass, so tapwords carry
-        # exactly the sigmoid lag -- not the input-mirror lag. caps[i] pairs
-        # with probs[i+SIG_LAG] AND tapwords[i+SIG_LAG]. The taps also make
-        # that lag directly checkable for the first time: the tapped layer10
-        # and the sigmoid slot come from one pass, so they must agree exactly.
+        # The taps are written right after the sigmoid in the same pass, so they carry the sigmoid's lag:
+        # caps[i] pairs with probs[i+SIG_LAG] and tapwords[i+SIG_LAG]; the tapped layer10 must equal the sigmoid
+        # slot's input.
         if lag:
             store[f"{name}__probs_aligned"] = probs[lag:]
             store[f"{name}__labels_aligned"] = Y[:-lag]

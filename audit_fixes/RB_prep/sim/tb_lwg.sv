@@ -1,4 +1,5 @@
-// live_window_gate (built copy) vs QICK buffer.sv with adversarial trigger patterns
+// tb_lwg: live_window_gate against QICK's buffer.sv with adversarial trigger patterns (single-cycle, long,
+// back-to-back, re-arm at window end; asynchronous edges, occasional invalid input cycles).
 `timescale 1ps / 1ps
 module tb_lwg;
     localparam integer CLK_PS = 1808, N = 576;

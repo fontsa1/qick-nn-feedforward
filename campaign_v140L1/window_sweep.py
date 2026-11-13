@@ -1,4 +1,4 @@
-"""Fidelity vs classification window (task 4.1 follow-up): how much latency can
+"""Fidelity vs classification window: how much latency can
 a shorter window buy?
 
 NN_live decides 15 cycles after the window's last sample, so the decision time

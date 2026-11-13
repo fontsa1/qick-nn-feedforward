@@ -51,7 +51,7 @@ L = {
 }
 OPEN = {
 }
-# 2026-11-09, v1.44 swap: numbers that matched a v1.43 ledger value only by coincidence, and the new wording's numbers
+# numbers that match a v1.43 ledger value only by coincidence, and numbers in the v1.44 wording
 _A = {
  "P40": {"50": "the 50% point, a definition"}, "P50": {"860": "value reported by [43]", "620": "value reported by [43]", "270": "value reported by [43]", "10": "value reported by [43]: 9.93% rounded"},
  "P61": {"50": DESIGN + ": 50 MHz carrier"}, "P71": {"−164": "phase of the swap session, in the ledger as arg(k)", "−143": "phase of the swap session, in the ledger as arg(k)"},
@@ -63,7 +63,7 @@ _A = {
           "1.5": "same", "0.7": "v1.44 latency study, largest sensitivity shift 0.74 ns (campaign_v144/final/latency/cold/B_c2.json)"},
  "P171": {"10": "number of loads, ledger row name"}, "P184": {"4.4": "assignment error, rounded from the headline (100 - 95.60)"},
 }
-# 2026-11-11: Appendices A-C (P188-P200; contribution 8 deleted, so P22-P188 moved up by one)
+# Appendices A-C (P188-P200)
 _CR = "v1.44 calibration repeats, 8 per board on one load: s.d. of arg k and of the probe phase (campaign_v144/final/cal_repeat/cal_repeat_<host>.json)"
 _PH = "v1.44 phase across loads, board A (campaign_v144/final/board2/A_phrst_probe_v144.json)"
 _B = {

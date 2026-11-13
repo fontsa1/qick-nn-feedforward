@@ -1,3 +1,5 @@
+// tb_cdc_skew: live_res_cdc_skew with SKEW_PS of extra delay on the data bits (TOG_PS on the toggle); counts
+// corrupted results out of N at destination period M_PS. Finds the data-vs-toggle skew the crossing tolerates.
 `timescale 1ps / 1ps
 module tb_cdc_skew;
     parameter integer M_PS = 2034, SKEW_PS = 0, TOG_PS = 0, N = 3000;

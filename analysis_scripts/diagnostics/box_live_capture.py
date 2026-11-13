@@ -1,4 +1,4 @@
-"""NN_live on the boxcar readout path (v1.40L8, task 4.1h): live capture for the bit-exact check.
+"""NN_live on the boxcar readout path: live capture for the bit-exact check.
 
 Per shot (test20k_real_X rows, the run_loopback_box.py recipe and dataset-wide DAC scale):
 readout 0 (FIR) triggered at adc_trig_offset; readout 1 (avg buffer 1 = the boxcar stream)

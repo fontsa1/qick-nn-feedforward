@@ -3,7 +3,7 @@
 Same programs as box_probe.py (const 50 MHz pulse in loopback; readout 0 = QICK's FIR stream in
 avg buffer 0, readout 1 = boxcar_tap_0's stream in avg buffer 1, one trigger), but every captured
 trace is stored, so Fig. 7 plots measured waveforms and the image level is estimated offline
-without the Hann-window bias of box_probe.py (audit D12: the old estimate read ~0.6 dB low).
+without the Hann-window bias of box_probe.py (whose estimate reads ~0.6 dB low).
   A. 20 shots: rising edge of a 0.4 us pulse through both paths (raw complex traces).
   B. M = 1..16: long 7 us pulse, raw plateau traces through both paths (3 shots per M).
   D. seg_stamp edge time at NN_live's input, sel 0 (FIR) vs 1 (boxcar), 20 shots each.

@@ -1,23 +1,16 @@
-"""Measured feed-forward loop latency on v1.40L2 (task 4.1b).
+"""Measured feed-forward loop latency through the tProc (conditional_pulse_demo.py's program).
 
-Builds on conditional_pulse_demo.py (4.1a). Everything is measured in the
-readout buffer's own time frame, with two captures on the loopback ADC (ro 0)
-per shot:
-  read 0  the classified window (trigger 1 at adc_trig_offset, 770 samples;
-          NN_live's gate captures the same window, +-1 sample)
+Everything is measured in the readout buffer's own time frame, with two captures on the loopback ADC (ro 0) per shot:
+  read 0  the classified window (trigger 1 at adc_trig_offset; NN_live's gate captures the same window, +-1 sample)
   read 1  the conditional pulse coming back through DAC -> cable -> ADC
-Both triggers travel the same tProc -> buffer path and both signals pass the
-same ADC, DDC and FIR, so
+Both triggers travel the same tProc -> buffer path and both signals pass the same ADC and DDC, so
 
   L_buf = (t_trig2 - t_trig1) + onset1 / fs - (N - 1) / fs
 
-is the time from the window's last sample (sample index N-1, at t_trig1 + (N-1)/fs)
-to the conditional pulse's 50% point (an interpolated sample index on the same grid),
-both at the buffer. Convention (decided 2026-10-20, audit R2/E1): latency is measured
-to the last sample INSTANT. Until then the code used the window END, t_trig1 + N/fs,
-which is 1/fs = 1.808 ns later and gives an L_buf 1.808 ns smaller; that convention is
-still available with --lbuf-ref window_end (or env QICK_LBUF_REF=window_end, which
-also reaches gate_probe / seg_probe / tproc_savings through l_buf). A sample at the ADC pin reaches the buffer d_in later and a
+is the time from the window's last sample (sample index N-1, at t_trig1 + (N-1)/fs) to the conditional pulse's 50%
+point (an interpolated sample index on the same grid), both at the buffer. --lbuf-ref window_end (or env
+QICK_LBUF_REF=window_end, which also reaches gate_probe / seg_probe / tproc_savings through l_buf) measures from the
+window end t_trig1 + N/fs instead, 1/fs = 1.808 ns later. A sample at the ADC pin reaches the buffer d_in later and a
 pulse leaving the DAC pin reaches it d_cable + d_in later, so
 
   L_buf = (pulse at DAC pin) - (last sample at ADC pin) + d_cable
@@ -25,16 +18,13 @@ pulse leaving the DAC pin reaches it d_cable + d_in later, so
 i.e. the pin-to-pin loop plus the loopback cable delay (a few ns). d_in cancels.
 
 Sweeps:
-  --slacks   pulse time relative to the DPORT_RD wait. Negative = scheduled in
-             the past, so the tProc dispatches it as soon as WPORT_WR executes
-             (ASAP). Arrival is flat below some slack (the ASAP floor) and
-             tracks the slack above it.
-  --margins  DPORT_RD time after the programmed window end, at ASAP slack.
-             The earliest margin with every shot fresh (and branch == NN_live
-             decision) gives the measured loop.
-Also reports the loopback onset (pulse timestamp -> 50% at the buffer, relative
-to a trigger at the same timestamp) from the scheduled, slack > floor points.
-
+  --slacks   pulse time relative to the DPORT_RD wait. Negative = scheduled in the past, so the tProc dispatches it as
+             soon as WPORT_WR executes. Arrival is flat below some slack (the dispatch floor) and tracks the slack
+             above it.
+  --margins  DPORT_RD time after the programmed window end, at negative slack. The earliest margin with every shot
+             fresh (and branch == NN_live decision) gives the measured loop.
+Also reports the loopback onset (pulse timestamp -> 50% at the buffer, relative to a trigger at the same timestamp)
+from the scheduled points above the floor.
 """
 import argparse
 import sys
@@ -48,8 +38,7 @@ A, h, S, soc, soccfg = C.A, C.h, C.S, C.soc, C.soccfg
 CFG0, FS_RO = C.CFG0, C.FS_RO                   # FS_RO in MHz (samples / us)
 N_WIN = int(__import__("os").environ.get("QICK_LIVE_N", 770))   # live window, samples (L3: 576)
 TICK = 1.0 / soccfg["tprocs"][0]["f_time"]       # tProc timestamp unit, us
-# L_buf reference: "last_sample" = t1 + (N-1)/fs (default since 2026-10-20, audit R2);
-# "window_end" = t1 + N/fs (the convention of every L_buf recorded before that date).
+# L_buf reference: "last_sample" = t1 + (N-1)/fs (default); "window_end" = t1 + N/fs.
 LBUF_REFS = ("last_sample", "window_end")
 LBUF_REF = __import__("os").environ.get("QICK_LBUF_REF", "last_sample")
 if LBUF_REF not in LBUF_REFS:
@@ -176,7 +165,7 @@ def l_buf(cf, arr_us, ref=None):
     """Window's last sample -> conditional pulse 50% point, both at the buffer, ns.
     Trigger 1 (t = adc_trig_offset) and trigger 2 share the tProc -> buffer path, so
     L_buf = (t_dec + arr) - (t_trig1 + (N_WIN - 1) / fs)   [ref "last_sample", default]
-    L_buf = (t_dec + arr) - (t_trig1 + N_WIN / fs)         [ref "window_end", pre-2026-10-20]"""
+    L_buf = (t_dec + arr) - (t_trig1 + N_WIN / fs)         [ref "window_end"]"""
     ref = ref or LBUF_REF
     n_ref = {"last_sample": N_WIN - 1, "window_end": N_WIN}[ref]
     full = dict(CFG0, **cf)

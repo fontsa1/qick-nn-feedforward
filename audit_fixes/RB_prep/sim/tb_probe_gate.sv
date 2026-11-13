@@ -1,6 +1,8 @@
-// Reviewer probe of dac_gate (lane D). Decision input driven directly on aclk
-// (cycle-exact), BRAM model READ_LATENCY 1, generator model: pulse PLEN words,
-// first RAMP words at low amplitude (|x| = LOWAMP, below NZ_THR), rest at FULL.
+// tb_probe_gate: edge cases of dac_gate with the decision input driven cycle-exactly on aclk, BRAM model
+// READ_LATENCY 1, generator pulse of PLEN words (first RAMP words at |x| = LOWAMP < NZ_THR, the rest at FULL).
+// Cases: reset output, calibration (word 7), blank onset vs DELAY_LEAD, a sub-threshold leading edge, late and
+// same-cycle decisions, decision arrival scanned around window open, two markers per shot, the next cls_trig
+// inside a window, gate disabled mid-window.
 `timescale 1ps / 1ps
 module tb_probe_gate;
     localparam integer NS = 16, D_PS = 2034;

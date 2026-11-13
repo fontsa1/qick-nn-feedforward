@@ -126,7 +126,7 @@ def main():
           f"CFG_SAFE {g10 >> 11 & 1}; marker -> pulse {sorted(set(mp))} cycles, DELAY {delay}; plateau {plat_pass:.0f}")
     if delay != 29:
         print(f"WARNING: DELAY {delay} differs from the v1.41 loop run (29)")
-    # half the |I|+|Q| plateau since 2026-11-05 (R18 and R18_full used half the |IQ| plateau); seg_stamp only observes
+    # half the |I|+|Q| plateau (the R18 and R18_full runs used half the |IQ| plateau); seg_stamp only observes
     seg_thr = G.seg_threshold([wf(r)[0] for r in CAL_ROWS[:4]], dict(base, cp_slack=0.0))
     print(f"seg thr {seg_thr} (half the |I|+|Q| plateau)")
     soc.seg_write(1, seg_thr); soc.seg_write(4, a.rf_thr)

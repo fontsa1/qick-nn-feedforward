@@ -30,7 +30,7 @@ typedef ap_fixed<32,16> layer6_t;
 typedef ap_int<2> weight6_t;
 typedef ap_int<2> bias6_t;
 typedef ap_uint<1> layer6_index;
-typedef ap_fixed<16,6,AP_TRN,AP_SAT> q_output_alpha_result_t;   // v1.5 (R.17): saturate, was ap_fixed<16,6> (wrap)
+typedef ap_fixed<16,6,AP_TRN,AP_SAT> q_output_alpha_result_t;   // saturates (hls4ml's default wraps)
 typedef struct exponent_scale10_t {ap_uint<1> sign;ap_int<2> weight; } exponent_scale10_t;
 typedef ap_int<2> bias10_t;
 typedef ap_fixed<18,8> result_t;

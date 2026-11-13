@@ -1,61 +1,35 @@
-// seg_stamp: per-shot segment timestamps for the live feed-forward path
-// (task 4.1f, v1.40L4 diagnostic build). Observes only; drives nothing in the
-// data path.
+// seg_stamp: per-shot timestamps along the feed-forward path, for the latency measurement. Observes only,
+// except for the configuration words it drives out (cfg to boxcar_tap, rf_thr to rf_tap).
 //
-// Runs on clk_adc0_x2 (552.96 MHz, 1.808 ns) beside live_gate_0 and NN_live_0.
-// A free-running 32-bit counter is latched at each event of a shot:
-//   trig    rising edge of live_gate_0's synchronized trigger (dbg_trig)
-//   first   the window's first word leaves the gate (dbg_first)
-//   last    the window's last word leaves the gate (dbg_last = TLAST)
-//   res     NN_live_0's result strobe (res_o_ap_vld)
-//   edge1   first stream sample after trig with |I|+|Q| >= thr
-//   edge2   first RISING crossing of |I|+|Q| >= thr after last: armed only once
-//           LOW_N consecutive samples after last have been below thr, so a signal
-//           still high, or crossing thr noisily, at the window's end is not taken
-//           for the pulse (in a loopback feed-forward program: the conditional
-//           pulse coming back). (v1.40L4: first sample >= thr after last;
-//           v1.40L5: armed by a single low sample; v1.40L6: LOW_N.)
-//           v1.40L6b: "after last" is a registered flag (post_last) instead of a
-//           32-bit subtract-and-compare in the enable path (L6 missed timing
-//           there by 0.65 ns); same samples qualify.
-//   edge0   first rf_hit after trig (v1.40L9): the window's own pulse at the
-//           RFdc ADC tile output (rf_tap_0, 3 cycles behind the tile)
-//   edge3   first rising rf_hit after last, armed after LOW_N consecutive cycles
-//           without a hit after last (v1.40L9): the conditional pulse at the
-//           tile output, the counterpart of edge2 at the readout output
-// The stream is live_gate_0's registered input (dbg_data/dbg_dvalid), i.e. the
-// readout output NN_live sees, so edge2 - last is the loop latency seen at the
-// readout output (ADC-side delays cancel), one sample (1.808 ns) resolution.
+// Runs on clk_adc0_x2 (552.96 MHz, 1.808 ns per cycle). Every input passes one register first. A free-running
+// 32-bit counter is latched at each event of a shot:
+//   trig   rising edge of the window gate's synchronized trigger (dbg_trig); starts the shot
+//   first  the window's first word leaves the gate (dbg_first)
+//   last   the window's last word leaves the gate (dbg_last)
+//   res    NN_live's result strobe (res_vld)
+//   edge1  first sample after trig with |I|+|Q| >= thr
+//   edge2  first rising crossing of |I|+|Q| >= thr after last, armed once LOW_N consecutive samples after last
+//          are below thr (the conditional pulse returning)
+//   edge0  first rf_hit after trig (the window's pulse at the ADC tile)
+//   edge3  first rising rf_hit after last, armed after LOW_N hit-free cycles (the conditional pulse at the tile)
+// The |I|+|Q| stream is the gate's input (dbg_data/dbg_dvalid), so edge2 - last is the loop latency at the
+// readout output, at one-sample resolution.
 //
-// One 8-word record per shot, written CLOSE_CYC cycles after last (or at the
-// next trigger, whichever is first), into a BRAM read by the PS through
-// axi_bram_ctrl_seg (byte addresses, 32-bit words):
-//   word 0  records written (header, updated after each record)
-//   word 1  thr, |I|+|Q| edge threshold (written by the host; read here)
-//   word 2  magic 0x53454731 ("SEG1")
-//   word 3  cfg (written by the host; read here, driven out on `cfg` for
-//           boxcar_tap, v1.40L7): [0] NN_live input 0 = readout FIR, 1 = boxcar;
-//           [7:4] boxcar output shift; [12:8] moving-sum length - 1
-//           (all zero at reset = FIR, as before v1.40L7)
-//   word 4  rf_thr (written by the host; read here, driven out to rf_tap_0,
-//           v1.40L9): |x| threshold for rf_hit, low 16 bits
-//   word 16 + 16*(k mod N_REC) (v1.40L9; 8 words per record before):
+// A record is written CLOSE_CYC cycles after last, or at the next trigger if sooner. BRAM (32-bit words; PS
+// side via axi_bram_ctrl_seg):
+//   word 0  records written
+//   word 1  thr, |I|+|Q| threshold (host)
+//   word 2  magic 0x53454733 ("SEG3")
+//   word 3  cfg (host), driven out to boxcar_tap: [0] NN input 0 = FIR, 1 = boxcar; [7:4] shift; [12:8] M - 1
+//   word 4  rf_thr (host), driven out to rf_tap: [15:0]
+//   words 16 + 16*(k mod N_REC), record k:
 //     +0 shot (trigger count, from 1)   +1 trig (absolute counter)
 //     +2 first - trig                   +3 last - trig
-//     +4 res - trig                     +5 edge1 - trig (0xFFFFFFFF if none)
-//     +6 edge2 - trig (0xFFFFFFFF if none)
-//     +7 {seen flags [7:0], words in window [23:8] (16 bits)}
-//     +8 edge0 - trig                   +9 edge3 - trig
-//     +10..+15 0 (reserved)
-// A missing event leaves its field 0xFFFFFFFF and its flag bit clear:
+//     +4 res - trig                     +5 edge1 - trig
+//     +6 edge2 - trig                   +7 {seen flags [7:0], words in window [23:8]}
+//     +8 edge0 - trig                   +9 edge3 - trig          +10..+15 0
+// A missing event leaves its field 0xFFFFFFFF and its flag clear:
 // flags [0] first [1] last [2] res [3] edge1 [4] edge2 [5] edge0 [6] edge3.
-// Magic 0x53454733 ("SEG3", v1.40L10): every input (dbg_*, res_vld, rf_hit)
-// passes one register at the module boundary before anything uses it, so the
-// long routes from live_gate_0, NN_live_0 and rf_tap_0 end on a flop (L9 missed
-// timing here at 552.96 MHz). All fields relative to trig are unchanged; the
-// trigger stamp itself is one cycle later against the classify trigger.
-// "SEG2" (v1.40L9): same layout, no input registers. "SEG1": 8-word records.
-
 `timescale 1ns / 1ps
 
 module seg_stamp #(
@@ -104,7 +78,7 @@ module seg_stamp #(
     assign bram_rst = ~aresetn;
 
 
-    // input registers (v1.40L10): one flop on every input, no reset needed
+    // input registers
     reg        i_trig = 1'b0, i_first = 1'b0, i_last = 1'b0, i_dvalid = 1'b0, i_res = 1'b0, i_rf = 1'b0;
     reg [31:0] i_data = 32'd0;
     always @(posedge aclk) begin
@@ -203,9 +177,8 @@ module seg_stamp #(
                 if (i_last && !seen[1])  begin d_last  <= t - t_trig; seen[1] <= 1'b1; in_win <= 1'b0; end
                 if (i_res  && !seen[2])  begin d_res   <= t - t_trig; seen[2] <= 1'b1; end
                 if (mag_v && mag >= thr[16:0] && !seen[3]) begin d_e1 <= t_mag - t_trig; seen[3] <= 1'b1; end
-                // seen[1] is set the cycle after last (t = T); mag then holds the
-                // sample of t_mag = T, so the first sample with t_mag > T is in mag one
-                // cycle later, when post_last (seen[1] delayed) turns on
+                // seen[1] is set the cycle after last (t = T), when mag holds the sample of t_mag = T; the first
+                // later sample is in mag one cycle after, when post_last turns on
                 post_last <= seen[1];
                 if (mag_v && post_last) begin
                     if (mag >= thr[16:0]) low_cnt <= 8'd0;
@@ -248,11 +221,9 @@ module seg_stamp #(
                 end
             end else begin
                 bram_we   <= 4'h0;
-                // phases 0-3 address word 1 (threshold), 4-7 word 3 (cfg), 8-11
-                // word 4 (rf_thr), 12-15 word 1 again. bram_addr is registered and
-                // the BRAM has READ_LATENCY 1, so dout shows the word addressed at
-                // phase r from phase r + 2 on: each word is taken at the last phase
-                // of its group
+                // phases 0-3 address word 1 (thr), 4-7 word 3 (cfg), 8-11 word 4 (rf_thr), 12-15 word 1.
+                // dout shows the word addressed at phase r from phase r + 2, so each is taken at its group's
+                // last phase
                 bram_addr <= (rd_cnt[3:2] == 2'd1) ? 32'd12 : (rd_cnt[3:2] == 2'd2) ? 32'd16 : 32'd4;
                 rd_cnt    <= rd_cnt + 4'd1;
                 if (rd_cnt == 4'd3 || rd_cnt == 4'd15) thr <= bram_dout;

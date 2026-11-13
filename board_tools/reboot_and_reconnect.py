@@ -1,29 +1,12 @@
 """
-Wait for the board to come back after a reboot, and confirm it genuinely
-rebooted (not just that the network blipped).
+Wait for the board to come back after a reboot, and confirm it actually rebooted (not just a network blip).
 
-STATUS: same split as deploy_and_verify.py -- the WAIT/VERIFY half below
-is real, working code. TRIGGERING the reboot itself is not automated here
--- it requires executing a command on the board (`sudo reboot`, root has
-passwordless sudo per this project's history), which needs whatever
-board-side code-execution mechanism is available at the time (a Jupyter
-notebook cell, direct terminal access, etc.) -- not something reachable
-through the Pyro4 QICK connection this script otherwise uses.
+The reboot itself is not triggered here: run `sudo reboot` on the board (e.g. from a board notebook cell), then
+wait_for_reboot_and_reconnect().
 
-WHEN TO USE A FULL REBOOT INSTEAD OF JUST A KERNEL RESTART
-(see CLASSIFIER_DEBUGGING_REFERENCE.md #11 for the full story):
-PYNQ can silently serve stale cached overlay metadata for a bitstream
-whose BINARY CONTENT hasn't changed, even under a brand-new filename,
-even across a Jupyter kernel restart. Symptom: a redeployed build's
-driver-visible behavior doesn't match its just-verified-correct .hwh
-content. If you hit that, don't keep re-verifying file bytes or trying
-new filenames -- reboot.
-
-MANUAL STEP: trigger the reboot yourself (fire a `sudo reboot` cell in a
-board notebook, or however you currently have code-execution access),
-THEN run wait_for_reboot_and_reconnect() below to confirm it's back and
-genuinely fresh.
-
+When to reboot instead of restarting the kernel: PYNQ can serve stale cached overlay metadata for a bitstream whose
+binary content has not changed, even under a new filename and across a kernel restart. Symptom: a redeployed build's
+driver-visible behaviour does not match its .hwh. A reboot clears it.
 """
 import sys
 import time

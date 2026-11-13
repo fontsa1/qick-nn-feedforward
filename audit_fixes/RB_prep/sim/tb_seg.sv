@@ -1,24 +1,11 @@
-// RTL sim of live_window_gate (N = 576, with the v1.40L4 debug outputs) +
-// seg_stamp, against a BRAM model with READ_LATENCY 1 (task 4.1f).
-//
-// Stimulus on a continuous 552.96 MHz stream (valid every cycle, no backpressure):
-//   per shot, an asynchronous trigger pulse (as the tProc's trig_0_o);
-//   an input "pulse" (|I|+|Q| = 3000) from stream index P1 after the trigger
-//   sample, and a second one ("conditional pulse") from index P2;
-//   a fake NN_live result strobe RES_LAT cycles after the gate's TLAST.
-// Shots 1-2 are 3000 cycles apart (record closed by the next trigger); shot 3
-// is followed by a long gap (record closed by the CLOSE_CYC timeout).
-// Checks, per record: last - first = N-1, res - last = RES_LAT, the edge
-// positions against the stimulus, the word count, flags, header and magic.
-// v1.40L9: the trigger goes through trig_sync (as in the BD) before the gate;
-// a raw 8-sample "tile" stream carries the same two pulses RF_LEAD cycles
-// earlier into rf_tap, whose hit feeds seg_stamp: edge0 / edge3 must be
-// P2 - P1 apart, and edge1 - edge0 = edge2 - edge3 on every shot (the same
-// fixed front-end offset for the window's pulse and the conditional pulse).
-// Records are 16 words (SEG3, v1.40L10: seg_stamp registers its inputs, rf_tap
-// has 4 stages); word 4 (rf_thr) is read back. edge1 - edge0 = RF_LEAD - 3
-// (rf_tap's 4 stages against the 1 register on the readout-side input).
-
+// tb_seg: trig_sync + live_window_gate (N = 576) + rf_tap + seg_stamp, with a BRAM model (READ_LATENCY 1),
+// on a continuous 552.96 MHz stream.
+// Per shot: an asynchronous trigger; an input pulse (|I|+|Q| = 3000) from stream index P1 after the trigger
+// and a second one (the conditional pulse) from P2; a fake NN_live result RES_LAT cycles after TLAST. A raw
+// 8-sample tile stream carries the same pulses RF_LEAD cycles earlier into rf_tap. Shots 1-2 are 3000 cycles
+// apart (record closed by the next trigger); shot 3 is closed by the CLOSE_CYC timeout.
+// Checks per record: last - first = N-1, res - last = RES_LAT, edges against the stimulus, edge3 - edge0 =
+// P2 - P1, edge1 - edge0 = edge2 - edge3 = RF_LEAD - 3, word count, flags, header, magic, rf_thr readback.
 `timescale 1ps / 1ps
 
 module tb_seg;
@@ -139,8 +126,8 @@ module tb_seg;
         #(CLK_PS * 10) aresetn = 1;
         #(CLK_PS * 5);
         mem[1] = 32'd2000;                       // host writes the threshold
-        mem[3] = 32'h00000A31;                   // and the boxcar_tap cfg word (v1.40L7)
-        mem[4] = 32'd1000;                       // and the rf_tap threshold (v1.40L9)
+        mem[3] = 32'h00000A31;                   // and the boxcar_tap cfg word
+        mem[4] = 32'd1000;                       // and the rf_tap threshold
         #(CLK_PS * 10);
         shot(3000);
         shot(3000);

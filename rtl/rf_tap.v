@@ -1,19 +1,9 @@
-// rf_tap: pulse detector on the RFdc ADC output (v1.40L9, task 4.1h split).
+// rf_tap: pulse detector on the RFdc ADC output.
 //
-// Sits on usp_rf_data_converter_0/m00_axis (ADC tile 0 channel 0, readout 0's
-// input; 8 real 16-bit samples per clk_adc0_x2 cycle) in front of
-// axis_register_slice_2. The stream passes through combinationally (no
-// register, no change), so QICK's readout timing is untouched.
-//
-// Monitor: hit = 1 when any of the word's 8 samples has |x| > thr. Four
-// register stages (|x|, compare, OR of each half-word, OR), so hit is 4 cycles
-// behind the word at the tile output (v1.40L10; 3 in v1.40L9, whose single
-// 8-input OR missed timing at 552.96 MHz). seg_stamp_0 timestamps the first hit after the classify
-// trigger (edge0: the window's own pulse at the tile) and the first armed hit
-// after the window (edge3: the conditional pulse coming back). Against
-// seg_stamp's readout-output edges these give the readout front end, and
-// against dac_gate_0's timestamps, DAC tile + cable + ADC tile.
-// thr comes from seg_stamp_0 BRAM word 4 (0 at reset: every nonzero sample hits).
+// Sits on ADC tile 0 channel 0's stream (readout 0's input; NS real 16-bit samples per clk_adc0_x2 cycle).
+// The stream passes through combinationally, unchanged.
+// hit = 1 when any sample of the word has |x| > thr, 4 cycles behind the word (|x|, compare, two OR stages).
+// seg_stamp timestamps hit (edges 0 and 3). thr comes from seg_stamp BRAM word 4 (0 at reset).
 `timescale 1ns / 1ps
 
 module rf_tap #(

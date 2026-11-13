@@ -1,25 +1,13 @@
-// (neural_net4_live576s copy, v1.40L10: N = 576, vectors from this project's
-// tb_data; run_tb.sh <HLS project dir> runs it on NN_live 1.3 or 1.4.)
-// RTL testbench: live_window_gate + the HLS-generated NN_live, on a
-// continuous 552.96 MHz stream with an asynchronous tProc-style trigger.
-//
-// Test A (alignment): the stream carries its own sample index. Every trigger
-// is seen by the gate and by QICK's real buffer.sv (axis_avg_buffer's
-// decimated-buffer FSM, behind the same 2-flop synchronizer avg_buffer.v
-// uses). The words the gate passes must equal the words buffer.sv stores,
-// 770 per trigger, TLAST on the last.
-// Test B (inference): the source places real windows exactly where the gate
-// captures. Each result must equal the v1.40 emulator's output and each
-// stored first-layer sum the integer dot product (expected.hex), with no
-// word ever offered while TREADY is low. Latency is counted from the window's
-// last sample to res_o_ap_vld.
-// With +define+FEEDBACK (run_sim_fb.bat, v1.40L2): res_o also goes through
-// live_res_axis and the generated axis_clock_converter (OG_build_axis_cc_live_0,
-// 552.96 -> 100 MHz) into a model of the tProc input register
-// (qproc_inport_reg: latch tdata on tvalid, one c_clk register; DPORT_RD reads
-// it). Each result must arrive there intact, and the latency is counted from
-// the gate's TLAST beat to that register's update, in ns.
-
+// tb_live: live_window_gate + the HLS-generated NN_live (N = 576) on a continuous 552.96 MHz stream with an
+// asynchronous tProc-style trigger. run_tb.sh <HLS project dir> runs it.
+// Test A (alignment): the stream carries its own sample index; every trigger also drives QICK's buffer.sv
+// behind the same 2-flop synchronizer. The words the gate passes must equal the words buffer.sv stores, with
+// TLAST on the last.
+// Test B (inference): real windows placed where the gate captures. Each result must equal the emulator's
+// output and each stored first-layer sum the integer dot product (expected.hex), with no word offered while
+// TREADY is low. Latency is counted from the window's last sample to res_o_ap_vld.
+// +define+FEEDBACK: res_o also goes through live_res_axis and an axis_clock_converter (552.96 -> 100 MHz) into
+// a model of the tProc input register; each result must arrive intact, latency from TLAST to that register.
 `timescale 1ps / 1ps
 
 module tb_live;
@@ -169,7 +157,7 @@ module tb_live;
     end
 
 `ifdef FEEDBACK
-    // ---------------- feedback path to the tProc (v1.40L2) ----------------
+    // ---------------- feedback path to the tProc ----------------
     reg cclk = 0;
     always #5000 cclk = ~cclk;          // 10 ns: pl_clk0, the tProc core clock
     reg cresetn = 0;

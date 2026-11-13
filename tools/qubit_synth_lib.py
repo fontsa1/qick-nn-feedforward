@@ -1,60 +1,21 @@
 """
-Shared cavity-response fit + synthetic-shot generation logic, factored out
-of generate_data_4.ipynb so both `generate_data_4_noisy.ipynb` (fits on the
-full 1,000,000-shot 0528 pool) and `generate_data_4_holdout.ipynb` (fits on
-only a held-out subset of it) can share one tested implementation instead of
-copy-pasting the fit/generation code twice.
+Cavity-response fit and synthetic-shot generation for the synthetic readout datasets.
 
-Two real bugs in the original generate_data_4.ipynb's noise model are fixed
-here (see CURRENT_BEST_RESULTS.md's 2026-08-31 leakage-audit entry and the
-2026-09-01 noise-reimplementation entry for the full writeup):
+fit_cavity_and_noise_model() fits the cavity response (joint least squares) and per-class noise models to real
+shots; generate_dataset() draws synthetic shots. noise_mode:
+  * "white": independent per-timestep noise with a per-class covariance (Cholesky factor per timestep).
+  * "measured" (default): the empirical class mean, rotated by the shot's phase, plus a draw from the full
+    real-valued covariance in the interleaved [I, Q] space, which captures colouring, common mode,
+    signal-aligned power and I/Q non-circularity. The fit also stores the measured per-class PSD and std profile.
+The real 0528 noise is coloured (autocorrelation at lags 1-5: +0.3195, -0.1967, +0.0678, +0.0019, -0.0576; PSD
+cutoff near Nyquist), and each shot carries a common-mode offset that does not average down (37-49% of the
+integrated variance is shared between trace halves). A per-shot constant offset is a DC component of the PSD:
+predicted per-shot offset std sigma*sqrt(PSD_norm[0]/n) = 1185*sqrt(2.243/770) = 63.95, measured 63.98.
+Measured and not modelled because absent: a T1/jump process (half-split decay asymmetry z = +2.30), heavy tails
+(excess kurtosis -0.017), state-dependent variance (sigma_1/sigma_0 = 1.002), I/Q anisotropy (std_I/std_Q = 0.9996).
 
-1. The original `generate_shot()` referenced a bare `cov_t[t]` where `t` was
-   never a parameter/local -- it silently read the leftover value (769) from
-   an unrelated earlier top-level loop, so only 1 of 770 samples per shot
-   ever got real per-timestep noise. Fixed here by injecting noise at every
-   timestep, vectorized via a per-timestep Cholesky factor instead of a slow
-   770-iteration Python loop per shot.
-2. The original noise covariance list (`cov_t`) was built from class-0's
-   residuals only (`noise0`) and then reused for BOTH classes in the (dead)
-   per-class noise-model branch. Fixed here by fitting separate per-timestep
-   covariances for each class (`cov_t0`, `cov_t1`) and using the matching one
-   for whichever class is being generated.
-
-2026-09-01 -- MEASURED NOISE MODEL (`noise_mode="measured"`, now the default).
-
-The white per-timestep model above is still structurally wrong. Direct
-characterisation of the real 0528 data (char_real_readout_noise.py /
-char_real_readout_t1.py) found:
-
-  * The noise is COLOURED, not white: autocorrelation at lags 1-5 is
-    +0.3195, -0.1967, +0.0678, +0.0019, -0.0576, with a sharp cutoff near
-    Nyquist (normalised PSD 0.001 at f=0.5) -- an anti-alias/decimation
-    filter signature. Colouring alone cuts the effective integration gain
-    from sqrt(770)=27.75 to 24.58.
-  * Each shot carries a COMMON-MODE OFFSET that persists across the whole
-    trace and therefore does NOT average down under integration. Measured
-    via the half-split matched filter: corr(halfA, halfB) within class is
-    +0.368 (|0>) and +0.491 (|1>), i.e. 37-49% of the integrated variance
-    is shared. std of the per-shot mean residual is 63.98 / 78.91, versus
-    the 42.72 that independent noise would give (1.50x / 1.85x excess).
-
-  KEY POINT: a per-shot constant offset IS a DC component, so BOTH effects
-  are captured by simply shaping the noise with the measured PSD. Check:
-  predicted per-shot offset std = sigma*sqrt(PSD_norm[0]/n)
-  = 1185*sqrt(2.243/770) = 63.95, versus 63.98 measured. No separate
-  common-mode term is needed.
-
-Measured and deliberately NOT modelled, because they are absent:
-  * T1/jump process -- half-split decay asymmetry z=+2.30, not significant
-  * heavy tails -- excess kurtosis -0.017
-  * state-dependent per-sample variance -- sigma_1/sigma_0 = 1.002
-  * I/Q anisotropy -- std_I/std_Q = 0.9996, corr(I,Q) ~ 0
-
-ACCEPTANCE TEST: `matched_filter_ceiling()` reproduces the ceiling the real
-data supports -- d = 3.885 sigma, 95.65% held-out matched-filter fidelity.
-A generator whose ceiling sits above that is producing data easier than
-reality (which is what x_50k and x_50k_heldout both do).
+Acceptance test: matched_filter_ceiling() reproduces the ceiling the real data supports, d = 3.885 sigma, 95.65%
+held-out matched-filter fidelity. A generator whose ceiling is above that produces data easier than the real data.
 """
 import numpy as np
 from scipy.optimize import least_squares
@@ -91,13 +52,9 @@ def cavity_response_shot(params, state, offset_I, offset_Q, n=770, dt=2e-9,
                          rng=None, phase_sigma=0.1):
     """Returns (z, phi, shot_phase).
 
-    phi is this shot's phase replicated across the trace -- the row layout
-    generate_data_4 stores in Phi.npy, [[p0]*n, [p1]*n, ...]. shot_phase is
-    the same number as a scalar, returned so the caller applies the SAME
-    rotation to whatever deterministic part it uses.
-
-    Drawn from the passed rng: it previously used the global np.random, which
-    generate_dataset's seeded rng did not control.
+    phi is this shot's phase replicated across the trace (the Phi.npy row layout, [[p0]*n, [p1]*n, ...]);
+    shot_phase is the same number as a scalar, so the caller applies the same rotation to its deterministic part.
+    Drawn from the passed rng.
     """
     z = cavity_response_fit(params, state, offset_I, offset_Q, n, dt)
     r = rng if rng is not None else np.random
@@ -117,15 +74,11 @@ _UPPER = [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf
 
 def fit_cavity_and_noise_model(X_all_0, X_all_1, n=770, verbose=True, initial_guess=None):
     """
-    Reproduces generate_data_4.ipynb's fit exactly (same joint least-squares
-    cavity fit, same offset_I/offset_Q), but computes SEPARATE per-timestep
-    noise covariances for each class (bug fix #2 above) and returns
-    Cholesky factors ready for vectorized per-shot noise generation.
+    Cavity fit (joint least squares, offset_I/offset_Q) plus separate per-timestep noise covariances for each
+    class, returned as Cholesky factors for vectorized per-shot noise generation.
 
-    X_all_0 / X_all_1: (N0, 2*n) and (N1, 2*n) interleaved [I0,Q0,I1,Q1,...]
-    real-shot arrays for class 0 / class 1 respectively. N0/N1 need not be
-    equal, and need not be the full 500k/class pool (task 2 passes a
-    held-out subset).
+    X_all_0 / X_all_1: (N0, 2*n) and (N1, 2*n) interleaved [I0,Q0,I1,Q1,...] real-shot arrays for class 0 / class 1.
+    N0 and N1 need not be equal or the full pool.
     """
     if verbose:
         print(f"Fitting on {X_all_0.shape[0]} class-0 shots and {X_all_1.shape[0]} class-1 shots")
@@ -160,8 +113,7 @@ def fit_cavity_and_noise_model(X_all_0, X_all_1, n=770, verbose=True, initial_gu
         print(f"  z1 mean abs residual: {np.mean(np.abs(z1_real - z1_fit_check)):.2f}"
               f" (signal scale {np.mean(np.abs(z1_real)):.2f})")
 
-    # Per-class per-timestep noise covariance (bug fix #2: class 0's
-    # residuals no longer get silently reused for class 1).
+    # per-class per-timestep noise covariance
     shots0 = X_all_0[:, 0::2] + 1j * X_all_0[:, 1::2]
     shots1 = X_all_1[:, 0::2] + 1j * X_all_1[:, 1::2]
     noise0 = shots0 - z0_real
@@ -200,11 +152,9 @@ def fit_cavity_and_noise_model(X_all_0, X_all_1, n=770, verbose=True, initial_gu
         print("Mean per-timestep noise std (class 0):", np.sqrt(np.mean(np.diagonal(cov_t0, axis1=1, axis2=2))))
         print("Mean per-timestep noise std (class 1):", np.sqrt(np.mean(np.diagonal(cov_t1, axis1=1, axis2=2))))
 
-    # ---- MEASURED noise model (2026-09-01): per-class PSD + std profile ----
-    # The PSD carries BOTH the colouring and the per-shot common-mode offset:
-    # a constant offset across the trace is exactly a DC component, so the
-    # elevated PSD[0] bin reproduces it with no separate term. See the module
-    # docstring for the numerical check (63.95 predicted vs 63.98 measured).
+    # ---- measured noise model: per-class PSD + std profile ----
+    # The PSD carries both the colouring and the per-shot common-mode offset (a DC component); see the module
+    # docstring for the numerical check.
     def measure_psd(noise):
         R = np.fft.fft(noise, axis=1)
         psd = (np.abs(R) ** 2).mean(axis=0)
@@ -218,20 +168,11 @@ def fit_cavity_and_noise_model(X_all_0, X_all_1, n=770, verbose=True, initial_gu
     prof0, sig0 = measure_std_profile(noise0)
     prof1, sig1 = measure_std_profile(noise1)
 
-    # ---- FULL REAL-VALUED covariance (2026-09-01) -----------------------
-    # Progression of approximations and the ceiling each reached, against a
-    # real-data target of d = 3.84 sigma:
-    #   white per-timestep (old model) ............ 9.12  (100.00% fidelity)
-    #   stationary PSD ............................ 5.65
-    #   PSD + top-8 eigenvectors .................. 4.64
-    #   full COMPLEX covariance E[r r^H] .......... 4.76
-    # The complex covariance still fell short because it models only the
-    # CIRCULAR part. The matched filter takes the REAL part of a complex
-    # inner product, so the pseudo-covariance E[r r^T] -- i.e. any I/Q
-    # non-circularity -- changes its variance directly.
-    # Working in the real 2n-dimensional interleaved [I,Q] space captures
-    # every second-order structure with no assumption: colouring, per-shot
-    # common mode, signal-aligned power, and non-circularity alike.
+    # ---- full real-valued covariance in the interleaved [I, Q] space ----
+    # Ceilings reached against the real-data target d = 3.84 sigma: white per-timestep 9.12, stationary PSD 5.65,
+    # PSD + top-8 eigenvectors 4.64, full complex covariance E[r r^H] 4.76. The complex covariance models only the
+    # circular part, while the matched filter's real-part inner product also depends on the pseudo-covariance
+    # E[r r^T]; the real 2n-dimensional covariance captures every second-order structure.
     def real_cov_chol(noise_iq, sub=40000):
         r = noise_iq[:sub] if noise_iq.shape[0] > sub else noise_iq
         C = np.cov(r, rowvar=False)
@@ -343,15 +284,8 @@ def generate_shot(state, model, add_noise, n=770, noise_mode="measured", rng=Non
 
     if add_noise:
         if noise_mode == "measured":
-            # Deterministic part = the EMPIRICAL class mean (the parametric
-            # cavity fit overshoots |m1-m0| by 13%), rotated by THIS shot's
-            # phase. Noise = a draw from the full real-valued [I,Q]
-            # covariance, in interleaved space, so no circularity is assumed.
-            #
-            # This is ADDITIVE. It previously overwrote z, which silently
-            # discarded the per-shot rotation and left Phi recording a
-            # rotation the traces did not carry: on x_50k_heldout_measnoise
-            # corr(Phi, actual trace phase) = -0.009 instead of ~+1.
+            # Deterministic part = the empirical class mean (the parametric cavity fit overshoots |m1-m0| by 13%),
+            # rotated by this shot's phase, plus a draw from the full real-valued [I, Q] covariance (additive).
             miq = model["mean_iq0"] if state == 0 else model["mean_iq1"]
             L = model["Lr0"] if state == 0 else model["Lr1"]
             m = miq[0::2] + 1j * miq[1::2]

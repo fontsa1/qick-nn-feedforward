@@ -1,21 +1,17 @@
 """
-2026-09-01: generate a new holdout dataset using the MEASURED noise model.
-
-Replaces the white-noise generator used for x_50k_heldout.npy. See
-tools/qubit_synth_lib.py's docstring for the characterisation this is based on
+Generate a synthetic holdout dataset with the measured noise model (white-noise version: x_50k_heldout.npy).
+See tools/qubit_synth_lib.py's docstring for the characterisation it is based on
 (char_real_readout_noise.py / char_real_readout_t1.py): the real 0528 noise
 is coloured (autocorr +0.32, -0.20 at lags 1,2; sharp Nyquist cutoff) and
 carries a per-shot common-mode offset that does not average down. Both are
 reproduced by shaping the noise with the measured per-class PSD.
 
-Fit pool is unchanged from generate_data_4_holdout.ipynb: the LAST 100,000
-shots of each class, disjoint from the FIRST 400,000/class used to train the
-classifier -- so the physics model that defines the test domain shares zero
-rows with the classifier's training data (2026-08-31 audit finding #3).
+Fit pool: the last 100,000 shots of each class, disjoint from the first 400,000/class used to train the
+classifier, so the model that defines the test domain shares no rows with the classifier's training data.
 
 ACCEPTANCE TEST: the generated set's matched-filter ceiling must land near
-the real data's d = 3.885 sigma / 95.65%. The previous white-noise
-generator produces data materially easier than that.
+the real data's d = 3.885 sigma / 95.65% (the white-noise generator produces
+data materially easier than that).
 
 """
 import sys

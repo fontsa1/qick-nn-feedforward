@@ -1,13 +1,12 @@
 """
-2026-09-02: build SHUFFLED, class-balanced test subsets for the loopback runs.
+Build shuffled, class-balanced test subsets for the loopback runs.
 
 Why shuffling is required, not cosmetic: 0528_X_test_0_770.npy is block-ordered
 in runs of 5000 (class-change points at 4999, 9999, 14999, ...). Firing it in
 file order sends every class-0 shot in the first half of the run and every
 class-1 shot in the second. Any thermal/gain drift over a 66-minute acquisition
 would then be perfectly confounded with the class label and would show up as
-fidelity. We already have an unexplained systematic |1> bias, so this is exactly
-the artifact that could masquerade as one.
+fidelity.
 
 Shuffling with a recorded seed converts that confound into noise.
 

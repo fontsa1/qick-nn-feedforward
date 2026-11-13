@@ -39,7 +39,7 @@ from qubit_synth_lib import (fit_cavity_and_noise_model, generate_dataset,  # no
 # Copied verbatim from generate_holdout_measured_noise.FULL_POOL_WARM_START (only the
 # least-squares warm start; in noise_mode="measured" the cavity fit affects nothing but
 # the Phi bookkeeping array). Copied, not imported, so this script does not depend on
-# the module that writes the banned x_50k_heldout_measnoise (audit A13).
+# the module that writes x_50k_heldout_measnoise, which is not used.
 FULL_POOL_WARM_START = [
     1.01720706e+07, -4.54101244e+04, 3.64588334e+06, -3.07607069e-02,
     2.98501165e-02, 2.70625462e-02, -4.07594194e-02, 9.14256911e-02,

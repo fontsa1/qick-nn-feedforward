@@ -28,7 +28,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 W = HERE / "firmware" / "weights"
-N_IN, N_OUT, N_SAMP = 1152, 4, 576   # task 4.1g: window [0, 576)
+N_IN, N_OUT, N_SAMP = 1152, 4, 576   # window [0, 576)
 
 def load_txt(name):
     return np.array([float(t) for t in (W / name).read_text().split(",")])

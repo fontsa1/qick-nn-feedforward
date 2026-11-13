@@ -1,7 +1,7 @@
-// R.17 / C5: the HLS-generated NN_live RTL on extreme inputs (ext_windows.hex from make_ext_vectors.py).
-// Windows are streamed back to back (40 idle cycles between them, TLAST on word 576). res_o must equal the
-// exact model: logit raw = SAT value (or WRAP value with +define+EXPECT_WRAP for NN_live 1.4), decision =
-// exact sign (logit >= 1/64), shot field = window index. Latency: TLAST beat -> res_o_ap_vld.
+// tb_live_ext: the HLS-generated NN_live on extreme inputs (ext_windows.hex from make_ext_vectors.py),
+// streamed back to back (40 idle cycles between windows, TLAST on word 576). res_o must equal the exact model:
+// logit = saturated value (wrapped value with +define+EXPECT_WRAP), decision = logit >= 1/64, shot field =
+// window index. Latency: TLAST -> res_o_ap_vld.
 `timescale 1ps / 1ps
 module tb_live_ext;
     localparam integer N = 576, CLK_PS = 1808, MAXW = 256;

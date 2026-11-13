@@ -519,7 +519,7 @@ def t13():
             s.trigger(ros=[R], t=LAT - 0.02)
             # the read needs >= 0.2 us after the readout window (T12); with 0.1 the
             # tProc read the PREVIOUS shot's second readout on ~0.25% of shots
-            # (2026-10-13). delay_auto must then clear the stalled processor time.
+            # delay_auto must then clear the stalled processor time.
             s.wait_auto(0.25)
             s.delay_auto(0.5)
             s.read_and_jump(ro_ch=R, component='I', threshold=0, test='>=', label='NOCOND')
@@ -722,7 +722,7 @@ def t17():
     pkc = float(frc[ipk])
     # quadrature check: the tone's mirror (-f) in the complex spectrum, relative to the tone.
     # (Was |corr(I, Q)| < 0.2, which depends on the tone's phase in a finite window and so on
-    # the bitstream load: vanilla 0.14, L7 -0.01, L8 -0.23 -- 2026-10-13.)
+    # the bitstream load: vanilla 0.14, L7 -0.01, L8 -0.23.)
     imir = int(np.argmin(np.abs(frc + pkc)))
     mirror_db = float(20 * np.log10(spc[max(imir - 2, 0):imir + 3].max() / spc[ipk]))
     quad = float(np.corrcoef(mr[:, 0], mr[:, 1])[0, 1])

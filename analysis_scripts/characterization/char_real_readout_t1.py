@@ -1,5 +1,5 @@
 """
-2026-09-01 follow-up: char_real_readout_noise.py's Q6 (mid-trace state
+Follow-up to char_real_readout_noise.py's Q6 (mid-trace state
 transitions) was underpowered -- per-sample SNR is only ~0.2, so a K=40
 smoothing window gives ~1.3 sigma and the resulting "state per window"
 assignments were dominated by noise (54.7% of |1> shots "never looked

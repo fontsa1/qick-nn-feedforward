@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
-// classifier_unit -- one qubit's streaming classifier and feed-forward gate, exactly the v1.41 blocks
-// (boxcar_tap, trig_sync, live_window_gate N=576, NN_live 1.5, live_res_cdc x2, dac_gate GAT4) wired as
-// in the BD, for the 4.5b out-of-context scaling sweep. One unit per readout tone in a
-// frequency-multiplexed system. Starts at the readout's mixed stream (axis_dyn_readout m0 in the BD);
-// the per-tone DDS/mixer is QICK's and is not part of this unit.
-// Input registers model the readout's registered output. Not included (verification only in v1.41):
-// averaging buffer 1 (boxcar capture), seg_stamp, rf_tap.
+// classifier_unit_zl: one qubit's streaming classifier and feed-forward gate for the out-of-context scaling study: the
+// deployed blocks (boxcar_tap, trig_sync, live_window_gate_zl, NN_live, live_res_cdc x2, dac_gate) wired as in the
+// block design. One unit per readout tone. Starts at the readout's mixed stream (axis_dyn_readout m0); the
+// per-tone mixer is QICK's and is not included, nor are readout 1's capture buffer, seg_stamp and rf_tap.
+// Input registers model the readout's registered output.
+// Variant: the window gate's output register is replaced by a register on NN_live's result, before both
+// CDCs; same end-to-end latency. Not deployed.
 module classifier_unit_zl (
     input  wire         clk_adc,     // clk_adc0_x2, 552.96 MHz
     input  wire         rstn_adc,
@@ -86,7 +86,7 @@ module classifier_unit_zl (
         .out_r_Addr_A(o_addr), .out_r_EN_A(o_en), .out_r_WEN_A(o_we), .out_r_Din_A(o_din),
         .out_r_Dout_A(32'd0), .out_r_Clk_A(), .out_r_Rst_A());
 
-    // ZL variant: register NN_live's result before both CDCs (takes the cycle the gate no longer adds)
+    // register NN_live's result before both CDCs
     reg [63:0] res_r; reg res_vr;
     always @(posedge clk_adc) begin
         res_r  <= res;

@@ -1,4 +1,4 @@
-// csim testbench for NN_live (task 4.1).
+// csim testbench for NN_live.
 //
 // For every shot in tb_data/live_words.bin it streams the N_SAMP words into
 // NN_live with TLAST on the last, then checks, bit for bit:
@@ -6,8 +6,7 @@
 //     run on the window NN_axi would have built from the same words;
 //   * the logit (res_o) against hls4ml's tail on its own layer2_t type;
 //   * the four first-layer sums against a direct dot product with w2;
-//   * the sigmoid output against the v1.40 bit-accurate emulator, where
-//     tb_data/live_meta.bin carries one;
+//   * the sigmoid output against the bit-accurate emulator, where tb_data/live_meta.bin carries one;
 //   * the res_o word (and that it is written only for scored windows), the
 //     record ring, the header counters and the capture.
 // Then it injects a short window and a window without TLAST and checks that
@@ -153,10 +152,9 @@ int main() {
         ref_NN(x, r);
         ref0 = r[0];
     }
-    // (1) a window one word short (TLAST on word 768), then two good windows.
-    //     Pass 1 reads the short window plus word 0 of good window A, sees the
-    //     early TLAST and no TLAST on word 769, counts one error and drains A.
-    //     Pass 2 scores good window B.
+    // (1) a window one word short (TLAST on word N_SAMP-2), then two good windows. Pass 1 reads the short
+    //     window plus word 0 of window A, sees the early TLAST and no TLAST on word N_SAMP-1, counts one error
+    //     and drains A. Pass 2 scores window B.
     unsigned fe0 = out_mem[HDR_FRAME_ERR], sh0 = out_mem[HDR_SHOTS];
     push_window(in, w0, N_SAMP - 1, true);
     push_window(in, w0, N_SAMP, true);
@@ -175,8 +173,8 @@ int main() {
                 (unsigned)out_mem[HDR_FRAME_ERR], p1 ? "ok" : "WRONG", p2 ? "ok" : "WRONG");
     if (!p1 || !p2) fault_bad++;
 
-    // (2) a window with no TLAST on word 769, its TLAST 10 words later, then a
-    //     good window. Pass 1 counts one error and drains the 10 words.
+    // (2) a window with no TLAST on word N_SAMP-1, its TLAST 10 words later, then a good window. Pass 1 counts
+    //     one error and drains the 10 words.
     unsigned fe1 = out_mem[HDR_FRAME_ERR], sh1 = out_mem[HDR_SHOTS];
     std::vector<uint32_t> tail(10, 0x00010001u);
     push_window(in, w0, N_SAMP, false);

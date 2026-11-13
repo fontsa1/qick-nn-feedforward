@@ -1,5 +1,5 @@
 """
-2026-09-02: parameterised loopback acquisition.
+Parameterised loopback acquisition.
 
 Fires an arbitrary (N, 1540) I/Q dataset through DAC -> analog loopback -> ADC
 and saves what comes back, so the on-chip classifier and the offline ones can

@@ -1,40 +1,16 @@
-"""Phase 0.1(a): does the (k2,c2) domain calibration actually earn its place?
+"""Ablation of the (k2, c2) domain calibration: does it improve fidelity, and do its labels matter?
 
-THE QUESTION. (k2,c2) is a global complex affine map applied to 100% of the
-training data. It was introduced at v1.25 (2026-09-04) to fix an on-chip
-ceiling then stuck at ~50-76%, attributed at the time to an amplitude/phase
-mismatch between the on-disk data and what the loopback chain delivers. The
-actual cause of that ceiling turned out to be the unsigned-encoding bug found
-at v1.37 (2026-09-21). The calibration has never been re-tested since the real
-defect was fixed.
+(k2, c2) is a global complex affine map applied to all of the training data. Three arms:
+  raw           no transform
+  cal_perclass  the per-class mean fit (uses data/domain_calib_y.npy, test-file labels)
+  cal_global    a label-free global complex affine fit (mean over all shots, lstsq, as tools/run_calibration.py)
 
-It is not free: the deployed (k2,c2) is fit with a PER-CLASS mean regression
-that consumes `data/domain_calib_y.npy` -- labels belonging to the test file. That
-is leakage item F1. So the question is not merely "does calibration help" but
-"does it help enough to justify a test-label-derived preprocessing step".
+Evaluation domain: `data/loopback20k_real.npy`, 20,000 real shots played through the DAC, the analog loopback and the
+ADC, with the labels of test20k_real (matched-filter ceiling 95.42% vs 95.40% on disk; mean |z| 248 vs 1063, ratio
+0.234, consistent with |k2| = 0.200).
 
-THREE ARMS.
-  raw         no transform at all
-  cal_perclass  the deployed k2/c2 (per-class mean fit; USES TEST LABELS)
-  cal_global    a global complex affine fit using NO labels, mirroring
-                tools/run_calibration.py's approach (mean over all shots, lstsq).
-                If this matches cal_perclass, F1 can be deleted outright
-                rather than re-acquired: a label-free fit has no leakage.
-
-EVALUATION DOMAIN. `data/loopback20k_real.npy` -- 20,000 REAL shots played through
-the DAC, the analog loopback, and back through the ADC, carrying the same
-labels as test20k_real. This is the actual deployment domain, not a proxy.
-Verified 2026-10-01: labels identical to test20k_real_y, matched-filter
-ceiling 95.42% vs 95.40% for the same shots on disk, mean |z| 248 vs 1063
-(ratio 0.234, consistent with |k2| = 0.200).
-
-WHY THIS SHOULD MATTER (prediction, recorded before running). BatchNorm
-absorbs a global input scale only when train and test agree, because its
-statistics are frozen after training. Training on raw data (mean |z| ~ 1063)
-and evaluating on acquired data (mean |z| ~ 248) presents a ~4.3x scale shift
-that frozen BN statistics cannot absorb. So `raw` is expected to do badly, and
-the interesting comparison is cal_perclass vs cal_global.
-
+BatchNorm's statistics are frozen after training, so it cannot absorb the ~4.3x scale difference between raw
+training data (mean |z| ~ 1063) and acquired data (~248); `raw` is expected to do worst.
 """
 import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
@@ -61,7 +37,7 @@ def cols_for(start, length):
     return np.stack([2 * s, 2 * s + 1], axis=1).ravel()
 
 def hw_raw_transform(X):
-    """Mirror of v1.37 LOAD_L: signed int16 sample * scaling_factor."""
+    """Signed int16 sample * scaling_factor, as NN_axi's LOAD_L."""
     return np.clip(np.round(X), -32768, 32767).astype(np.int16).astype(np.float32) * SCALING_FACTOR
 
 def apply_affine(X, k, c):

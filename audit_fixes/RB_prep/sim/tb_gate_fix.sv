@@ -1,9 +1,10 @@
-// R.15 fix tests (built from lane D's tb_probe_gate). Four gates, same stimulus, cycle-exact
-// decision input on aclk, BRAM model READ_LATENCY 1, generator pulse PLEN words starting
-// GEN_LAT cycles after the marker (first RAMP words at |x| = 500 < NZ_THR, rest at 12000).
-//   0 REF = built v1.40L10 dac_gate          1 NEW = v1.41 defaults (EARLY_BLANK, SHOT_BIND)
-//   2 FS  = v1.41 + FAIL_SAFE = 1             3 CS  = v1.41 + CFG_SAFE = 1
-// Shot fields follow NN_live (one per result, consecutive).
+// tb_gate_fix: four gates on the same stimulus, decision input driven cycle-exactly on aclk, BRAM model
+// READ_LATENCY 1, generator pulse of PLEN words GEN_LAT cycles after the marker (first RAMP words at |x| = 500
+// < NZ_THR, the rest at 12000):
+//   0 REF = earlier version (ref/dac_gate_ref.v)    1 NEW = rtl/dac_gate.v defaults (EARLY_BLANK, SHOT_BIND)
+//   2 FS  = NEW + FAIL_SAFE = 1                      3 CS  = NEW + CFG_SAFE = 1
+// Shot fields follow NN_live (one per result, consecutive). Cases B1-B5 (shot binding), C3 (ENABLE cleared
+// mid-window), D1-D3 (corrupted or mid-window writes of word 0).
 `timescale 1ps / 1ps
 module tb_gate_fix;
     localparam integer NS = 16, D_PS = 2034;
@@ -141,7 +142,7 @@ module tb_gate_fix;
         cfg(cfgw(1, 1, 0, 0, mp - 4));
         clr; fire_cls; decision(1); repeat (10) @(posedge aclk); fire_marker;
         show("B0 normal shot, decision 1", PLEN, PLEN);
-        // B1 (lane D sim B): shot k's decision arrives after shot k+1's classify trigger
+        // B1: shot k's decision arrives after shot k+1's classify trigger
         rej0 = mem[1][19];
         clr; fire_cls; /* shot k, its NN result still pending */ fire_cls; /* shot k+1 */
         decision(1); /* = shot k's result */ repeat (10) @(posedge aclk); fire_marker;
@@ -179,7 +180,7 @@ module tb_gate_fix;
         if (nz[2] != 0 || nz[1] != PLEN) begin errors = errors + 1; $display("  ERROR"); end
         cfg(cfgw(0, 1, 0, 0, mp - 4)); clr; fire_cls; decision(1); repeat (10) @(posedge aclk); fire_marker;
         $display("C2 ENABLE = 0, decision 1: pulse words out REF %0d NEW %0d FS %0d CS %0d", nz[0], nz[1], nz[2], nz[3]);
-        // C3: ENABLE cleared in the middle of a blanked window (lane D sim G)
+        // C3: ENABLE cleared in the middle of a blanked window
         cfg(cfgw(1, 1, 0, 0, mp - 4)); clr; fire_cls; decision(0); repeat (10) @(posedge aclk);
         fork fire_marker; begin repeat (mp + 10) @(posedge aclk); wcfg(cfgw(0, 1, 0, 0, mp - 4)); end join
         $display("C3 ENABLE cleared mid-window, decision 0: pulse words out REF %0d NEW %0d FS %0d CS %0d", nz[0], nz[1], nz[2], nz[3]);

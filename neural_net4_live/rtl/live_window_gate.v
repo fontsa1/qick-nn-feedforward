@@ -1,31 +1,18 @@
-// live_window_gate: frames the live readout stream into classifier windows.
+// live_window_gate: frames the continuous readout stream into NN_live windows.
 //
-// axis_dyn_readout_v1_0.m1_axis (via axis_broadcaster_0.M02_AXIS) is a
-// continuous stream with no TLAST and no backpressure. This block passes
-// exactly N samples per tProc readout trigger and marks the last with TLAST,
-// using the same rules as axis_avg_buffer_0's decimated buffer (buffer.sv),
-// so NN_live sees the samples acquire_decimated() returns for the same shot:
-//   * the trigger crosses into aclk through a 2-flop synchronizer
-//     (avg_buffer.v: synchronizer_n #(.N(2)));
-//   * TRIGGER -> MEMW on the synchronized trigger, level-sensitive;
-//   * in MEMW, every valid input word is taken, starting with the word
-//     present in the first MEMW cycle, until N have been taken;
+// Passes exactly N samples per readout trigger and marks the last with TLAST, following the rules of QICK's
+// decimated buffer (buffer.sv), so NN_live sees the samples acquire_decimated() returns for the same shot:
+//   * the trigger passes a 2-flop synchronizer;
+//   * TRIGGER -> MEMW on the synchronized trigger (level-sensitive);
+//   * in MEMW every valid input word is taken, from the word present in the first MEMW cycle, until N are taken;
 //   * WAIT_TRIGGER until the synchronized trigger is low, then re-arm.
-// (buffer.sv's START_REG enable is omitted: this gate is always armed.)
+// buffer.sv's START_REG enable is omitted (always armed). Output registered, one cycle behind. m_axis_tready is
+// ignored: the source cannot be stalled.
 //
-// The output is registered, one cycle behind; the content is unchanged.
-// m_axis_tready is ignored: the source cannot be stalled, and any word the
-// consumer misses surfaces there as a window without TLAST on word N-1.
-//
-// Debug outputs (v1.40L4, task 4.1f segment timestamps): copies of existing
-// signals for seg_stamp and the ILA; they change nothing above. Names avoid the
-// *_tdata/*_tvalid pattern so the module reference does not infer an interface.
-//   dbg_trig    the synchronized trigger (trig_r), the one the state machine uses
-//   dbg_first   one-cycle strobe, aligned with the first word's m_axis beat
-//   dbg_last    = m_axis_tlast (registered)
-//   dbg_data    = m_axis_tdata: the registered input stream, every cycle
-//   dbg_dvalid  the registered input tvalid, every cycle
-
+// Debug outputs for seg_stamp (copies of internal signals; named to avoid interface inference):
+//   dbg_trig    synchronized trigger        dbg_first   strobe with the first word's beat
+//   dbg_last    = m_axis_tlast              dbg_data    = m_axis_tdata, every cycle
+//   dbg_dvalid  registered input tvalid, every cycle
 `timescale 1ns / 1ps
 
 module live_window_gate #(

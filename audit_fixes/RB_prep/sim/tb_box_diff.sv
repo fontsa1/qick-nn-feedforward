@@ -1,8 +1,7 @@
-// R.16 regression: new boxcar_tap (non-recursive moving sum) vs the built v1.40L7
-// boxcar_tap (renamed boxcar_tap_ref), same stimulus, every output compared on every
-// cycle. Stimulus: full-range / rail / alternating-rail / realistic inputs, random
-// s_axis_tvalid gaps in some segments, random cfg changes (M 1..16, also the aliased
-// M 17..32 encodings, shift 0..15, sel), cfg glitches of 1-2 cycles, and resets.
+// tb_box_diff: rtl/boxcar_tap.v (non-recursive moving sum) against the earlier recursive version
+// (ref/boxcar_tap_ref.v), same stimulus, every output compared on every cycle. Stimulus: full-range, rail,
+// alternating-rail and realistic inputs, random s_axis_tvalid gaps, random cfg (M 1..16 and the aliased
+// encodings 17..32, shift 0..15, sel), 1-2-cycle cfg glitches, and resets.
 `timescale 1ps / 1ps
 module tb_box_diff;
     localparam integer CLK_PS = 1808;

@@ -1,16 +1,14 @@
-"""Decode v1.28's DATAFLOW-tap capture slots into layer values.
+"""Decode NN_axi's layer-tap capture slots into layer values (firmware built with NN()'s debug ports only; the
+deployed NN_axi has none).
 
-The tee processes inside NN() write each intermediate layer as RAW
-fixed-point BITS (see NN.h's v1.28 note for why raw bits rather than floats:
-a (float) cast of ap_fixed<48,32> synthesises a real converter, and 14 of
-them would be hundreds of LUTs for nothing). Those bits ride through the
-float BRAM word untouched, exactly as v1.27's input capture does, so the host
-must reinterpret rather than read a number.
+The tap processes inside NN() write each intermediate layer as raw fixed-point bits, carried through the float BRAM
+word unchanged, so the host must reinterpret them rather than read a number.
 
-BRAM record for one armed shot (789 words):
+BRAM record for one armed shot:
     [0   .. 769]  packed I/Q stream words   -- the exact NN input
     [770]         the sigmoid the chip produced
     [771 .. 788]  the 18 tap words decoded here
+    [789 ..    ]  in_local readbacks (layout below)
 
 Slot map inside the tap region, matching NN.h's N_DBG_* constants:
     +0  .. +7   layer2  4 x ap_fixed<48,32>, low word then high 16 bits
@@ -28,22 +26,11 @@ DBG_BASE = N_WORDS + 1
 N_DBG_L2, N_DBG_L4, N_DBG_L5, N_DBG_L6, N_DBG_L10 = 8, 4, 4, 1, 1
 N_DBG_TOTAL = N_DBG_L2 + N_DBG_L4 + N_DBG_L5 + N_DBG_L6 + N_DBG_L10  # 18
 
-# v1.29 in_local readback: 128 I/Q pairs at stride 6 PAIRS, i.e. word indices
-# 12k and 12k+1 for k = 0..127 (covering in_local[0..1525]). Must match
-# N_INLOC_PAIRS / INLOC_STRIDE / CAP_INLOC_BASE in NN_axi.h.
+# in_local readbacks after the taps: PRE_TAIL (in_local[1002..1539]), PRE_HEAD (128 words), the dense-input tap
+# (pairs at INLOC_STRIDE), RAW (LOAD_L's read-back at lags RAW_LAGS) and PRELOAD (in_local before LOAD_L).
 INLOC_BASE = DBG_BASE + N_DBG_TOTAL                                  # 789
 INLOC_PRE_BASE = INLOC_BASE                                          # 789
 
-# ---- v1.34 layout (PREPPED, not yet built) --------------------------------
-# PRE is now CONTIGUOUS: word k is in_local[k], k = 0..N_PRE_WORDS-1, covering
-# capture pairs 0..N_PRE_PAIRS-1 (65% of the window, every word). The v1.29
-# POST gather is gone -- it agreed with PRE 256/256 on every build from v1.30
-# on, so its 256 BRAM words went to PRE's coverage instead.
-#   [0    .. 769 ] capture      [770] sigmoid      [771 .. 788] taps
-#   [789  .. 1790] in_local PRE (1002 words)
-#   [1791 .. 2046] dense-input tap (256 words)
-# v1.35: PRE re-pointed at the TAIL (in_local[1002..1539]) -- the only region
-# never observed -- plus a HEAD control on the same shots.
 N_PRE_TAIL_WORDS = 538
 PRE_TAIL_START = 1002
 N_PRE_HEAD_WORDS = 128
@@ -63,7 +50,7 @@ N_RAW_RB = 4 * RAW_N                                                 # 128
 RAW_LAGS = (1, 32, 256, 700)
 RAW_ISTART = (1, 40, 300, 730)
 RAW_BASE = DENSE_IN_BASE + N_DENSE_IN                                # 1647
-# ---- v1.36 PRELOAD probe: in_local read BEFORE LOAD_L, same indices ----
+# ---- PRELOAD: in_local read before LOAD_L, at the same indices ----
 N_PRELOAD_WORDS = 64
 PRELOAD_START = 1540 - N_PRELOAD_WORDS                               # 1476
 PRELOAD_BASE = RAW_BASE + N_RAW_RB                                   # 1775

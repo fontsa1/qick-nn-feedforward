@@ -1,29 +1,22 @@
-"""Conditional-pulse demo for v1.40L2 (task 4.1a): the tProc plays a DAC pulse
-chosen by NN_live's decision, and the pulse is captured in loopback.
+"""Conditional-pulse demo through the tProc: the tProc plays a DAC pulse chosen by NN_live's decision, and the pulse
+is captured in loopback.
 
-feedback_test.py shows the tProc *branches* on NN_live's result. This closes the
-loop to actuation. Per shot, on gen 0 / ro 0 (the loopback pair):
-  1. the dataset waveform + readout trigger, exactly as feedback_test.py
-     (NN_live classifies this window and feeds tProc input 3)
-  2. wait until (trigger + readout_length + margin); DPORT_RD 3;
-     TEST s_port_l - thr ; JUMP NS
-  3. branch 0 plays const pulse "c0" (gain --g0), branch 1 plays "c1" (--g1),
-     both scheduled at the same tProc time t_cp = t_dec + --slack
+Per shot, on gen 0 / ro 0 (the loopback pair):
+  1. the dataset waveform + readout trigger (NN_live classifies this window and feeds tProc input 3)
+  2. wait until (trigger + readout_length + margin); DPORT_RD 3; TEST s_port_l - thr ; JUMP NS
+  3. branch 0 plays const pulse "c0" (gain --g0), branch 1 plays "c1" (--g1), both scheduled at the same tProc time
+     t_cp = t_dec + --slack
   4. a second readout trigger on ro 0 captures the conditional pulse
 The host then checks, per shot:
-  played   which pulse the ADC saw (plateau amplitude vs the midpoint of the two
-           levels, measured first on forced-branch shots)
+  played              which pulse the ADC saw (plateau amplitude vs the midpoint of the two levels, measured first
+                      on forced-branch shots)
   played == branch    the DAC did what the tProc decided
   branch == decision  the tProc decided what NN_live decided (fresh shots)
-The second trigger also fires NN_live (trig_0_o fans out to live_gate_0), so
-the shot counter advances twice per shot; the first window's record is read by
-its shot number from the 512-record ring (NN_live.h), not with live_latest().
+The record of the classified window is read by its shot number from the 512-record ring (NN_live.h).
 
-The readout trigger is narrowed to --trig-width (A.Prog holds it 10 us, and a
-second trigger on the same FIFO port would then fire ~10 us late).
-The pulse is scheduled with slack, not ASAP, so this is the actuation demo; the
-latency measurement is task 4.1b (the captures are saved for it).
-
+The readout trigger is narrowed to --trig-width (A.Prog holds it 10 us, and a second trigger on the same FIFO port
+would then fire ~10 us late). The pulse is scheduled with slack, not as soon as possible, so this demonstrates
+actuation, not latency (the captures are saved for latency analysis).
 """
 import argparse
 import sys
@@ -48,8 +41,8 @@ FS_RO = soccfg["readouts"][0]["fs"] / 8         # decimated readout rate, MHz
 
 def live_len(cf):
     """Programmed window end for the live decision, us after the readout trigger.
-    NN_live frames QICK_LIVE_N samples (env; v1.40L3: 576) at the decimated rate;
-    unset, the readout length (770 samples, v1.40L1/L2)."""
+    NN_live frames QICK_LIVE_N samples (env, 576 in the deployed build) at the decimated rate; unset, the readout
+    length (770 samples)."""
     import os
     n = os.environ.get("QICK_LIVE_N")
     return cf["readout_length"] if not n else int(n) / (soccfg["readouts"][0]["fs"] / 8)
@@ -112,16 +105,13 @@ class CondProg(A.Prog):
                   width=cf["trig_width"])
 
 _win_last_n = None
-_win_back = 0          # records after this shot's classified window: v1.40L5+ 0, v1.40L2-L4 1
+_win_back = 0          # records after this shot's classified window (0, or 1 on builds that framed every trigger)
 
 def shot_window(hdr):
-    """NN_live record number of this shot's classified window, from the header
-    read after the shot. Through v1.40L4 the gate framed every readout trigger,
-    so a feed-forward shot (window + capture of the pulse) left two records and
-    the classified one was hdr[0] - 1; from v1.40L5 the gate runs on the classify
-    trigger only and it is hdr[0]. The layout is taken from the record count's
-    step between calls (1 or 2 per shot); until one is seen, the last known
-    layout (default v1.40L5) is assumed."""
+    """NN_live record number of this shot's classified window, from the header read after the shot.
+    With the window gate on the classify trigger only (deployed build) it is hdr[0]; on builds whose gate framed every
+    readout trigger, a feed-forward shot left two records and it is hdr[0] - 1. The layout is taken from the record
+    count's step between calls (1 or 2 per shot); until one is seen, the last known layout is assumed."""
     global _win_last_n, _win_back
     n = int(hdr[0])
     if _win_last_n is not None and n - _win_last_n in (1, 2):

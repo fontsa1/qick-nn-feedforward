@@ -1,19 +1,8 @@
-"""Score on-chip fidelity through the ARMED capture path.
+"""Score NN_axi's on-chip fidelity through its capture mode, and NN_live's on the same shots.
 
-Why not tools/onchip_test_harness.py: on qick44 (v1.32) the harness's ROLLING output
-slots read back as 0.0 / NaN / garbage for every shot, so it reported 50.00%
-with 0/400 predicted |1> -- a write-path failure, not a classification result.
-The ARMED path (STORE_L writing the fixed slot CAP_SIG_SLOT = 770) demonstrably
-works on the same board and same session: acquire_classifier_input_captures.py
-read varying, sensible probabilities (0.04 .. 0.85) through it minutes earlier.
-
-So this scores through the proven channel. It arms capture per shot and reads
-exactly ONE BRAM word per shot (slot 770), instead of the ~1300 the full
-capture acquisition needs, which makes a few hundred shots affordable.
-
-Both label pairings are reported. v1.32's measurement is that the in_local /
-NN pipeline runs one shot behind the capture region, so the correct pairing is
-an empirical question, not an assumption -- printing both keeps it honest.
+Each shot arms capture and reads one BRAM word (the sigmoid, slot 770), instead of the full ~770-word capture, so a
+few hundred shots per minute are affordable. Both label pairings (same shot and previous shot) are reported, so a
+pipeline offset would show directly.
 """
 import argparse
 import sys
@@ -59,24 +48,14 @@ def raw_peak(X, k, c, block=1000):
 
 
 # ---------------------------------------------------------------------------
-# STREAM-PHASE ALIGNMENT (2026-10-06). NN_axi cuts 770-word windows BACK TO
-# BACK out of the avg_buffer readback stream; nothing ties the window grid to
-# shot boundaries. Every get_decimated() streams its words into NN_axi's FIFO,
-# so the window grid sits at some phase R relative to each shot's buffer copy,
-# and the classifier sees chip[n] = shot[(n - R) mod 770] -- a CIRCULAR
-# ROTATION of the shot (with the extra DMA; without it, a mix of two shots,
-# which is what the "one-shot lag" was). R persists across runs (it lives in
-# the FIFO state) and drifts by one word each time DRAIN_L drains an extra
-# word below onset_threshold (~2.4% of shots at threshold 40). Measured cost
-# with the deployed model: -0.17 to -1.2 points depending on R
-# (CURRENT_BEST_RESULTS 2026-10-06). Fix, all host side:
-#   * onset_threshold 0 -> DRAIN_L never drains extra words -> no drift;
-#   * measure R by circular cross-correlation of captured reference shots
-#     against loopback20k_real's recording of the same waveforms;
-#   * one get_decimated(delta) moves the grid by delta words -> R = 0.
-#     Transfers are rounded UP to an even number of words (64-bit readback
-#     beats: 345 -> +346, 3 -> +4, measured 2026-10-06), so an odd delta lands
-#     at R = 1, which the +-1 tolerance accepts.
+# Stream-phase alignment. NN_axi's window grid sits at some phase R relative to each shot's buffer copy, so it
+# can classify a circular rotation of the shot, chip[n] = shot[(n - R) mod 770]. R persists across runs and slips by
+# one word whenever DRAIN_L drains an extra word below onset_threshold. Host-side handling:
+#   * onset_threshold 0, so DRAIN_L never drains extra words;
+#   * R is measured by circular cross-correlation of captured reference shots against loopback20k_real's
+#     recording of the same waveforms;
+#   * one get_decimated(delta) moves the grid by delta words, giving R = 0. Transfers are rounded up to an even
+#     number of words (64-bit beats), so an odd delta lands at R = 1, within the +-1 tolerance.
 # ---------------------------------------------------------------------------
 REF_ROWS = (19990, 19991, 19992, 19993, 19994, 19995)
 
@@ -177,7 +156,7 @@ def report_live(Y, probs, hdr, rec, words=None, dec=None):
     if words is not None:
         wi = (words & 0xFFFF).astype(np.uint16).view(np.int16).astype(np.int32)
         wq = (words >> 16).astype(np.uint16).view(np.int16).astype(np.int32)
-        dec = dec[:, :words.shape[1]]           # NN_live may frame fewer samples (v1.40L3: 576)
+        dec = dec[:, :words.shape[1]]           # NN_live may frame fewer samples (576)
         exact = ((wi == dec[:, :, 0]) & (wq == dec[:, :, 1])).all(axis=1)
         print(f"  live window == acquire_decimated() window, sample for sample: {int(exact.sum())}/{n}")
         best = []
@@ -198,34 +177,18 @@ def main():
     ap.add_argument("--chunk", type=int, default=500)
     ap.add_argument("--dataset", default="test20k_real_X")
     ap.add_argument("--scaling-factor", type=int, default=1)
-    # 0 since 2026-10-06: any other value lets DRAIN_L drain extra words below
-    # threshold, and every drained word slips the window grid by one (see
-    # STREAM-PHASE ALIGNMENT above). With threshold 0 DRAIN_L takes exactly one
-    # word, which is what it has done on ~98% of shots at 40 anyway.
+    # 0: any other value lets DRAIN_L drain extra words below threshold, and each one slips the window grid by
+    # one word (see stream-phase alignment above). With 0 DRAIN_L takes exactly one word.
     ap.add_argument("--onset-threshold", type=int, default=0)
     ap.add_argument("--no-align", dest="align", action="store_false",
                     help="skip the stream-phase alignment (diagnostics only: "
                          "scores a rotated window, -0.2 to -1.2 points)")
-    # Board B slipped 3 words in 2000 shots even at onset_threshold 0
-    # (2026-10-06), so re-check periodically; ~5 s per check.
+    # the grid can still slip occasionally at threshold 0, so re-check periodically (~5 s per check)
     ap.add_argument("--realign-every", type=int, default=500,
                     help="re-measure R every N shots and re-align if off (0 = never)")
-    # ON BY DEFAULT since 2026-10-05 (task 2.4). NN_axi is fed from
-    # axis_avg_buffer_0.m1_axis -- the host-DMA readback port, not the live
-    # readout stream. CORRECTED UNDERSTANDING 2026-10-06: the "one-shot lag"
-    # was a misaligned window grid (STREAM-PHASE ALIGNMENT above), not a
-    # whole-shot delay. The extra get_decimated() streams a second copy of the
-    # shot, so a misaligned window became a rotation of the CURRENT shot rather
-    # than a mix of two shots. Once aligned it is harmless (it supplies 770
-    # words, a whole window, so it does not move the phase); it is kept so the
-    # BRAM read always follows a complete current-shot window.
-    # Original note: one extra get_decimated() (no new tProc program, no extra
-    # pulse) advances it onto the current shot, moving the working pairing from
-    # y[i-1] to y[i].
-    # See CURRENT_BEST_RESULTS.md 2026-09-22. The flag was opt-in for three
-    # weeks, which meant forgetting it silently reintroduced the lag and
-    # reported the y[i-1] column as though it were same-shot. Inverted: the
-    # correct behaviour is the default, suppressing it is explicit.
+    # On by default. NN_axi is fed from axis_avg_buffer_0.m1_axis (the host-DMA readback), not the live readout
+    # stream. The extra get_decimated() streams a second copy of the shot (770 words, a whole window, so it does
+    # not move the phase) so the BRAM read always follows a complete window of the current shot.
     ap.add_argument("--extra-dma", dest="extra_dma", action="store_true",
                     default=True,
                     help="(default, kept for compatibility) advance past the "
@@ -235,19 +198,10 @@ def main():
                          "for lag diagnostics only")
     ap.add_argument("--start", type=int, default=0,
                     help="first dataset row; scores rows [start, start+chunk)")
-    # prepare_chunk scales every chunk so ITS loudest sample fills 99% of the
-    # DAC, so a shot's played amplitude depends on what else is in its chunk:
-    # with board A's 2026-10-05 k, a 500-row chunk of test20k_real_X plays ~19%
-    # louder than the whole file, a 2000-row chunk 4-19% louder depending on
-    # where it starts. (The peak is per-component, so these ratios move with
-    # arg(k) -- they are board- and calibration-specific.) "dataset" scales
-    # every chunk by the whole file's peak, so every shot is played identically
-    # however the run is split, and split runs are poolable. The reference
-    # amplitudes -- domain_calib_acquired (600-row chunk, what (k2,c2) was
-    # fitted on) and loopback20k_real (one 20k chunk, the 95.34% eval set) --
-    # agree to 1.4% in mean |z|, and on-chip fidelity was flat from 0.94x to
-    # 1.19x, so the exact choice is not critical; consistency is the point.
-    # "chunk" is the historical behaviour (CURRENT_BEST_RESULTS 2026-10-05).
+    # prepare_chunk scales every chunk so its loudest sample fills 99% of the DAC, so a shot's played amplitude
+    # depends on the rest of its chunk (a 500-row chunk of test20k_real_X plays up to ~19% louder than the whole
+    # file; board- and calibration-specific). "dataset" scales every chunk by the whole file's peak, so every shot
+    # is played identically however the run is split, and split runs can be pooled. "chunk" scales per chunk.
     ap.add_argument("--norm", choices=("chunk", "dataset"), default="chunk")
     ap.add_argument("--capture", action="store_true",
                     help="also read back the 770 raw packed input words NN() "
@@ -255,11 +209,8 @@ def main():
                          "Saved as `words` in --save.")
     ap.add_argument("--save", default=None,
                     help="write per-shot idx/probs/labels to this .npz")
-    # Task 4.1 (v1.40L1+): NN_live classifies every shot straight off the live
-    # readout stream, beside NN_axi. Its per-shot record (NN_live.h) is read
-    # after each shot and compared with NN_axi's answer for the same shot:
-    # both see the samples acquire_decimated() returns, so once NN_axi is
-    # aligned the two probabilities should be identical.
+    # NN_live classifies every shot straight off the readout stream, beside NN_axi. Its per-shot record
+    # (NN_live.h) is read after each shot and compared with NN_axi's answer for the same shot.
     ap.add_argument("--live", action="store_true",
                     help="also read NN_live's record for every shot (needs a "
                          "v1.40L1+ bitstream and the patched NNQickSoc)")

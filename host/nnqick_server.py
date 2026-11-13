@@ -12,16 +12,11 @@ from qick import QickSoc
 from pynq import MMIO
 
 
-# --- BD 2.0 compatibility patch (2026-08-27) ---
-# QickMetadata.trace_dma (qick/ip.py) walks the block-design graph
-# downstream of axis_avg_buffer_0's m1_axis expecting to find only
-# axi_dma or axis_switch. BD 2.0 inserts a clean axis_broadcaster
-# (HAS_TREADY=0) directly on that port to also feed NN_axi_0, without
-# disturbing the ORIGINAL acquire_decimated() path (still wired to the
-# broadcaster's M00_AXIS exactly as it was wired directly before the
-# broadcaster existed) -- this teaches the tracer to pass straight through
-# an axis_broadcaster via its M00_AXIS output, so acquire_decimated()'s
-# own driver-level auto-discovery keeps working unmodified.
+# --- axis_broadcaster patch ---
+# QickMetadata.trace_dma (qick/ip.py) walks the block design downstream of axis_avg_buffer_0's m1_axis expecting
+# only axi_dma or axis_switch. An axis_broadcaster on that port also feeds NN_axi_0; the DMA path continues on its
+# M00_AXIS. This lets the tracer pass through an axis_broadcaster via M00_AXIS, so acquire_decimated()'s
+# auto-discovery works unmodified.
 import qick.ip as _qickip
 
 def _bd2_trace_dma(self, direction, start_block, start_port):
@@ -53,10 +48,9 @@ def _bd2_trace_dma(self, direction, start_block, start_port):
 
 _qickip.QickMetadata.trace_dma = _bd2_trace_dma
 print("BD 2.0 patch applied: QickMetadata.trace_dma now passes through axis_broadcaster nodes")
-# --- end BD 2.0 patch ---
+# --- end axis_broadcaster patch ---
 
-# --- NN_live tracer patch (2026-10-06): hide live_gate_0 from QICK's net
-# tracing; it shares trig_0_o with axis_avg_buffer_0 (patch_nameserver_live.py).
+# --- NN_live tracer patch: hide live_gate_0 from QICK's net tracing; it shares trig_0_o with axis_avg_buffer_0.
 _orig_trace_net = _qickip.QickMetadata._trace_net
 
 def _live_trace_net(self, parser, blockname, portname):
@@ -66,9 +60,8 @@ def _live_trace_net(self, parser, blockname, portname):
 _qickip.QickMetadata._trace_net = _live_trace_net
 print("NN_live patch applied: QickMetadata._trace_net ignores live_gate_0")
 # --- end NN_live tracer patch ---
-# --- dac_gate tracer patch (v1.40L6): trace_forward passes through dac_gate_0
-# (gen 0 -> register slice -> dac_gate_0 -> RFdc), like a register slice
-# (patch_nameserver_gate.py).
+# --- dac_gate tracer patch: trace_forward passes through dac_gate_0 (gen 0 -> register slice -> dac_gate_0 ->
+# RFdc) like a register slice.
 _orig_mod2type = _qickip.QickMetadata.mod2type
 
 def _gate_mod2type(self, block):
@@ -78,8 +71,7 @@ def _gate_mod2type(self, block):
 _qickip.QickMetadata.mod2type = _gate_mod2type
 print("dac_gate patch applied: QickMetadata.mod2type treats dac_gate_0 as a register slice")
 # --- end dac_gate tracer patch ---
-# --- boxcar_tap tracer patch (v1.40L7): QICK sees the stock readout topology
-# (patch_nameserver_boxcar.py).
+# --- boxcar_tap tracer patch: QICK sees the stock readout topology.
 _BOX_OUT = {('boxcar_tap_0', 'm_box_axis'): ['axis_dyn_readout_v1_1', 'm1_axis'],
             ('boxcar_tap_0', 'm_mr_axis'): ['axis_dyn_readout_v1_0', 'm0_axis']}
 _BOX_IN = {('axis_dyn_readout_v1_1', 'm1_axis'): [['axis_broadcaster_1', 'S_AXIS']],
@@ -97,8 +89,7 @@ def _box_trace_bus(self, blockname, portname):
 _qickip.QickMetadata.trace_bus = _box_trace_bus
 print("boxcar_tap patch applied: QickMetadata.trace_bus aliases boxcar_tap_0 to the stock readout ports")
 # --- end boxcar_tap tracer patch ---
-# --- v1.40L9 tracer patch (patch_nameserver_L9.py): rf_tap_0 and trig_sync_0
-# are invisible to QICK.
+# --- rf_tap / trig_sync tracer patch: rf_tap_0 and trig_sync_0 are invisible to QICK.
 _L9_BUS_OUT = {('rf_tap_0', 'm_axis'): ['usp_rf_data_converter_0', 'm00_axis']}
 _L9_BUS_FWD = {('rf_tap_0', 's_axis'): ['axis_register_slice_2', 'S_AXIS']}
 _l9_prev_trace_bus = _qickip.QickMetadata.trace_bus
@@ -135,24 +126,24 @@ def _l9_trace_sig(self, blockname, portname):
 _qickip.QickMetadata.trace_bus = _l9_trace_bus
 _qickip.QickMetadata.trace_sig = _l9_trace_sig
 print("v1.40L9 patch applied: rf_tap_0 and trig_sync_0 aliased for QickMetadata tracing")
-# --- end v1.40L9 tracer patch ---
+# --- end rf_tap / trig_sync tracer patch ---
 
 class NNQickSoc(QickSoc):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         bram_info = self.mem_dict['axi_bram_ctrl_0']
         self._nn_bram_mmio = MMIO(bram_info['phys_addr'], bram_info['addr_range'])
-        # NN_live (task 4.1) results BRAM; absent on bitstreams before v1.40L1.
+        # NN_live record BRAM (absent on builds without NN_live)
         live = self.mem_dict.get('axi_bram_ctrl_live')
         self._live_mmio = MMIO(live['phys_addr'], live['addr_range']) if live else None
-        # seg_stamp (task 4.1f) segment-timestamp BRAM; v1.40L4 only.
+        # seg_stamp timestamp BRAM (absent on builds without seg_stamp)
         seg = self.mem_dict.get('axi_bram_ctrl_seg')
         self._seg_mmio = MMIO(seg['phys_addr'], seg['addr_range']) if seg else None
-        # dac_gate (v1.40L6) config/statistics BRAM; absent before v1.40L6.
+        # dac_gate config/statistics BRAM (absent on builds without dac_gate)
         gate = self.mem_dict.get('axi_bram_ctrl_gate')
         self._gate_mmio = MMIO(gate['phys_addr'], gate['addr_range']) if gate else None
-        # v1.40L5 classify trigger: trig_11 drives PMOD0_7 and live_gate_0, which
-        # qick's pin discovery skips; list it again so NN_TRIGGER_PIN stays trig_11.
+        # classify trigger: trig_11 drives PMOD0_7 and live_gate_0, which qick's pin discovery skips; list it again
+        # so NN_TRIGGER_PIN stays trig_11.
         self._fix_classify_pins()
 
     def _fix_classify_pins(self):
@@ -190,7 +181,7 @@ class NNQickSoc(QickSoc):
         """Words 0..14: config, windows, passed, blanked, stale, decisions, margin,
         marker->pulse, decision lo, decision hi, flags, magic, late decisions,
         last late (cycles after window start), classify triggers (dac_gate.v)."""
-        return self.gate_read_block(0, 21)   # v1.41 GAT4: words 0..20 (19 binding rejects, 20 expected shot)
+        return self.gate_read_block(0, 21)   # GAT4: words 0..20 (19 binding rejects, 20 expected shot field)
 
     def box_present(self):
         return 'boxcar_tap_0' in self.metadata.modinfo
@@ -232,10 +223,7 @@ class NNQickSoc(QickSoc):
         return {"out_offset": int(reg.out_offset), "out_offset_ctrl": int(reg.out_offset_ctrl), "trig_count": int(reg.trig_count)}
 
     def nn_status_raw(self):
-        # Bypasses PYNQ's register_map/RegisterMap ctypes layer entirely --
-        # a raw AXI-lite MMIO read at the known byte offsets, to test
-        # whether register_map itself is the source of stale trig_count
-        # reads (2026-08-11 investigation).
+        # raw AXI-lite MMIO read at the register byte offsets, bypassing PYNQ's register_map
         m = self.NN_axi_0.mmio
         return {"out_offset_raw": m.read(0x30), "out_offset_ctrl_raw": m.read(0x34),
                 "trig_count_raw": m.read(0x40), "trig_count_ctrl_raw": m.read(0x44)}
@@ -254,8 +242,8 @@ class NNQickSoc(QickSoc):
         self._seg_mmio.write(4 * word, int(value) & 0xFFFFFFFF)
 
     def seg_latest(self):
-        """[records, thr, magic] + the newest record (seg_stamp.v): 16 words on
-        SEG2/SEG3 (v1.40L9/L10, +8 edge0, +9 edge3), 8 on SEG1."""
+        """[records, thr, magic] + the newest record (seg_stamp.v): 16 words (SEG2/SEG3: +8 edge0, +9 edge3),
+        8 on SEG1."""
         m = self._seg_mmio
         hdr = [m.read(0), m.read(4), m.read(8)]
         n = 16 if hdr[2] in (0x53454732, 0x53454733) else 8
@@ -291,10 +279,7 @@ class NNQickSoc(QickSoc):
         return {"wrote_255_read_back_as": readback_255, "wrote_0_read_back_as": readback_0}
 
     def nn_read_out_reset_raw(self):
-        # Raw MMIO read of out_reset, bypassing register_map entirely
-        # (2026-08-13: register_map.out_reset getter throws
-        # "TypeError: __int__ returned non-int (type str)" on v1.8.0 --
-        # investigating whether out_reset itself is stuck asserted).
+        # raw MMIO read of out_reset, bypassing register_map
         return self.NN_axi_0.mmio.read(0x28)
 
     def nn_write_out_reset_raw(self, value):

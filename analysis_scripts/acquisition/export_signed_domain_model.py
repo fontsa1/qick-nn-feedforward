@@ -1,41 +1,14 @@
 """
-2026-09-21: v1.37 fidelity fix -- train in the SIGNED ADC domain.
+Train and export the deployed classifier (ternary 2N -> 4 -> 1, QKeras, hls4ml precision config) on the
+loopback-domain-calibrated training set, in the signed ADC domain.
 
-Identical to export_loopback_calibrated_model.py (same architecture, same
-SEED=20260901, same shuffle-before-split, same hls4ml precision config, same
-loopback-domain-calibrated training set) EXCEPT for `hw_raw_transform`, which
-no longer reinterprets the int16 samples as uint16.
+hw_raw_transform reads each int16 sample as signed, multiplied by scaling_factor, as NN_axi's LOAD_L and NN_live do;
+the firmware encoding and this transform must agree. Measured offline on 0528_X_train_0_770_loopback_calibrated.npy
+[:20000] (3 seeds each): unsigned reading 92.35%, signed 94.42%, linear ceiling on the same data 96.07%.
 
-WHY. NN_axi.cpp's LOAD_L used to read each ADC word as `ap_uint<16>`, so a
-sample of -1 reached the network as 65535. 46.6% of samples are negative, so
-a 65536-wide discontinuity sat in the middle of the input distribution. The
-same word was already read SIGNED six hundred lines earlier for onset
-detection (`ap_int<16> pi = probe_word.range(15,0)`), so the design was
-internally inconsistent.
-
-Measured offline on this exact training distribution
-(0528_X_train_0_770_loopback_calibrated.npy[:20000], ternary 1540->4->1,
-3 seeds each):
-
-    UNSIGNED (old)  92.35%      SIGNED (this)  94.42%
-    linear ceiling on the same data: 96.07%   (paper reports 95.80-96%)
-
-The paper's "raw 14-bit unsigned integers" is genuine offset binary, which is
-monotone; reinterpreting two's complement as unsigned is not.
-
-MUST be deployed together with the matching NN_axi.cpp change (v1.37) -- the
-firmware encoding and this transform have to agree or the model sees a domain
-it was never trained on.
-
-2026-10-05 (task 1.2). Two changes. (1) The training set is now built with the
-LABEL-FREE global domain map rather than the per-class fit that consumed
-`data/domain_calib_y.npy` -- leakage item F1 is closed, at a measured cost of -0.01
-points. (2) Training runs several seeds and keeps the lowest `val_loss`,
-because seed-to-seed spread on the acquired eval set is +/-0.24 points,
-comparable to the entire benefit of the domain map. `val_loss` lives on the
-held-out 20% of the training pool, so the selection touches no test or acquired
-shot.
-
+The training set uses the label-free global domain map. Training runs several seeds and keeps the lowest val_loss,
+computed on the held-out 20% of the training pool (no test or acquired shot is used). Seed-to-seed spread on the
+acquired eval set is about +/-0.24 points.
 """
 import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
@@ -58,10 +31,9 @@ base = Path(".")
 SCALING_FACTOR = 1
 
 def hw_raw_transform(X, scaling_factor):
-    """Mirror of v1.37 LOAD_L: signed int16 sample * scaling_factor.
+    """Signed int16 sample * scaling_factor, as NN_axi's LOAD_L.
 
-    ap_fixed<32,20> holds +/-524288, and |32768 * SF<=8| = 262144, so the
-    signed range fits with room to spare.
+    ap_fixed<32,20> holds +/-524288, and |32768 * SF<=8| = 262144, so the signed range fits.
     """
     X_int16 = np.clip(np.round(X), -32768, 32767).astype(np.int16)
     return X_int16.astype(np.float32) * scaling_factor
@@ -199,13 +171,9 @@ def main():
     print(f"input range after transform: [{X_train.min():.0f}, {X_train.max():.0f}]"
           f"  (negative present: {bool((X_train < 0).any())})")
 
-    # SEED SELECTION BY VALIDATION LOSS (2026-10-05). Seed-to-seed spread on
-    # the acquired eval set is +/-0.24 points, comparable to the whole benefit
-    # of the domain map (+0.37), so a single fixed seed makes the deployed
-    # artifact a coin flip over a range that matters -- and the bitstream bakes
-    # in whichever draw it got. `val_loss` is computed on the held-out 20% of
-    # the TRAINING pool, so this selection touches no test shot, no acquired
-    # shot, and no label from outside the training pool.
+    # Seed selection by validation loss: seed-to-seed spread on the acquired eval set (+/-0.24 points) is
+    # comparable to the domain map's benefit (+0.37). val_loss is computed on the held-out 20% of the training
+    # pool, so the selection uses no test or acquired shot.
     print(f"\nTraining {len(a.seeds)} seed(s); keeping the lowest val_loss")
     best = None
     for seed in a.seeds:

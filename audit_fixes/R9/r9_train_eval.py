@@ -9,7 +9,7 @@ seed. Scored on loopback20k_real (20,000 replayed real shots, no map).
 
 Differences from task33: (1) per-shot sigmoid outputs are saved for every run so arms
 can be compared PAIRED on the same test shots; (2) more arms / data draws (below);
-(3) TF/BLAS limited to 4 threads (audit compute budget).
+(3) TF/BLAS limited to 4 threads.
 
 Arm spec  NAME=SOURCE[+SOURCE...]  where SOURCE is
     real:LO:HI              rows LO:HI of 0528_X_train_0_770.npy

@@ -1,25 +1,18 @@
-// RTL sim of dac_gate (v1.40L6b) with its decision path: NN_live result strobes on
-// the readout clock (552.96 MHz) -> live_res_cdc -> dac_gate on clk_dac2
-// (491.52 MHz), against a BRAM model (READ_LATENCY 1).
-// Generator model: a pulse of PLEN stream words (all 16 samples non-zero) starts
-// GEN_LAT cycles after the marker's rising edge (both at the gate input); otherwise small noise (|x| <= 3).
-// Shots:
-//   1 decision 1, PASS1           -> pulse passed, unchanged
-//   2 decision 0, PASS0 = 0       -> pulse blanked (all-zero output over it)
+// tb_gate: dac_gate (earlier version, GAT3) with its decision path: NN_live-like result strobes on the readout clock (552.96 MHz) ->
+// live_res_cdc -> dac_gate on clk_dac2 (491.52 MHz), with a BRAM model (READ_LATENCY 1).
+// Generator model: a pulse of PLEN words (all 16 samples non-zero) GEN_LAT cycles after the marker rise;
+// otherwise small noise (|x| <= 3). Every shot starts with cls_trig. Shots:
+//   1 decision 1, PASS1           -> passed unchanged
+//   2 decision 0, PASS0 = 0       -> blanked
 //   3 no decision                 -> stale, blanked (PASS_STALE = 0)
-//   4 decision 0, gate disabled   -> pulse passed; statistics still kept
-//   5 decision 1 arrives after the window opened -> late: stale, blanked, counted
-//   6 no new decision             -> stale, blanked (v1.40L6 used shot 5's late decision)
-//   7 decision 1 arrives after shot 6's window closed, before shot 7's classify
-//     trigger -> late, discarded; shot 7 stale, blanked
-//   8 decision 1, PASS1           -> passed again (recovery)
-// Every shot starts with the classify trigger (cls_trig), as on hardware.
-// Everywhere outside a blanked window: output == input one cycle earlier.
-// Checks the statistics words after each shot (margin, marker -> pulse, flags).
-// v1.40L9 (GAT3): words 15-18 are absolute counter values (decision, marker,
-// window open, classify trigger); window open - decision must equal the margin
-// (word 6) on fresh shots, the decision word must be 0xFFFFFFFF on stale ones,
-// and cls < marker < window open.
+//   4 decision 0, gate disabled   -> passed; statistics still kept
+//   5 decision after the window opened -> late: stale, blanked, counted
+//   6 no new decision             -> stale, blanked (shot 5's late decision is not used)
+//   7 decision between shot 6's window and shot 7's cls_trig -> discarded; shot 7 stale, blanked
+//   8 decision 1, PASS1           -> passed
+// Checks: output == input one cycle earlier outside blanked windows; the statistics words after each shot,
+// including words 15-18 (window open - decision = word 6 on fresh shots, 0xFFFFFFFF on stale ones,
+// cls < marker < window open) and the magic 0x47415433.
 `timescale 1ps / 1ps
 
 module tb_gate;

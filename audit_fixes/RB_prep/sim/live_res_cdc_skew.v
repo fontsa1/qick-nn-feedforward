@@ -1,26 +1,5 @@
-// live_res_cdc: NN_live's per-shot result (res_o, ap_vld) as one 64-bit AXIS
-// beat for a tProc_v2 input port, crossing from the readout clock into the
-// tProc core clock (v1.40L5). Replaces live_res_axis + axis_cc_live (an async
-// FIFO, ~6 core cycles) with a hold-and-toggle handshake (~3 core cycles).
-//
-// Word layout as live_res_axis.v (NN_live.h):
-//   tdata[31:0]  = logit sign-extended to 32 bits (ap_fixed<16,6> raw, Q.10)
-//   tdata[60:32] = shot count (29 bits), to detect a stale read
-//   tdata[63]    = decision bit (logit >= 1/64)
-//
-// Source (s_aclk, clk_adc0_x2): on res_o_ap_vld the formatted word is written
-// to `hold` and `tog` flips, in the same cycle.
-// Destination (m_aclk, the tProc core clock): `tog` passes a two-flop ASYNC_REG
-// synchronizer; a change at its output registers `hold` into m_axis_tdata and
-// pulses m_axis_tvalid for one cycle.
-// Why sampling `hold` is safe: it was written in the same source cycle as the
-// toggle, and is sampled only after the toggle has passed two destination flops,
-// i.e. at least one full destination cycle later. It does not change again until
-// the next result, and results arrive at most once per shot (>= ~1 us apart, vs
-// 3 core cycles of latency).
-// The two clocks are asynchronous clock groups in timing.xdc (clk_core vs
-// clk_adc0_x2), so these paths are not timed; the argument above is the guarantee.
-// m_axis_tready is ignored: the tProc's input ports latch on tvalid.
+// live_res_cdc_skew: live_res_cdc with simulation-only delays: SKEW_PS on `hold` and TOG_PS on `tog` before
+// the destination samples them. Used by tb_cdc_skew. See neural_net4_live576/rtl/live_res_cdc.v.
 `timescale 1ns / 1ps
 
 module live_res_cdc_skew #(parameter integer SKEW_PS = 0, parameter integer TOG_PS = 0) (
